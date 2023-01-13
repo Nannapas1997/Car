@@ -62,4 +62,8 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function canAccessFilament(): bool {
+        return str_ends_with($this->email, '@admin.com');
+    }
 }

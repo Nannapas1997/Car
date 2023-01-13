@@ -20,7 +20,7 @@ class RolesAndPermissionSeeder extends Seeder
      */
     public function run()
     {
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Misc
         $miscPermission = Permission::create(['name' => 'N/A']);

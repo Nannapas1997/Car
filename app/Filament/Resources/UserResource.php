@@ -30,13 +30,14 @@ use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Filament\Resources\UserResource\RelationManagers\RolesRelationManager;
-
+use App\Providers\UserPolicy;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationGroup = 'Admin Management';
+    protected static bool $shouldRegisterNavigation = false;
     public static function form(Form $form): Form
     {
         return $form
@@ -103,14 +104,10 @@ class UserResource extends Resource
 	/**
 	 * @return string|null
 	 */
-	public static function getNavigationGroup(): ?string {
-		return self::navigationGroup;
-	}
 
-	/**
-	 * @param string|null $navigationGroup
-	 */
-	public static function setNavigationGroup(?string $navigationGroup) {
-		self::navigationGroup =$navigationGroup;
-	}
+
+    /**
+     */
+    public function __construct() {
+    }
 }

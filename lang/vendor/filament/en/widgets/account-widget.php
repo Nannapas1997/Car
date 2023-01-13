@@ -2,14 +2,11 @@
 
 return [
 
-    'buttons' => [
+    'card' => [
 
-        'logout' => [
-            'label' => 'Sign out',
-        ],
+
 
     ],
 
-    'welcome' => 'Welcome, :user',
 
 ];
