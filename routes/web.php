@@ -24,3 +24,5 @@ Route::middleware([
         return view('home');
     })->name('home');
 });
+
+Route::get('/mywork',['MyWorkController', 'index']);
