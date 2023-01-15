@@ -8,6 +8,8 @@ module.exports = {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './vendor/filament**/*.blade.php',
+        './src/**/*.{html,js}',
+        './src/input.css'
     ],
 
     theme: {
@@ -20,5 +22,5 @@ module.exports = {
     },
 
     plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
-    'google_fonts' : 'https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap',
+    'google_fonts' : 'href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet',
 };

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c25b47727204279d47fa2de7d14733bd",
+    "content-hash": "5920d4c682da3f2d81e04392e71543d6",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -4786,6 +4786,79 @@
                 }
             ],
             "time": "2022-11-23T07:01:37+00:00"
+        },
+        {
+            "name": "suleymanozev/filament-radio-button-field",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/suleymanozev/filament-radio-button-field.git",
+                "reference": "5dd8e9620fc3b2cee4522adaa5487fe90d8645e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/suleymanozev/filament-radio-button-field/zipball/5dd8e9620fc3b2cee4522adaa5487fe90d8645e5",
+                "reference": "5dd8e9620fc3b2cee4522adaa5487fe90d8645e5",
+                "shasum": ""
+            },
+            "require": {
+                "filament/forms": "^2.0",
+                "illuminate/contracts": "^8.6|^9.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.9.2"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^6.0",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^7.0",
+                "pestphp/pest": "^1.21",
+                "pestphp/pest-plugin-laravel": "^1.1",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Suleymanozev\\FilamentRadioButtonField\\FilamentRadioButtonFieldServiceProvider"
+                    ],
+                    "aliases": {
+                        "FilamentRadioButtonField": "Suleymanozev\\FilamentRadioButtonField\\Facades\\FilamentRadioButtonField"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Suleymanozev\\FilamentRadioButtonField\\": "src",
+                    "Suleymanozev\\FilamentRadioButtonField\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Süleyman ÖZEV",
+                    "email": "info@suleymanozev.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The radio button field for the Filament forms",
+            "homepage": "https://github.com/suleymanozev/filament-radio-button-field",
+            "keywords": [
+                "filament-radio-button-field",
+                "laravel",
+                "suleymanozev"
+            ],
+            "support": {
+                "issues": "https://github.com/suleymanozev/filament-radio-button-field/issues",
+                "source": "https://github.com/suleymanozev/filament-radio-button-field/tree/v1.0.0"
+            },
+            "time": "2022-07-23T04:59:57+00:00"
         },
         {
             "name": "symfony/console",
