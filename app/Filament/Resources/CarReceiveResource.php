@@ -24,7 +24,7 @@ use App\Filament\Resources\CarReceiveResource\RelationManagers;
 class CarReceiveResource extends Resource
 {
     protected static ?string $model = CarReceive::class;
-
+    protected static ?string $navigationGroup = 'My Work';
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
     public static function form(Form $form): Form
