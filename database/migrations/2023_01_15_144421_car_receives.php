@@ -13,30 +13,30 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('car_receive', function (Blueprint $table) {
+        Schema::create('car_receives', function (Blueprint $table) {
             $table->id();
             $table->string('เลือกอู่')->required();
             $table->string('เลขที่งาน')->default('SP23-1234')->unique()->searchable()->required;
             $table->string('เลขที่งาน(กรณีลูกค้ารายใหม่')->unique()->default('SP23-1234')->required;
-            $table->date('วันที่รับเรื่อง')->format('d-M-Y')->required();
-            $table->time('เวลา')->required();
+            $table->date('วันที่รับเรื่อง')->required()->default('Jan 18, 2023');
+            $table->time('เวลา')->required()->default('09:00:00');
             $table->string('เจ้าของรถ')->default('นายสมชาย ภักดี')->required()->unique();
             $table->string('ผู้สั่งซ่อม')->default('นายศุภโชค แสนแก้ว')->required()->unique();
             $table->string('เบอร์ติดต่อ')->default('0823508565')->required();
-            $table->date('วันนัดรับรถ')->required();
+            $table->date('วันนัดรับรถ')->required()->default('Jan 18, 2023');;
             $table->string('ทะเบียนรถ')->default('กจ6409')->required()->unique();
             $table->string('ยี่ห้อรถ')->default('Honda')->required();
-            $table->string('รุ่น')->required();
+            $table->string('รุ่น')->required()->default('Civic');
             $table->string('ประเภทรถ')->required()->default('รถเก๋ง');
-            $table->string('เลขไมล์')->required();
+            $table->string('เลขไมล์')->required()->default('56785');
             $table->string('รหัสซ่อม')->required()->default('A');
-            $table->string('ประเภทของการซ่อมรถ')->required();
-            $table->string('ชื่อบริษัทประกันภัย')->required();
-            $table->string('เลขกรมธรรม์')->require();
-            $table->string('เลขที่รับแจ้ง')->required();
-            $table->string('เลขที่เคลม')->required();
-            $table->string('ประเภทการจอด')->required();
-            $table->date('วันที่รถเข้ามาจอด')->required();
+            $table->string('ประเภทของการซ่อมรถ')->required()->default('คดี');
+            $table->string('ชื่อบริษัทประกันภัย')->required()->default('วิริยะประกันภัย');
+            $table->string('เลขกรมธรรม์')->require()->default('12345678');
+            $table->string('เลขที่รับแจ้ง')->required()->default('12345678');;
+            $table->string('เลขที่เคลม')->required()->default('12345678');;
+            $table->string('ประเภทการจอด')->required()->default('จอดซ่อม');
+            $table->date('วันที่รถเข้ามาจอด')->required()->default('Jan 18, 2023');
             $table->string('ใบเคลมฉบับจริง')->required()->nullable();
             $table->string('สำเนาใบเคลม')->required()->nullable();
             $table->string('สำเนาใบขับขี่')->required()->nullable();
@@ -65,6 +65,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('car_receive');
+        Schema::dropIfExists('car_receives');
     }
 };
