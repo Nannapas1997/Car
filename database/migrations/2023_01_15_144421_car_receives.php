@@ -19,8 +19,8 @@ return new class extends Migration
         Schema::create('car_receives', function (Blueprint $table) {
             $table->id();
             $table->string('เลือกอู่')->required();
-            $table->string('เลขที่งาน')->nullable();
-            $table->string('เลขที่งาน(กรณีลูกค้ารายใหม่')->nullable();
+            $table->string('เลขที่งาน')->default('SP23-1234')->unique()->searchable()->required;
+            $table->string('เลขที่งาน(กรณีลูกค้ารายใหม่')->unique()->default('SP23-1234')->required;
             $table->dateTimeTz('วันที่รับเรื่อง')->required()->default(now());
             $table->dateTimeTz('เวลา')->required()->default(now());
             $table->string('เจ้าของรถ')->default('นายสมชาย ภักดี')->required()->unique();
