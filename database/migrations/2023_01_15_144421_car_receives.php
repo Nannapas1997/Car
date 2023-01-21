@@ -1,8 +1,11 @@
 <?php
 
+use Illuminate\Database\Eloquent\Factories\Relationship;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use League\Flysystem\UrlGeneration\PrefixPublicUrlGenerator;
+use PhpOption\Option;
 
 return new class extends Migration
 {
@@ -16,14 +19,14 @@ return new class extends Migration
         Schema::create('car_receives', function (Blueprint $table) {
             $table->id();
             $table->string('เลือกอู่')->required();
-            $table->string('เลขที่งาน')->default('SP23-1234')->unique()->searchable()->required;
-            $table->string('เลขที่งาน(กรณีลูกค้ารายใหม่')->unique()->default('SP23-1234')->required;
-            $table->date('วันที่รับเรื่อง')->required()->default('Jan 18, 2023');
-            $table->time('เวลา')->required()->default('09:00:00');
+            $table->string('เลขที่งาน')->nullable();
+            $table->string('เลขที่งาน(กรณีลูกค้ารายใหม่')->nullable();
+            $table->dateTimeTz('วันที่รับเรื่อง')->required()->default(now());
+            $table->dateTimeTz('เวลา')->required()->default(now());
             $table->string('เจ้าของรถ')->default('นายสมชาย ภักดี')->required()->unique();
             $table->string('ผู้สั่งซ่อม')->default('นายศุภโชค แสนแก้ว')->required()->unique();
             $table->string('เบอร์ติดต่อ')->default('0823508565')->required();
-            $table->date('วันนัดรับรถ')->required()->default('Jan 18, 2023');;
+            $table->dateTimeTz('วันนัดรับรถ')->required()->default(now());;
             $table->string('ทะเบียนรถ')->default('กจ6409')->required()->unique();
             $table->string('ยี่ห้อรถ')->default('Honda')->required();
             $table->string('รุ่น')->required()->default('Civic');
@@ -36,7 +39,7 @@ return new class extends Migration
             $table->string('เลขที่รับแจ้ง')->required()->default('12345678');;
             $table->string('เลขที่เคลม')->required()->default('12345678');;
             $table->string('ประเภทการจอด')->required()->default('จอดซ่อม');
-            $table->date('วันที่รถเข้ามาจอด')->required()->default('Jan 18, 2023');
+            $table->dateTimeTz('วันที่รถเข้ามาจอด')->required()->default(now());
             $table->string('ใบเคลมฉบับจริง')->required()->nullable();
             $table->string('สำเนาใบเคลม')->required()->nullable();
             $table->string('สำเนาใบขับขี่')->required()->nullable();
