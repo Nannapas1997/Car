@@ -7,9 +7,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{asset('assets/css/global.css')}}">
+
 </head>
 <body>
-<x-filament::widget>
+    <div class="container m-auto grid grid-cols-1 gap-1 bg-white">
+        <div class="">วัน</div>
+    </div>
 
-</x-filament::widget>
+</body>

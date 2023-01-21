@@ -20,6 +20,8 @@ use Filament\Forms\Components\MultiSelect;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CarReceiveResource\Pages;
 use App\Filament\Resources\CarReceiveResource\RelationManagers;
+use Filament\Forms\Components\Select;
+use Livewire\TemporaryUploadedFile;
 
 class CarReceiveResource extends Resource
 {
@@ -31,9 +33,9 @@ class CarReceiveResource extends Resource
     {
         return $form
             ->schema([
-            Radio::make('เลือกอู่')->label("กรุณาเลือกอู่ที่ต้องการ")->options(['1' => 'SP auto','2' => 'SBO'])->columns(3),
+            Radio::make('เลือกอู่')->label("กรุณาเลือกอู่ที่ต้องการ")->options(['SP' => 'SP auto','SBO' => 'SBO'])->columns(3),
             MultiSelect::make('เลขที่งาน')->label("เลขที่งาน")->preload(),
-            TextInput::make('เลขที่งาน(กรณีลูกค้ารายใหม่)')->label("เลขที่งาน(กรณีลูกค้ารายใหม่)")->default('sp5678')->required(),
+            TextInput::make('เลขที่งาน(กรณีลูกค้ารายใหม่)')->label("เลขที่งาน(กรณีลูกค้ารายใหม่)")->required(),
             DatePicker::make('date')->label('วันที่รับเรื่อง')->required(),
             TimePicker::make('เวลา')->label('เวลา'),
             TextInput::make('เจ้าของรถ')->label('เจ้าของรถ')->required(),
@@ -45,12 +47,12 @@ class CarReceiveResource extends Resource
             TextInput::make('รุ่น')->label('รุ่น')->required(),
             TextInput::make('ประเภทรถ')->label('ประเภทรถ')->required(),
             TextInput::make('รหัสซ่อม')->label('รหัสซ่อม')->required(),
-            Radio::make('เลือกอู่')->label("กรุณาเลือกอู่ที่ต้องการ")->options(['1' => 'รถประกัน','2' => 'รถคู่กรณี','3'=>'ฝ่ายถูก','4'=>'ฝ่ายผิด','5'=>'คดี','6'=>'เคลมประกันบริษัท','7'=>'เงินสด'])->columns(8)->required(),
+            Radio::make('ระบุตัวเลือก')->label("ระบุตัวเลือก")->options(['รถประกัน' => 'รถประกัน','รถคู่กรณี' => 'รถคู่กรณี','ฝ่ายถูก'=>'ฝ่ายถูก','ฝ่ายผิด'=>'ฝ่ายผิด','คดี'=>'คดี','เคลมประกันบริษัท'=>'เคลมประกันบริษัท','เงินสด'=>'เงินสด'])->columns(8)->required(),
             TextInput::make('ชื่อบริษัทประกันภัย')->label('ชื่อบริษัทประกันภัย')->required(),
             TextInput::make('เลขกรมธรรม์')->label('เลขกรมธรรม์')->required(),
             TextInput::make('เลขที่รับแจ้ง')->label('เลขที่รับแจ้ง')->required(),
             TextInput::make('เลขที่เคลม')->label('เลขที่เคลม')->required(),
-            Radio::make('ประัเภทการจอด')->label("ประเภทการจอด")->options(['1' => 'จอดซ่อม','2' => 'ไม่จอดซ่อม'])->columns(3),
+            Radio::make('ประัเภทการจอด')->label("ประเภทการจอด")->options(['จอดซ่อม' => 'จอดซ่อม','ไม่จอดซ่อม' => 'ไม่จอดซ่อม'])->columns(3),
             DatePicker::make('วันที่รถเข้ามาจอด')->label('วันที่รถเข้ามาจอด')->required(),
             FileUpload::make('ใบเคลมฉบับจริง')->label('ใบเคลมฉบับจริง'),
             FileUpload::make('สำเนาใบเคลม')->label('สำเนาใบเคลม'),
