@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -15,16 +16,16 @@ return new class extends Migration
     {
         Schema::create('car_receives', function (Blueprint $table) {
             $table->id();
-            $table->string('เลือกอู่')->required();
-            $table->string('เลขที่งาน')->default('SP23-1234')->unique()->searchable()->required;
-            $table->string('เลขที่งาน(กรณีลูกค้ารายใหม่')->unique()->default('SP23-1234')->required;
+            $table->string('เลือกอู่')->default('SBO')->required();
+            $table->string('เลขที่งาน')->default('SBO-65-100');
+            $table->string('เลขที่งาน(กรณีลูกค้ารายใหม่')->default('SBO-65-001');
             $table->dateTimeTz('วันที่รับเรื่อง')->required()->default(now());
             $table->dateTimeTz('เวลา')->required()->default(now());
-            $table->string('เจ้าของรถ')->default('นายสมชาย ภักดี')->required()->unique();
-            $table->string('ผู้สั่งซ่อม')->default('นายศุภโชค แสนแก้ว')->required()->unique();
+            $table->string('เจ้าของรถ')->default('นายสมชาย ภักดี')->required();
+            $table->string('ผู้สั่งซ่อม')->default('นายศุภโชค แสนแก้ว')->required();
             $table->string('เบอร์ติดต่อ')->default('0823508565')->required();
             $table->dateTimeTz('วันนัดรับรถ')->required()->default(now());;
-            $table->string('ทะเบียนรถ')->default('กจ6409')->required()->unique();
+            $table->string('ทะเบียนรถ')->default('กจ6409')->required();
             $table->string('ยี่ห้อรถ')->default('Honda')->required();
             $table->string('รุ่น')->required()->default('Civic');
             $table->string('ประเภทรถ')->required()->default('รถเก๋ง');

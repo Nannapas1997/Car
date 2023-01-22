@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CarReceiveResource\Pages;
 use App\Filament\Resources\CarReceiveResource\RelationManagers;
 use Filament\Forms\Components\Select;
+use Filament\Http\Livewire\GlobalSearch;
 use Livewire\TemporaryUploadedFile;
 
 class CarReceiveResource extends Resource
@@ -34,8 +35,9 @@ class CarReceiveResource extends Resource
         return $form
             ->schema([
             Radio::make('เลือกอู่')->label("กรุณาเลือกอู่ที่ต้องการ")->options(['SP' => 'SP auto','SBO' => 'SBO'])->columns(3),
-            MultiSelect::make('เลขที่งาน')->label("เลขที่งาน")->preload(),
-            TextInput::make('เลขที่งาน(กรณีลูกค้ารายใหม่)')->label("เลขที่งาน(กรณีลูกค้ารายใหม่)")->required(),
+            
+            Select::make('เลขที่งาน')->label("เลขที่งาน")->preload()->options(CarReceive::query()->pluck('เลขที่งาน(กรณีลูกค้ารายใหม่)')),
+            TextInput::make('เลขที่งาน(กรณีลูกค้ารายใหม่)')->label("เลขที่งาน(กรณีลูกค้ารายใหม่)"),
             DatePicker::make('date')->label('วันที่รับเรื่อง')->required(),
             TimePicker::make('เวลา')->label('เวลา'),
             TextInput::make('เจ้าของรถ')->label('เจ้าของรถ')->required(),
@@ -52,7 +54,7 @@ class CarReceiveResource extends Resource
             TextInput::make('เลขกรมธรรม์')->label('เลขกรมธรรม์')->required(),
             TextInput::make('เลขที่รับแจ้ง')->label('เลขที่รับแจ้ง')->required(),
             TextInput::make('เลขที่เคลม')->label('เลขที่เคลม')->required(),
-            Radio::make('ประัเภทการจอด')->label("ประเภทการจอด")->options(['จอดซ่อม' => 'จอดซ่อม','ไม่จอดซ่อม' => 'ไม่จอดซ่อม'])->columns(3),
+            Radio::make('ประเภทการจอด')->label("ประเภทการจอด")->options(['จอดซ่อม' => 'จอดซ่อม','ไม่จอดซ่อม' => 'ไม่จอดซ่อม'])->columns(3),
             DatePicker::make('วันที่รถเข้ามาจอด')->label('วันที่รถเข้ามาจอด')->required(),
             FileUpload::make('ใบเคลมฉบับจริง')->label('ใบเคลมฉบับจริง'),
             FileUpload::make('สำเนาใบเคลม')->label('สำเนาใบเคลม'),
