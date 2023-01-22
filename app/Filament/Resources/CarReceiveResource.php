@@ -24,6 +24,7 @@ use Filament\Forms\Components\Select;
 use Filament\Http\Livewire\GlobalSearch;
 use Livewire\TemporaryUploadedFile;
 
+
 class CarReceiveResource extends Resource
 {
     protected static ?string $model = CarReceive::class;
@@ -35,9 +36,11 @@ class CarReceiveResource extends Resource
         return $form
             ->schema([
             Radio::make('เลือกอู่')->label("กรุณาเลือกอู่ที่ต้องการ")->options(['SP' => 'SP auto','SBO' => 'SBO'])->columns(3),
-            
+
             Select::make('เลขที่งาน')->label("เลขที่งาน")->preload()->options(CarReceive::query()->pluck('เลขที่งาน(กรณีลูกค้ารายใหม่)')),
             TextInput::make('เลขที่งาน(กรณีลูกค้ารายใหม่)')->label("เลขที่งาน(กรณีลูกค้ารายใหม่)"),
+            TextInput::make('เลขที่งาน(กรณีลูกค้ารายใหม่)')->label("เลขที่งาน(กรณีลูกค้ารายใหม่)"),
+            TextInput::make('เลขที่งาน(กรณีลูกค้ารายใหม่)')->label("เลขที่งาน(กรณีลูกค้ารายใหม่)")->required(),
             DatePicker::make('date')->label('วันที่รับเรื่อง')->required(),
             TimePicker::make('เวลา')->label('เวลา'),
             TextInput::make('เจ้าของรถ')->label('เจ้าของรถ')->required(),
