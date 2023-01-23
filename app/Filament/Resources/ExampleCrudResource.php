@@ -2,17 +2,19 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Tables;
+use App\Models\ExampleCrud;
+use Filament\Resources\Form;
+use Filament\Resources\Table;
+use Filament\Resources\Resource;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Actions\DeleteAction;
 use App\Filament\Resources\ExampleCrudResource\Pages;
 use App\Filament\Resources\ExampleCrudResource\RelationManagers;
-use App\Models\ExampleCrud;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
-use Filament\Resources\Resource;
-use Filament\Resources\Table;
-use Filament\Tables;
-use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\TextColumn;
+use Livewire\TemporaryUploadedFile;
 
 class ExampleCrudResource extends Resource
 {
@@ -29,9 +31,13 @@ class ExampleCrudResource extends Resource
                     ->label('ชื่อ')
                     ->required(),
                 FileUpload::make('image_url_1')
-                    ->label('อัพโหลดรูปภาพ')
+                    ->label('อัพโหลดไฟล์')
                     ->required(),
             ]);
+
+
+
+
     }
 
     public static function table(Table $table): Table
@@ -48,6 +54,7 @@ class ExampleCrudResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
