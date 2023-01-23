@@ -34,48 +34,57 @@ class CarReceiveResource extends Resource
     {
         return $form
             ->schema([
-            Radio::make('เลือกอู่')->label("กรุณาเลือกอู่ที่ต้องการ")->options(['SP' => 'SP auto','SBO' => 'SBO'])->columns(3),
-            Select::make('เลขที่งาน')->label("เลขที่งาน")->preload()->options(CarReceive::query()->pluck('เลขที่งาน(กรณีลูกค้ารายใหม่)')),
-            TextInput::make('เลขที่งาน(กรณีลูกค้ารายใหม่)')->label("เลขที่งาน(กรณีลูกค้ารายใหม่)")->default('sp5678'),
-            TextInput::make('เลขที่งาน(กรณีลูกค้ารายใหม่)')->label("เลขที่งาน(กรณีลูกค้ารายใหม่)")->required(),
-            DatePicker::make('date')->label('วันที่รับเรื่อง')->required(),
-            TimePicker::make('เวลา')->label('เวลา'),
-            TextInput::make('เจ้าของรถ')->label('เจ้าของรถ')->required(),
-            TextInput::make('ผู้สั่งซ่อม')->label('ผู้สั่งซ่อม')->required(),
-            TextInput::make('เบอร์ติดต่อ')->label('เบอร์ติดต่อ')->required(),
-            DatePicker::make('date')->label('วันนัดรับรถ'),
-            TextInput::make('ทะเบียนรถ')->label('ทะเบียนรถ')->required(),
-            TextInput::make('ยี่ห้อรถ')->label('ยี่ห้อรถ')->required(),
-            TextInput::make('รุ่น')->label('รุ่น')->required(),
-            TextInput::make('ประเภทรถ')->label('ประเภทรถ')->required(),
-            TextInput::make('รหัสซ่อม')->label('รหัสซ่อม')->required(),
-
-            Radio::make('ระบุตัวเลือก')->label("ระบุตัวเลือก")->options(['รถประกัน' => 'รถประกัน','รถคู่กรณี' => 'รถคู่กรณี','ฝ่ายถูก'=>'ฝ่ายถูก','ฝ่ายผิด'=>'ฝ่ายผิด','คดี'=>'คดี','เคลมประกันบริษัท'=>'เคลมประกันบริษัท','เงินสด'=>'เงินสด'])->columns(8)->required(),
-
-            TextInput::make('ชื่อบริษัทประกันภัย')->label('ชื่อบริษัทประกันภัย')->required(),
-            TextInput::make('เลขกรมธรรม์')->label('เลขกรมธรรม์')->required(),
-            TextInput::make('เลขที่รับแจ้ง')->label('เลขที่รับแจ้ง')->required(),
-            TextInput::make('เลขที่เคลม')->label('เลขที่เคลม')->required(),
-            Radio::make('ประัเภทการจอด')->label("ประเภทการจอด")->options(['จอดซ่อม' => 'จอดซ่อม','ไม่จอดซ่อม' => 'ไม่จอดซ่อม'])->columns(3),
-            DatePicker::make('วันที่รถเข้ามาจอด')->label('วันที่รถเข้ามาจอด')->required(),
-            FileUpload::make('ใบเคลมฉบับจริง')->label('ใบเคลมฉบับจริง'),
-            FileUpload::make('สำเนาใบเคลม')->label('สำเนาใบเคลม'),
-            FileUpload::make('สำเนาใบขับขี่')->label('สำเนาใบขับขี่'),
-            FileUpload::make('สำเนาทะเบียนรถ')->label('สำเนาทะเบียนรถ'),
-            FileUpload::make('สำเนากรมธรรม์')->label('สำเนากรมธรรม์'),
-            FileUpload::make('หนังสือมอบอำนาจ')->label('หนังสือมอบอำนาจ'),
-            FileUpload::make('สำเนาบัตรประชาชนกรรมการ')->label('สำเนาบัตรประชาชนกรรมการ'),
-            FileUpload::make('สำเนาหนังสือรับรองนิติบุคคล(ยังไม่หมดอายุ)')->label('สำเนาหนังสือรับรองนิติบุคคล(ยังไม่หมดอายุ)'),
-            FileUpload::make('หน้าสมุดบัญชีธนาคาร')->label('หน้าสมุดบัญชีธนาคาร'),
-            FileUpload::make('บัตร ATM')->label('บัตร ATM'),
-            FileUpload::make('ด้านหน้ารถ')->label('ด้านหน้ารถ'),
-            FileUpload::make('ด้านซ้ายรถ')->label('ด้านซ้ายรถ'),
-            FileUpload::make('ด้านขวารถ')->label('ด้านขวารถ'),
-            FileUpload::make('ด้านหลังรถ')->label('ด้านหลังรถ'),
-            FileUpload::make('ภายในเก๋งด้านซ้าย')->label('ภายในเก๋งด้านซ้าย'),
-            FileUpload::make('ภายในเก๋งด้านขวา')->label('ภายในเก๋งด้านขวา'),
-            FileUpload::make('ในตู้บรรทุก')->label('ในตู้บรรทุก'),
-            FileUpload::make('ภาพอื่นๆ')->label('ภาพอื่นๆ'),
+            Radio::make('choose_garage')->label(__('trans.choose_garage.text'))->options(['SP' => 'SP auto','SBO' => 'SBO'])->columns(3),
+            Select::make('job_number')->label(__('trans.job_number.text'))->preload()
+            ->options(CarReceive::all()->pluck('name', 'id')->toArray()
+            ->searchable()
+            ->reactive()
+            ->afterStateUpdated(function ($set, $state) {
+                if ($state) {
+                    $name = CarReceive::find($state)->toArray();
+                    if ($name) {
+                        $set('name', $name['name']);
+                    }
+                }
+            })),
+            TextInput::make('job_number(new_customer)')->label( __ ('trans.new_customer.text')),
+            DatePicker::make('receive_date')->label(__('trans.receive_date.text'))->required(),
+            TimePicker::make('time')->label(__('trans.time.text')),
+            TextInput::make('customer')->label(__('trans.customer.text'))->required(),
+            TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
+            TextInput::make('tel_number')->label(__('trans.tel_number.text'))->required(),
+            DatePicker::make('pickup_date')->label(__('trans.pickup_date.text')),
+            TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
+            Select::make('brand')->label(__('trans.brand.text'))->required()->options(['Toyota' => 'Toyota','Isuzu' => 'Isuzu','Honda' => 'Honda', 'Mitsubishi'=>'Mitsubishi','Nissan'=>'Nissan','Mazda'=>'Mazda','Ford'=>'Ford','MG'=>'MG','Suzuki'=>'Suzuki','Kia'=>'Kia','Hyundai'=>'Hyundai','Volvo'=>'Volvo','Subaru'=>'Subaru'])->columns(14),
+            TextInput::make('model')->label(__('trans.model.text'))->required(),
+            TextInput::make('car_type')->label(__('trans.car_type.text'))->required(),
+            TextInput::make('mile_number')->label(__('trans.mile_number.text'))->required(),
+            Select::make('repair_code')->label(__('trans.repair_code.text'))->required()->options(['A' => 'A','B' => 'B', 'C'=>'C', 'D'=>'D'])->columns(5),
+            Radio::make('options')->label(__('trans.options.text'))->options(['รถประกัน' => 'รถประกัน','รถคู่กรณี' => 'รถคู่กรณี','ฝ่ายถูก'=>'ฝ่ายถูก','ฝ่ายผิด'=>'ฝ่ายผิด','คดี'=>'คดี','เคลมประกันบริษัท'=>'เคลมประกันบริษัท','เงินสด'=>'เงินสด'])->columns(8)->required(),
+            TextInput::make('insu_company_name')->label(__('trans.insu_company_name.text'))->required(),
+            TextInput::make('policy_number')->label(__('trans.policy_number.text'))->required(),
+            TextInput::make('noti_number')->label(__('trans.noti_number.text'))->required(),
+            TextInput::make('claim_number')->label(__('trans.claim_number.text'))->required(),
+            Radio::make('park_type')->label(__('trans.park_type.text'))->options(['จอดซ่อม' => 'จอดซ่อม','ไม่จอดซ่อม' => 'ไม่จอดซ่อม'])->columns(3),
+            DatePicker::make('car_park')->label(__('trans.car_park.text'))->required(),
+            FileUpload::make('real_claim')->label(__('trans.real_claim.text')),
+            FileUpload::make('copy_claim')->label(__('trans.copy_claim.text')),
+            FileUpload::make('copy_driver_license')->label(__('trans.copy_driver_license.text')),
+            FileUpload::make('copy_vehicle_regis')->label(__('trans.copy_vehicle_regis.text')),
+            FileUpload::make('copy_policy')->label(__('trans.copy_policy.text')),
+            FileUpload::make('power_of_attorney')->label(__('trans.power_of_attorney.text')),
+            FileUpload::make('copy_of_director_id_card')->label(__('trans.copy_of_director_id_card.text')),
+            FileUpload::make('copy_of_person')->label(__('trans.copy_of_person.text')),
+            FileUpload::make('account_book')->label(__('trans.account_book.text')),
+            FileUpload::make('atm_card')->label(__('trans.atm_card.text')),
+            FileUpload::make('front')->label(__('trans.front.text')),
+            FileUpload::make('left')->label(__('trans.left.text')),
+            FileUpload::make('right')->label(__('trans.right.text')),
+            FileUpload::make('back')->label(__('trans.back.text')),
+            FileUpload::make('inside_left')->label(__('trans.inside_left.text')),
+            FileUpload::make('inside_right')->label(__('trans.inside_right.text')),
+            FileUpload::make('inside_truck')->label(__('trans.truck.text')),
+            FileUpload::make('etc')->label(__('trans.etc.text')),
             ]);
     }
 
@@ -121,7 +130,6 @@ class CarReceiveResource extends Resource
                 TextColumn::make('ภายในเก๋งด้านขวา'),
                 TextColumn::make('ในตู้บรรทุก'),
                 TextColumn::make('ภาพอื่น ๆ'),
-
             ])
             ->filters([
                 //
