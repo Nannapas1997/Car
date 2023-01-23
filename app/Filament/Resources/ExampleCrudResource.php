@@ -4,25 +4,26 @@ namespace App\Filament\Resources;
 
 use Filament\Tables;
 
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-
-
+use App\Models\ExampleCrud;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
+
+
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Log;
+use Livewire\TemporaryUploadedFile;
+use Filament\Forms\Components\Select;
+
 use Filament\Tables\Columns\TextColumn;
 
-use Illuminate\Support\Facades\Log;
-
 use Filament\Forms\Components\TextInput;
+
 use Filament\Tables\Columns\ImageColumn;
+
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Actions\DeleteAction;
 use App\Filament\Resources\ExampleCrudResource\Pages;
 use App\Filament\Resources\ExampleCrudResource\RelationManagers;
-use Livewire\TemporaryUploadedFile;
 
 
 class ExampleCrudResource extends Resource
