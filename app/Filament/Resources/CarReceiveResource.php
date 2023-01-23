@@ -19,6 +19,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TimePicker;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\SelectColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\MultiSelect;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -37,7 +38,7 @@ class CarReceiveResource extends Resource
         return $form
             ->schema([
             Radio::make('choose_garage')->label(__('trans.choose_garage.text'))->options(['SP' => 'SP auto','SBO' => 'SBO'])->columns(3),
-            Select::make('job_number')->label(__('trans.job_number.text'))->preload()->options(CarReceive::query()->pluck('job_number')),
+            Select::make('job_number')->label(__('trans.job_number.text'))->preload()->options(CarReceive::query()->pluck('job_number(new_customer)')),
             TextInput::make('job_number(new_customer)')->label( __ ('trans.new_customer.text')),
             DatePicker::make('receive_date')->label(__('trans.receive_date.text'))->required(),
             TimePicker::make('time')->label(__('trans.time.text')),

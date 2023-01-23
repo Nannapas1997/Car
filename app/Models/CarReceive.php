@@ -10,7 +10,6 @@ class CarReceive extends Model
     use HasFactory;
     protected $fillable = [
         'choose_garage',
-        'job_number',
         'job_number(new_customer)',
         'receive_date',
         'time',

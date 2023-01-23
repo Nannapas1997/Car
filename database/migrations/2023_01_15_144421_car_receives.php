@@ -16,14 +16,14 @@ return new class extends Migration
         Schema::create('car_receives', function (Blueprint $table) {
             $table->id();
             $table->string('choose_garage')->required();
-            $table->string('job_number')->nullable();
+            $table->string('job_number')->default('Example:SP-66-001');
             $table->string('job_number(new_customer)');
-            $table->dateTimeTz('receive_date')->required();
+            $table->date('receive_date')->required();
             $table->time('time')->required();
             $table->string('customer')->required();
             $table->string('repairman')->required();
             $table->string('tel_number')->required();
-            $table->dateTimeTz('pickup_date')->required();
+            $table->date('pickup_date')->required();
             $table->string('vehicle_registration')->required();
             $table->string('brand')->required();
             $table->string('model')->required();
@@ -36,7 +36,7 @@ return new class extends Migration
             $table->string('noti_number')->required();
             $table->string('claim_number')->required();
             $table->string('park_type')->required();
-            $table->dateTimeTz('car_park')->required();
+            $table->date('car_park')->required();
             $table->string('real_claim')->required()->nullable();
             $table->string('copy_claim')->required()->nullable();
             $table->string('copy_driver_license')->required()->nullable();
