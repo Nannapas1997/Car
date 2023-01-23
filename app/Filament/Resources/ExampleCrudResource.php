@@ -6,6 +6,7 @@ use App\Filament\Resources\ExampleCrudResource\Pages;
 use App\Filament\Resources\ExampleCrudResource\RelationManagers;
 use App\Models\ExampleCrud;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -13,6 +14,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Support\Facades\Log;
 
 class ExampleCrudResource extends Resource
 {
@@ -25,6 +27,20 @@ class ExampleCrudResource extends Resource
     {
         return $form
             ->schema([
+                Select::make('search_name')
+                    ->label("เลือกชื่อ")
+                    ->preload()
+                    ->options(ExampleCrud::all()->pluck('name', 'id')->toArray())
+                    ->searchable()
+                    ->reactive()
+                    ->afterStateUpdated(function ($set, $state) {
+                        if ($state) {
+                            $name = ExampleCrud::find($state)->toArray();
+                            if ($name) {
+                                $set('name', $name['name']);
+                            }
+                        }
+                    }),
                 TextInput::make('name')
                     ->label('ชื่อ')
                     ->required(),
