@@ -6,6 +6,11 @@
         <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="{{asset('assets/css/global.css')}}">
     </head>
+    <style>
+        body {
+            font-family: 'Kanit' !important;
+        }
+    </style>
     <body>
         <div class="font-sans text-gray-900 antialiased">
             {{ $slot }}
