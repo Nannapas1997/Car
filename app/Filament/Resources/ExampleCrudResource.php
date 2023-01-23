@@ -46,7 +46,7 @@ class ExampleCrudResource extends Resource
                     ->required(),
                 FileUpload::make('image_url_1')
                     ->label('อัพโหลดรูปภาพ')
-                    ->required()->minSize(10)->maxSize(1024)->image(),
+                    ->required(),
             ]);
     }
 
