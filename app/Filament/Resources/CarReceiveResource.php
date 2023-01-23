@@ -8,21 +8,24 @@ use App\Models\CarReceive;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
+use Livewire\TemporaryUploadedFile;
 use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Http\Livewire\GlobalSearch;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TimePicker;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\SelectColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\MultiSelect;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CarReceiveResource\Pages;
 use App\Filament\Resources\CarReceiveResource\RelationManagers;
-use Filament\Forms\Components\Select;
-use Livewire\TemporaryUploadedFile;
-
+use Illuminate\Support\Facades\Log;
 
 class CarReceiveResource extends Resource
 {
@@ -35,18 +38,21 @@ class CarReceiveResource extends Resource
         return $form
             ->schema([
             Radio::make('choose_garage')->label(__('trans.choose_garage.text'))->options(['SP' => 'SP auto','SBO' => 'SBO'])->columns(3),
-            Select::make('job_number')->label(__('trans.job_number.text'))->preload()
-            ->options(CarReceive::all()->pluck('name', 'id')->toArray()
-            ->searchable()
-            ->reactive()
-            ->afterStateUpdated(function ($set, $state) {
-                if ($state) {
-                    $name = CarReceive::find($state)->toArray();
-                    if ($name) {
-                        $set('name', $name['name']);
-                    }
-                }
-            })),
+            Select::make('job_number')
+                    ->label(__('trans.job_number.text'))
+                    ->preload()
+                    ->options(CarReceive::query()->pluck('job_number(new_customer)')->toArray())
+                    ->searchable()
+                    ->reactive()
+                    ->afterStateUpdated(function ($set, $state) {
+                        if ($state) {
+                            $name = CarReceive::find($state)->toArray();
+                            Log::info($name);
+                            if ($name) {
+                                $set('receive_date', $name['receive_date']);
+                            }
+                        }
+                    }),
             TextInput::make('job_number(new_customer)')->label( __ ('trans.new_customer.text')),
             DatePicker::make('receive_date')->label(__('trans.receive_date.text'))->required(),
             TimePicker::make('time')->label(__('trans.time.text')),
@@ -92,44 +98,46 @@ class CarReceiveResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('เลือกอู่'),
-                TextColumn::make('เลขที่งาน'),
-                TextColumn::make('เลขที่งานกรณีลูกค้ารายใหม่'),
-                TextColumn::make('วันที่รับเรื่อง'),
-                TextColumn::make('เวลา'),
-                TextColumn::make('เจ้าของรถ'),
-                TextColumn::make('ผู้่สั่งซ่อม'),
-                TextColumn::make('เบอร์ติดต่อ'),
-                TextColumn::make('วันนัดรับรถ'),
-                TextColumn::make('ทะเบียนรถ'),
-                TextColumn::make('ยี่ห้อรถ'),
-                TextColumn::make('รุ่น'),
-                TextColumn::make('ประเภทรถ'),
-                TextColumn::make('ประเภทของการซ่อมรถ'),
-                TextColumn::make('ชื่อบริษัทประกันภัย'),
-                TextColumn::make('เลขกรมธรรม์'),
-                TextColumn::make('เลขที่รับแจ้ง'),
-                TextColumn::make('เลขที่เคลม'),
-                TextColumn::make('ประเภทการจอด'),
-                TextColumn::make('วันที่รถเข้ามาจอด'),
-                TextColumn::make('ใบเคลมฉบับจริง'),
-                TextColumn::make('สำเนาใบเคลม'),
-                TextColumn::make('สำเนาใบขับขี่'),
-                TextColumn::make('สำเนาทะเบียนรถ'),
-                TextColumn::make('สำเนากรมธรรม์'),
-                TextColumn::make('หนังสือมอบอำนาจ'),
-                TextColumn::make('สำเนาบัตรประชาชนกรรมการ'),
-                TextColumn::make('สำเนาหนังสือรับรองนิติบุคคล(ยังไม่หมดอายุ)'),
-                TextColumn::make('หน้าสมุดบัญชีธนาคาร'),
-                TextColumn::make('บัตร ATM'),
-                TextColumn::make('ด้านหน้ารถ'),
-                TextColumn::make('ด้านซ้ายรถ'),
-                TextColumn::make('ด้านขวารถ'),
-                TextColumn::make('ด้านหลังรถ'),
-                TextColumn::make('ภายในเก๋งด้านซ้าย'),
-                TextColumn::make('ภายในเก๋งด้านขวา'),
-                TextColumn::make('ในตู้บรรทุก'),
-                TextColumn::make('ภาพอื่น ๆ'),
+                TextColumn::make('choose_garage')->label(__('trans.choose_garage.text')),
+                TextColumn::make('job_number')->label(__('trans.job_number.text')),
+                TextColumn::make('job_number(new_customer)')->label( __ ('trans.new_customer.text')),
+                TextColumn::make('receive_date')->label(__('trans.receive_date.text')),
+                TextColumn::make('time')->label(__('trans.time.text')),
+                TextColumn::make('customer')->label(__('trans.customer.text')),
+                TextColumn::make('repairman')->label(__('trans.repairman.text')),
+                TextColumn::make('tel_number')->label(__('trans.tel_number.text')),
+                TextColumn::make('pickup_date')->label(__('trans.pickup_date.text')),
+                TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text')),
+                TextColumn::make('brand')->label(__('trans.brand.text')),
+                TextColumn::make('model')->label(__('trans.model.text')),
+                TextColumn::make('car_type')->label(__('trans.car_type.text')),
+                TextColumn::make('mile_number')->label(__('trans.mile_number.text')),
+                TextColumn::make('repair_code')->label(__('trans.repair_code.text')),
+                TextColumn::make('options')->label(__('trans.options.text')),
+                TextColumn::make('insu_company_name')->label(__('trans.insu_company_name.text')),
+                TextColumn::make('policy_number')->label(__('trans.policy_number.text')),
+                TextColumn::make('noti_number')->label(__('trans.noti_number.text')),
+                TextColumn::make('claim_number')->label(__('trans.claim_number.text')),
+                TextColumn::make('park_type')->label(__('trans.park_type.text')),
+                TextColumn::make('car_park')->label(__('trans.car_park.text')),
+                ImageColumn::make('real_claim')->label(__('trans.real_claim.text')),
+                ImageColumn::make('copy_claim')->label(__('trans.copy_claim.text')),
+                ImageColumn::make('copy_driver_license')->label(__('trans.copy_driver_license.text')),
+                ImageColumn::make('copy_vehicle_regis')->label(__('trans.copy_vehicle_regis.text')),
+                ImageColumn::make('copy_policy')->label(__('trans.copy_policy.text')),
+                ImageColumn::make('power_of_attorney')->label(__('trans.power_of_attorney.text')),
+                ImageColumn::make('copy_of_director_id_card')->label(__('trans.copy_of_director_id_card.text')),
+                ImageColumn::make('copy_of_person')->label(__('trans.copy_of_person.text')),
+                ImageColumn::make('account_book')->label(__('trans.account_book.text')),
+                ImageColumn::make('atm_card')->label(__('trans.atm_card.text')),
+                ImageColumn::make('front')->label(__('trans.front.text')),
+                ImageColumn::make('left')->label(__('trans.left.text')),
+                ImageColumn::make('right')->label(__('trans.right.text')),
+                ImageColumn::make('back')->label(__('trans.back.text')),
+                ImageColumn::make('inside_left')->label(__('trans.inside_left.text')),
+                ImageColumn::make('inside_right')->label(__('trans.inside_right.text')),
+                ImageColumn::make('inside_truck')->label(__('trans.truck.text')),
+                ImageColumn::make('etc')->label(__('trans.etc.text')),
             ])
             ->filters([
                 //
