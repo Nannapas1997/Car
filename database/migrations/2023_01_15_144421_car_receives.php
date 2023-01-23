@@ -1,11 +1,8 @@
 <?php
 
-use Illuminate\Database\Eloquent\Factories\Relationship;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use League\Flysystem\UrlGeneration\PrefixPublicUrlGenerator;
-use PhpOption\Option;
 
 return new class extends Migration
 {
@@ -18,46 +15,46 @@ return new class extends Migration
     {
         Schema::create('car_receives', function (Blueprint $table) {
             $table->id();
-            $table->string('เลือกอู่')->required();
-            $table->string('เลขที่งาน')->default('SP23-1234')->unique()->searchable()->required;
-            $table->string('เลขที่งาน(กรณีลูกค้ารายใหม่')->unique()->default('SP23-1234')->required;
-            $table->dateTimeTz('วันที่รับเรื่อง')->required()->default(now());
-            $table->dateTimeTz('เวลา')->required()->default(now());
-            $table->string('เจ้าของรถ')->default('นายสมชาย ภักดี')->required()->unique();
-            $table->string('ผู้สั่งซ่อม')->default('นายศุภโชค แสนแก้ว')->required()->unique();
-            $table->string('เบอร์ติดต่อ')->default('0823508565')->required();
-            $table->dateTimeTz('วันนัดรับรถ')->required()->default(now());;
-            $table->string('ทะเบียนรถ')->default('กจ6409')->required()->unique();
-            $table->string('ยี่ห้อรถ')->default('Honda')->required();
-            $table->string('รุ่น')->required()->default('Civic');
-            $table->string('ประเภทรถ')->required()->default('รถเก๋ง');
-            $table->string('เลขไมล์')->required()->default('56785');
-            $table->string('รหัสซ่อม')->required()->default('A');
-            $table->string('ประเภทของการซ่อมรถ')->required()->default('คดี');
-            $table->string('ชื่อบริษัทประกันภัย')->required()->default('วิริยะประกันภัย');
-            $table->string('เลขกรมธรรม์')->require()->default('12345678');
-            $table->string('เลขที่รับแจ้ง')->required()->default('12345678');;
-            $table->string('เลขที่เคลม')->required()->default('12345678');;
-            $table->string('ประเภทการจอด')->required()->default('จอดซ่อม');
-            $table->dateTimeTz('วันที่รถเข้ามาจอด')->required()->default(now());
-            $table->string('ใบเคลมฉบับจริง')->required()->nullable();
-            $table->string('สำเนาใบเคลม')->required()->nullable();
-            $table->string('สำเนาใบขับขี่')->required()->nullable();
-            $table->string('สำเนาทะเบียนรถ')->required()->nullable();
-            $table->string('สำเนากรมธรรม์')->required()->nullable();
-            $table->string('หนังสือมอบอำนาจ')->required()->nullable();
-            $table->string('สำเนาบัตรประชาชนกรรมการ')->required()->nullable();
-            $table->string('สำเนาหนังสือรับรองนิติบุคคล(ยังไม่หมดอายุ)')->required()->nullable();
-            $table->string('หน้าสมุดบัญชีธนาคาร')->required()->nullable();
-            $table->string('บัตร ATM')->required()->nullable();
-            $table->string('ด้านหน้ารถ')->required()->nullable();
-            $table->string('ด้านซ้ายรถ')->required()->nullable();
-            $table->string('ด้านขวารถ')->required()->nullable();
-            $table->string('ด้านหลังรถ')->required()->nullable();
-            $table->string('ภายในเก๋งด้านซ้าย')->required()->nullable();
-            $table->string('ภายในเก๋งด้านขวา')->required()->nullable();
-            $table->string('ในตู้บรรทุก')->required()->nullable();
-            $table->string('ภาพอื่น ๆ')->required()->nullable();
+            $table->string('choose_garage')->required();
+            $table->string('job_number')->default('Example:SP-66-001');
+            $table->string('job_number(new_customer)');
+            $table->date('receive_date')->required();
+            $table->time('time')->required();
+            $table->string('customer')->required();
+            $table->string('repairman')->required();
+            $table->string('tel_number')->required();
+            $table->date('pickup_date')->required();
+            $table->string('vehicle_registration')->required();
+            $table->string('brand')->required();
+            $table->string('model')->required();
+            $table->string('car_type')->required();
+            $table->string('mile_number')->required();
+            $table->string('repair_code')->required();
+            $table->string('options')->required();
+            $table->string('insu_company_name')->required();
+            $table->string('policy_number')->require();
+            $table->string('noti_number')->required();
+            $table->string('claim_number')->required();
+            $table->string('park_type')->required();
+            $table->date('car_park')->required();
+            $table->string('real_claim')->required()->nullable();
+            $table->string('copy_claim')->required()->nullable();
+            $table->string('copy_driver_license')->required()->nullable();
+            $table->string('copy_vehicle_regis')->required()->nullable();
+            $table->string('copy_policy')->required()->nullable();
+            $table->string('power_of_attorney')->required()->nullable();
+            $table->string('copy_of_director_id_card')->required()->nullable();
+            $table->string('copy_of_person')->required()->nullable();
+            $table->string('account_book')->required()->nullable();
+            $table->string('atm_card')->required()->nullable();
+            $table->string('front')->required()->nullable();
+            $table->string('left')->required()->nullable();
+            $table->string('right')->required()->nullable();
+            $table->string('back')->required()->nullable();
+            $table->string('inside_left')->required()->nullable();
+            $table->string('inside_right')->required()->nullable();
+            $table->string('inside_truck')->required()->nullable();
+            $table->string('etc')->required()->nullable();
         });
     }
 

@@ -10,7 +10,11 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="{{asset('assets/css/global.css')}}">
-
+        <style>
+            body {
+                font-family: 'Kanit' !important;
+            }
+        </style>
     </head>
     <body>
         <x-jet-banner />
