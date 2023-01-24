@@ -42,18 +42,68 @@ class CarReceiveResource extends Resource
             ->schema([
             Radio::make('choose_garage')->label(__('trans.choose_garage.text'))->options(['SP' => 'SP auto','SBO' => 'SBO'])->columns(3),
             Select::make('search_regis')->label(__('trans.search_regis.text'))->searchable()->preload()
-            ->options(CarReceive::query()->pluck('vehicle_registration')),
+            ->options(CarReceive::all()->pluck('vehicle_registration', 'id')->toArray())
+            ->searchable()
+                    ->reactive()
+                    ->afterStateUpdated(function ($set, $state) {
+                        if ($state) {
+                            $name = CarReceive::find($state)->toArray();
+                            if ($name) {
+                                $set('choose_garage', $name['choose_garage']);
+                                $set('receive_date', $name['receive_date']);
+                                $set('timex', $name['timex']);
+                                $set('customer', $name['customer']);
+                                $set('repairman', $name['repairman']);
+                                $set('tel_number', $name['tel_number']);
+                                $set('pickup_date', $name['pickup_date']);
+                                $set('vehicle_registration', $name['vehicle_registration']);
+                                $set('brand', $name['brand']);
+                                $set('model', $name['model']);
+                                $set('car_type', $name['car_type']);
+                                $set('mile_number', $name['mile_number']);
+                                $set('repair_code', $name['repair_code']);
+                                $set('options', $name['options']);
+                                $set('insu_company_name', $name['insu_company_name']);
+                                $set('policy_number', $name['policy_number']);
+                                $set('noti_number', $name['noti_number']);
+                                $set('claim_number', $name['claim_number']);
+                                $set('park_type', $name['park_type']);
+                                $set('content', $name['content']);
+                                $set('car_park', $name['car_park']);
+                            }
+                        }
+                    }),
             TextInput::make('job_number(new_customer)')->label( __ ('trans.new_customer.text')),
             Select::make('job_number')->label(__('trans.job_number.text'))
             ->preload()
-            ->options(CarReceive::all()->pluck('name, id')->toArray())
+            ->options(CarReceive::all()->pluck('job_number(new_customer)', 'id')->toArray())
                     ->searchable()
                     ->reactive()
                     ->afterStateUpdated(function ($set, $state) {
                         if ($state) {
                             $name = CarReceive::find($state)->toArray();
                             if ($name) {
+                                $set('choose_garage', $name['choose_garage']);
                                 $set('receive_date', $name['receive_date']);
+                                $set('timex', $name['timex']);
+                                $set('customer', $name['customer']);
+                                $set('repairman', $name['repairman']);
+                                $set('tel_number', $name['tel_number']);
+                                $set('pickup_date', $name['pickup_date']);
+                                $set('vehicle_registration', $name['vehicle_registration']);
+                                $set('brand', $name['brand']);
+                                $set('model', $name['model']);
+                                $set('car_type', $name['car_type']);
+                                $set('mile_number', $name['mile_number']);
+                                $set('repair_code', $name['repair_code']);
+                                $set('options', $name['options']);
+                                $set('insu_company_name', $name['insu_company_name']);
+                                $set('policy_number', $name['policy_number']);
+                                $set('noti_number', $name['noti_number']);
+                                $set('claim_number', $name['claim_number']);
+                                $set('park_type', $name['park_type']);
+                                $set('content', $name['content']);
+                                $set('car_park', $name['car_park']);
                             }
                         }
                     }),

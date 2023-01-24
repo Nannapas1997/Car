@@ -13,18 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/',[WelcomeController::class, 'index']);
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/', function () {
-        return view('/');
-    })->name('/');
-});
-
-Route::get('/mywork',['MyWorkController', 'index']);
