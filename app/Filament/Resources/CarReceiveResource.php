@@ -7,7 +7,9 @@ use Filament\Tables;
 use App\Models\CarReceive;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
+use App\Forms\Components\Search;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Log;
 use Livewire\TemporaryUploadedFile;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
@@ -22,10 +24,11 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\SelectColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\MultiSelect;
+use Filament\Forms\Components\MarkdownEditor;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CarReceiveResource\Pages;
 use App\Filament\Resources\CarReceiveResource\RelationManagers;
-
+use Filament\Forms\Components\Group;
 
 class CarReceiveResource extends Resource
 {
@@ -38,10 +41,24 @@ class CarReceiveResource extends Resource
         return $form
             ->schema([
             Radio::make('choose_garage')->label(__('trans.choose_garage.text'))->options(['SP' => 'SP auto','SBO' => 'SBO'])->columns(3),
-            Select::make('job_number')->label(__('trans.job_number.text'))->preload()->options(CarReceive::query()->pluck('job_number(new_customer)')),
+            Select::make('search_regis')->label(__('trans.search_regis.text'))->searchable()->preload()
+            ->options(CarReceive::query()->pluck('vehicle_registration')),
             TextInput::make('job_number(new_customer)')->label( __ ('trans.new_customer.text')),
+            Select::make('job_number')->label(__('trans.job_number.text'))
+            ->preload()
+            ->options(CarReceive::all()->pluck('name, id')->toArray())
+                    ->searchable()
+                    ->reactive()
+                    ->afterStateUpdated(function ($set, $state) {
+                        if ($state) {
+                            $name = CarReceive::find($state)->toArray();
+                            if ($name) {
+                                $set('receive_date', $name['receive_date']);
+                            }
+                        }
+                    }),
             DatePicker::make('receive_date')->label(__('trans.receive_date.text'))->required(),
-            TimePicker::make('time')->label(__('trans.time.text')),
+            TimePicker::make('timex')->label(__('trans.timex.text')),
             TextInput::make('customer')->label(__('trans.customer.text'))->required(),
             TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
             TextInput::make('tel_number')->label(__('trans.tel_number.text'))->required(),
@@ -58,7 +75,20 @@ class CarReceiveResource extends Resource
             TextInput::make('noti_number')->label(__('trans.noti_number.text'))->required(),
             TextInput::make('claim_number')->label(__('trans.claim_number.text'))->required(),
             Radio::make('park_type')->label(__('trans.park_type.text'))->options(['จอดซ่อม' => 'จอดซ่อม','ไม่จอดซ่อม' => 'ไม่จอดซ่อม'])->columns(3),
-            DatePicker::make('car_park')->label(__('trans.car_park.text'))->required(),
+            MarkdownEditor::make('content')
+                ->label(__('trans.content.text'))
+                ->toolbarButtons([
+                    'bold',
+                    'bulletList',
+                    'codeBlock',
+                    'edit',
+                    'italic',
+                    'orderedList',
+                    'preview',
+                    'strike',
+                ])->required(),
+            DatePicker::make('car_park')->label(__('trans.car_park.text')),
+            TextInput::make('group_document')->label(__('trans.group_document.text'))->disabled()->columnSpanFull(),
             FileUpload::make('real_claim')->label(__('trans.real_claim.text')),
             FileUpload::make('copy_claim')->label(__('trans.copy_claim.text')),
             FileUpload::make('copy_driver_license')->label(__('trans.copy_driver_license.text')),
@@ -69,6 +99,7 @@ class CarReceiveResource extends Resource
             FileUpload::make('copy_of_person')->label(__('trans.copy_of_person.text')),
             FileUpload::make('account_book')->label(__('trans.account_book.text')),
             FileUpload::make('atm_card')->label(__('trans.atm_card.text')),
+            TextInput::make('group_car')->label(__('trans.group_car.text'))->disabled()->columnSpanFull(),
             FileUpload::make('front')->label(__('trans.front.text')),
             FileUpload::make('left')->label(__('trans.left.text')),
             FileUpload::make('right')->label(__('trans.right.text')),
@@ -88,7 +119,7 @@ class CarReceiveResource extends Resource
                 TextColumn::make('job_number')->label(__('trans.job_number.text')),
                 TextColumn::make('job_number(new_customer)')->label( __ ('trans.new_customer.text')),
                 TextColumn::make('receive_date')->label(__('trans.receive_date.text')),
-                TextColumn::make('time')->label(__('trans.time.text')),
+                TextColumn::make('timex')->label(__('trans.timex.text')),
                 TextColumn::make('customer')->label(__('trans.customer.text')),
                 TextColumn::make('repairman')->label(__('trans.repairman.text')),
                 TextColumn::make('tel_number')->label(__('trans.tel_number.text')),

@@ -2,10 +2,11 @@
 
 return [
     'choose_garage.text' => 'เลือกอู่',
+    'search_regis.text' => 'ค้นหาทะเบียนรถ',
     'job_number.text' => 'เลขที่งาน',
     'new_customer.text' => 'เลขที่งาน(กรณีลูกค้ารายใหม่)',
     'receive_date.text' => 'วันที่รับเรื่อง',
-    'time.text' => 'เวลา',
+    'timex.text' => 'เวลา',
     'customer.text' => 'เจ้าของรถ',
     'repairman.text' => 'ผู้สั่งซ่อม',
     'tel_number.text' => 'เบอร์ติดต่อ',
@@ -22,7 +23,10 @@ return [
     'noti_number.text' => 'เลขที่รับแจ้ง',
     'claim_number.text' => 'เลขที่เคลม',
     'park_type.text' => 'ประเภทการจอด',
+    'content.text' => 'บันทึกรายการความเสียหาย',
     'car_park.text' => 'วันที่รถเข้ามาจอด',
+    'group_document.text' => 'สำหรับเอกสาร',
+    'group_car.text' => 'สำหรับรถ',
     'real_claim.text' => 'ใบเคลมฉบับจริง',
     'copy_claim.text' => 'สำเนาใบเคลม',
     'copy_driver_license.text' => 'สำเนาใบขับขี่',

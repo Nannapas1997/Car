@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('car_receives', function (Blueprint $table) {
             $table->id();
             $table->string('choose_garage')->required();
-            $table->string('job_number')->default('Example:SP-66-001');
+            $table->string('job_number');
             $table->string('job_number(new_customer)');
             $table->date('receive_date')->required();
-            $table->time('time')->required();
+            $table->time('timex')->required();
             $table->string('customer')->required();
             $table->string('repairman')->required();
             $table->string('tel_number')->required();
@@ -36,7 +36,9 @@ return new class extends Migration
             $table->string('noti_number')->required();
             $table->string('claim_number')->required();
             $table->string('park_type')->required();
+            $table->string('content')->required();
             $table->date('car_park')->required();
+            $table->string('group_document');
             $table->string('real_claim')->required()->nullable();
             $table->string('copy_claim')->required()->nullable();
             $table->string('copy_driver_license')->required()->nullable();
@@ -47,6 +49,7 @@ return new class extends Migration
             $table->string('copy_of_person')->required()->nullable();
             $table->string('account_book')->required()->nullable();
             $table->string('atm_card')->required()->nullable();
+            $table->string('group_car');
             $table->string('front')->required()->nullable();
             $table->string('left')->required()->nullable();
             $table->string('right')->required()->nullable();

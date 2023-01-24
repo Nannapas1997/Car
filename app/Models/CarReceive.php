@@ -10,9 +10,10 @@ class CarReceive extends Model
     use HasFactory;
     protected $fillable = [
         'choose_garage',
+        'job_number',
         'job_number(new_customer)',
         'receive_date',
-        'time',
+        'timex',
         'customer',
         'repairman',
         'tel_number',
@@ -30,6 +31,8 @@ class CarReceive extends Model
         'claim_number',
         'park_type',
         'car_park',
+        'content',
+        'group_document',
         'real_claim',
         'copy_claim',
         'copy_driver_license',
@@ -40,6 +43,7 @@ class CarReceive extends Model
         'copy_of_person',
         'account_book',
         'atm_card',
+        'group_car',
         'front',
         'left',
         'right',
