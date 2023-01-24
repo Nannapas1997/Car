@@ -3,3 +3,95 @@
 body {
     font-family: 'Kanit' !important;
 }
+.days {
+    color: black;
+    width: 400px;
+    height: 270px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.day {
+    font-size: 26px;
+    padding-left: 64px;
+    position: relative;
+    top: 2rem;
+    font-weight: bold;
+}
+.day-ten{
+    font-size: 60px;
+    padding-left: 47px;
+    position: relative;
+    top: 3rem;
+    font-weight: bold;
+}
+.item
+ {
+    font-size: 26px;
+    padding-left: 40px;
+    position: relative;
+    bottom: 1rem;
+    font-weight: bold;
+ }
+.left {
+    border-left: 4px solid black;
+    height: 200px;
+    position: relative;
+    left: 9rem;
+    bottom: 14rem;
+}
+.code {
+    font-size: 20px;
+    padding-left: 68px;
+    font-weight: bold;
+}
+.items {
+    font-size: 20px;
+    padding-left: 80px;
+    font-weight: bold;
+}
+.day-code {
+    font-size: 26px;
+    padding-left: 73px;
+    position: relative;
+    top: 2rem;
+    font-weight: bold;
+}
+.code-2 {
+    font-size: 20px;
+    padding-left: 181px;
+    font-weight: bold;
+}
+.items-2 {
+    font-size: 20px;
+    padding-left: 80px;
+    font-weight: bold;
+}
+.code-3 {
+    font-size: 20px;
+    padding-left: 181px;
+    position:relative;
+    top: 14px;
+    font-weight: bold;
+}
+.items-3 {
+    font-size: 20px;
+    padding-left: 80px;
+    font-weight: bold;
+    position:relative;
+    top: 14px;
+}
+.code-4 {
+    font-size: 20px;
+    padding-left: 181px;
+    position:relative;
+    top: 26px;
+    font-weight: bold;
+}
+.items-4 {
+    font-size: 20px;
+    padding-left: 80px;
+    font-weight: bold;
+    position:relative;
+    top: 26px;
+}
