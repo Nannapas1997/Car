@@ -49,7 +49,9 @@ class CarReceiveResource extends Resource
                     ->afterStateUpdated(function ($set, $state) {
                         if ($state) {
                             $name = CarReceive::find($state)->toArray();
+                            dd($name);
                             if ($name) {
+
                                 $set('choose_garage', $name['choose_garage']);
                                 $set('receive_date', $name['receive_date']);
                                 $set('timex', $name['timex']);
@@ -71,6 +73,47 @@ class CarReceiveResource extends Resource
                                 $set('park_type', $name['park_type']);
                                 $set('content', $name['content']);
                                 $set('car_park', $name['car_park']);
+                                $set('spare_tire', $name['spare_tire']);
+                                $set('jack_handle', $name['jack_handle']);
+                                $set('boxset', $name['boxset']);
+                                $set('batteries', $name['batteries']);
+                                $set('cigarette_lighter', $name['cigarette_lighter']);
+                                $set('radio', $name['radio']);
+                                $set('floor_mat', $name['floor_mat']);
+                                $set('spare_removal', $name['spare_removal']);
+                                $set('fire_extinguisher', $name['fire_extinguisher']);
+                                $set('spining_wheel', $name['spining_wheel']);
+                                $set('other', $name['other']);
+                                $set('real_claim_document', $name['real_claim_document']);
+                                $set('copy_policy_document', $name['copy_policy_document']);
+                                $set('copy_claim_document', $name['copy_claim_document']);
+                                $set('power_of_attorney_document', $name['power_of_attorney_document']);
+                                $set('copy_driver_license_document', $name['copy_driver_license_document']);
+                                $set('copy_of_director_id_card_document', $name['copy_of_director_id_card_document']);
+                                $set('copy_vehicle_regis_document', $name['copy_vehicle_regis_document']);
+                                $set('copy_of_person_document', $name['copy_of_person_document']);
+                                $set('account_book_document', $name['account_book_document']);
+                                $set('atm_card_document', $name['atm_card_document']);
+                                $set('other_document', $name['other_document']);
+                                $set('real_claim', $name['real_claim']);
+                                $set('copy_claim', $name['copy_claim']);
+                                $set('copy_driver_license', $name['copy_driver_license']);
+                                $set('copy_vehicle_regis', $name['copy_vehicle_regis']);
+                                $set('copy_policy', $name['copy_policy']);
+                                $set('power_of_attorney', $name['power_of_attorney']);
+                                $set('copy_of_director_id_card', $name['copy_of_director_id_card']);
+                                $set('copy_of_person', $name['copy_of_person']);
+                                $set('account_book', $name['account_book']);
+                                $set('atm_card', $name['atm_card']);
+                                $set('front', $name['front']);
+                                $set('left', $name['left']);
+                                $set('right', $name['right']);
+                                $set('back', $name['back']);
+                                $set('inside_left', $name['inside_left']);
+                                $set('inside_right', $name['inside_right']);
+                                $set('inside_truck', $name['inside_truck']);
+                                $set('etc', $name['etc']);
+                                $set('addressee', $name['addressee']);
                             }
                         }
                     }),
@@ -109,7 +152,7 @@ class CarReceiveResource extends Resource
                         }
                     }),
             DatePicker::make('receive_date')->label(__('trans.receive_date.text'))->required(),
-            TimePicker::make('timex')->label(__('trans.timex.text')),
+            TextInput::make('timex')->label(__('trans.timex.text')),
             TextInput::make('customer')->label(__('trans.customer.text'))->required(),
             TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
             TextInput::make('tel_number')->label(__('trans.tel_number.text'))->required(),
@@ -162,6 +205,18 @@ class CarReceiveResource extends Resource
                 FileUpload::make('copy_of_person')->label(__('trans.copy_of_person.text')),
                 FileUpload::make('account_book')->label(__('trans.account_book.text')),
                 FileUpload::make('atm_card')->label(__('trans.atm_card.text')),
+                TextInput::make('customer_document')->label(__('trans.customer_document.text'))->disabled()->columnSpanFull(),
+                Checkbox::make('real_claim_document')->label(__('trans.real_claim.text')),
+                Checkbox::make('copy_policy_document')->label(__('trans.copy_policy.text')),
+                Checkbox::make('copy_claim_document')->label(__('trans.copy_claim.text')),
+                Checkbox::make('power_of_attorney_document')->label(__('trans.power_of_attorney.text')),
+                Checkbox::make('copy_driver_license_document')->label(__('trans.copy_driver_license.text')),
+                Checkbox::make('copy_of_director_id_card_document')->label(__('trans.copy_of_director_id_card.text')),
+                Checkbox::make('copy_vehicle_regis_document')->label(__('trans.copy_vehicle_regis.text')),
+                Checkbox::make('copy_of_person_document')->label(__('trans.copy_of_person.text')),
+                Checkbox::make('account_book_document')->label(__('trans.account_book.text')),
+                Checkbox::make('atm_card_document')->label(__('trans.atm_card.text')),
+                Checkbox::make('other_document')->label(__('trans.other.text')),
                 TextInput::make('group_car')->label(__('trans.group_car.text'))->disabled()->columnSpanFull(),
                 FileUpload::make('front')->label(__('trans.front.text')),
                 FileUpload::make('left')->label(__('trans.left.text')),
@@ -171,6 +226,8 @@ class CarReceiveResource extends Resource
                 FileUpload::make('inside_right')->label(__('trans.inside_right.text')),
                 FileUpload::make('inside_truck')->label(__('trans.truck.text')),
                 FileUpload::make('etc')->label(__('trans.etc.text')),
+                TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
+                TextInput::make('addressee')->label(__('trans.addressee.text'))->required(),
                 ]);
     }
 

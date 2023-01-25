@@ -55,6 +55,18 @@ class CarReceive extends Model
         'copy_of_person',
         'account_book',
         'atm_card',
+        'customer_document',
+        'real_claim_document',
+        'copy_policy_document',
+        'copy_claim_document',
+        'power_of_attorney_document',
+        'copy_driver_license_document',
+        'copy_of_director_id_card_document',
+        'copy_vehicle_regis_document',
+        'copy_of_person_document',
+        'account_book_document',
+        'atm_card_document',
+        'other_document',
         'group_car',
         'front',
         'left',
@@ -63,7 +75,8 @@ class CarReceive extends Model
         'inside_left',
         'inside_right',
         'inside_truck',
-        'etc'
+        'etc',
+        'addressee'
     ];
     // turn off both
 public $timestamps = false;

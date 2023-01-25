@@ -50,6 +50,7 @@ return [
     'copy_of_person.text' => 'สำเนาหนังสือรับรองนิติบุคคล(ยังไม่หมดอายุ)',
     'account_book.text' => 'หน้าสมุดบัญชีธนาคาร',
     'atm_card.text' => 'บัตรATM',
+    'customer_document.text' => 'เอกสารที่ลูกค้านำมาวันรับรถ',
     'front.text' => 'ด้านหน้ารถ',
     'left.text' => 'ด้านซ้ายรถ',
     'right.text' => 'ด้านขวารถ',
@@ -58,4 +59,5 @@ return [
     'inside_right.text' => 'ภายในเก๋งด้านขวา',
     'truck.text' => 'ภายในตู้บรรทุก',
     'etc.text' => 'ภาพอื่นๆ',
+    'addressee.text' => 'ผู้รับเรื่อง',
 ];

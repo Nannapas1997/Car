@@ -49,7 +49,31 @@ return new class extends Migration
             $table->string('copy_of_person')->required()->nullable();
             $table->string('account_book')->required()->nullable();
             $table->string('atm_card')->required()->nullable();
-            $table->string('group_car');
+            $table->string('group_checkbox')->nullable();
+            $table->boolean('spare_tire')->nullable();
+            $table->boolean('jack_handle')->nullable();
+            $table->boolean('boxset')->nullable();
+            $table->boolean('batteries')->nullable();
+            $table->boolean('cigarette_lighter')->nullable();
+            $table->boolean('radio')->nullable();
+            $table->boolean('floor_mat')->nullable();
+            $table->boolean('spare_removal')->nullable();
+            $table->boolean('fire_extinguisher')->nullable();
+            $table->boolean('spining_wheel')->nullable();;
+            $table->boolean('other')->nullable();
+            $table->string('customer_document')->nullable();
+            $table->boolean('real_claim_document')->nullable();
+            $table->boolean('copy_policy_document')->nullable();
+            $table->boolean('copy_claim_document')->nullable();
+            $table->boolean('power_of_attorney_document')->nullable();
+            $table->boolean('copy_driver_license_document')->nullable();
+            $table->boolean('copy_of_director_id_card_document')->nullable();
+            $table->boolean('copy_vehicle_regis_document')->nullable();
+            $table->boolean('copy_of_person_document')->nullable();
+            $table->boolean('account_book_document')->nullable();
+            $table->boolean('atm_card_document')->nullable();
+            $table->boolean('other_document')->nullable();
+            $table->string('group_car')->nullable();
             $table->string('front')->required()->nullable();
             $table->string('left')->required()->nullable();
             $table->string('right')->required()->nullable();
@@ -58,6 +82,7 @@ return new class extends Migration
             $table->string('inside_right')->required()->nullable();
             $table->string('inside_truck')->required()->nullable();
             $table->string('etc')->required()->nullable();
+            $table->string('addressee')->required();
         });
     }
 
