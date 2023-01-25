@@ -24,6 +24,19 @@ return [
     'claim_number.text' => 'เลขที่เคลม',
     'park_type.text' => 'ประเภทการจอด',
     'content.text' => 'บันทึกรายการความเสียหาย',
+    'group_checkbox.text' => 'สภาพรถและอุปกรณ์',
+    'spare_tire.text' => 'ยางอะไหล่',
+    'jack_handle.text' => 'แม่แรง+ด้าม',
+    'boxset.text' => 'ชุดเครื่องมือ คีม, ประแจ, ไขควง',
+    'batteries.text' => 'แบตเตอรี่',
+    'batteries_input.text' => 'จำนวนแบตเตอรี่',
+    'cigarette_lighter.text' => 'ที่จุดบุหรี่',
+    'radio.text' => 'วิทยุ/CD',
+    'floor_mat.text' => 'ผ้ายางปูพื้น',
+    'spare_removal.text' => 'ชุดถอดยางอะไหล่',
+    'fire_extinguisher.text' => 'ถังดับเพลิง',
+    'spining_wheel.text' => 'ไม้หมุนล้อ',
+    'other.text' => 'อื่นๆ',
     'car_park.text' => 'วันที่รถเข้ามาจอด',
     'group_document.text' => 'สำหรับเอกสาร',
     'group_car.text' => 'สำหรับรถ',
@@ -45,6 +58,4 @@ return [
     'inside_right.text' => 'ภายในเก๋งด้านขวา',
     'truck.text' => 'ภายในตู้บรรทุก',
     'etc.text' => 'ภาพอื่นๆ',
-
-
 ];

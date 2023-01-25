@@ -28,6 +28,7 @@ use Filament\Forms\Components\MarkdownEditor;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CarReceiveResource\Pages;
 use App\Filament\Resources\CarReceiveResource\RelationManagers;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Group;
 
 class CarReceiveResource extends Resource
@@ -137,28 +138,40 @@ class CarReceiveResource extends Resource
                     'preview',
                     'strike',
                 ])->required(),
-            DatePicker::make('car_park')->label(__('trans.car_park.text')),
-            TextInput::make('group_document')->label(__('trans.group_document.text'))->disabled()->columnSpanFull(),
-            FileUpload::make('real_claim')->label(__('trans.real_claim.text')),
-            FileUpload::make('copy_claim')->label(__('trans.copy_claim.text')),
-            FileUpload::make('copy_driver_license')->label(__('trans.copy_driver_license.text')),
-            FileUpload::make('copy_vehicle_regis')->label(__('trans.copy_vehicle_regis.text')),
-            FileUpload::make('copy_policy')->label(__('trans.copy_policy.text')),
-            FileUpload::make('power_of_attorney')->label(__('trans.power_of_attorney.text')),
-            FileUpload::make('copy_of_director_id_card')->label(__('trans.copy_of_director_id_card.text')),
-            FileUpload::make('copy_of_person')->label(__('trans.copy_of_person.text')),
-            FileUpload::make('account_book')->label(__('trans.account_book.text')),
-            FileUpload::make('atm_card')->label(__('trans.atm_card.text')),
-            TextInput::make('group_car')->label(__('trans.group_car.text'))->disabled()->columnSpanFull(),
-            FileUpload::make('front')->label(__('trans.front.text')),
-            FileUpload::make('left')->label(__('trans.left.text')),
-            FileUpload::make('right')->label(__('trans.right.text')),
-            FileUpload::make('back')->label(__('trans.back.text')),
-            FileUpload::make('inside_left')->label(__('trans.inside_left.text')),
-            FileUpload::make('inside_right')->label(__('trans.inside_right.text')),
-            FileUpload::make('inside_truck')->label(__('trans.truck.text')),
-            FileUpload::make('etc')->label(__('trans.etc.text')),
-            ]);
+                DatePicker::make('car_park')->label(__('trans.car_park.text')),
+                TextInput::make('group_checkbox')->label(__('trans.group_checkbox.text'))->disabled()->columnSpanFull(),
+                Checkbox::make('spare_tire')->label(__('trans.spare_tire.text')),
+                Checkbox::make('jack_handle')->label(__('trans.jack_handle.text')),
+                Checkbox::make('boxset')->label(__('trans.boxset.text')),
+                Checkbox::make('batteries')->label(__('trans.batteries.text')),
+                Checkbox::make('cigarette_lighter')->label(__('trans.cigarette_lighter.text')),
+                Checkbox::make('radio')->label(__('trans.radio.text')),
+                Checkbox::make('floor_mat')->label(__('trans.floor_mat.text')),
+                Checkbox::make('spare_removal')->label(__('trans.spare_removal.text')),
+                Checkbox::make('fire_extinguisher')->label(__('trans.fire_extinguisher.text')),
+                Checkbox::make('spining_wheel')->label(__('trans.spining_wheel.text')),
+                Checkbox::make('other')->label(__('trans.other.text')),
+                TextInput::make('group_document')->label(__('trans.group_document.text'))->disabled()->columnSpanFull(),
+                FileUpload::make('real_claim')->label(__('trans.real_claim.text')),
+                FileUpload::make('copy_claim')->label(__('trans.copy_claim.text')),
+                FileUpload::make('copy_driver_license')->label(__('trans.copy_driver_license.text')),
+                FileUpload::make('copy_vehicle_regis')->label(__('trans.copy_vehicle_regis.text')),
+                FileUpload::make('copy_policy')->label(__('trans.copy_policy.text')),
+                FileUpload::make('power_of_attorney')->label(__('trans.power_of_attorney.text')),
+                FileUpload::make('copy_of_director_id_card')->label(__('trans.copy_of_director_id_card.text')),
+                FileUpload::make('copy_of_person')->label(__('trans.copy_of_person.text')),
+                FileUpload::make('account_book')->label(__('trans.account_book.text')),
+                FileUpload::make('atm_card')->label(__('trans.atm_card.text')),
+                TextInput::make('group_car')->label(__('trans.group_car.text'))->disabled()->columnSpanFull(),
+                FileUpload::make('front')->label(__('trans.front.text')),
+                FileUpload::make('left')->label(__('trans.left.text')),
+                FileUpload::make('right')->label(__('trans.right.text')),
+                FileUpload::make('back')->label(__('trans.back.text')),
+                FileUpload::make('inside_left')->label(__('trans.inside_left.text')),
+                FileUpload::make('inside_right')->label(__('trans.inside_right.text')),
+                FileUpload::make('inside_truck')->label(__('trans.truck.text')),
+                FileUpload::make('etc')->label(__('trans.etc.text')),
+                ]);
     }
 
     public static function table(Table $table): Table
