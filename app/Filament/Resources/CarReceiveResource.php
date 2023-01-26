@@ -7,7 +7,9 @@ use Filament\Tables;
 use App\Models\CarReceive;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
+use App\Forms\Components\Search;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Log;
 use Livewire\TemporaryUploadedFile;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
@@ -22,10 +24,12 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\SelectColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\MultiSelect;
+use Filament\Forms\Components\MarkdownEditor;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CarReceiveResource\Pages;
 use App\Filament\Resources\CarReceiveResource\RelationManagers;
-use Illuminate\Support\Facades\Log;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Group;
 
 class CarReceiveResource extends Resource
 {
@@ -54,8 +58,41 @@ class CarReceiveResource extends Resource
                         }
                     }),
             TextInput::make('job_number(new_customer)')->label( __ ('trans.new_customer.text')),
+            Select::make('job_number')->label(__('trans.job_number.text'))
+            ->preload()
+            ->options(CarReceive::all()->pluck('job_number(new_customer)', 'id')->toArray())
+                    ->searchable()
+                    ->reactive()
+                    ->afterStateUpdated(function ($set, $state) {
+                        if ($state) {
+                            $name = CarReceive::find($state)->toArray();
+                            if ($name) {
+                                $set('choose_garage', $name['choose_garage']);
+                                $set('receive_date', $name['receive_date']);
+                                $set('timex', $name['timex']);
+                                $set('customer', $name['customer']);
+                                $set('repairman', $name['repairman']);
+                                $set('tel_number', $name['tel_number']);
+                                $set('pickup_date', $name['pickup_date']);
+                                $set('vehicle_registration', $name['vehicle_registration']);
+                                $set('brand', $name['brand']);
+                                $set('model', $name['model']);
+                                $set('car_type', $name['car_type']);
+                                $set('mile_number', $name['mile_number']);
+                                $set('repair_code', $name['repair_code']);
+                                $set('options', $name['options']);
+                                $set('insu_company_name', $name['insu_company_name']);
+                                $set('policy_number', $name['policy_number']);
+                                $set('noti_number', $name['noti_number']);
+                                $set('claim_number', $name['claim_number']);
+                                $set('park_type', $name['park_type']);
+                                $set('content', $name['content']);
+                                $set('car_park', $name['car_park']);
+                            }
+                        }
+                    }),
             DatePicker::make('receive_date')->label(__('trans.receive_date.text'))->required(),
-            TimePicker::make('time')->label(__('trans.time.text')),
+            TextInput::make('timex')->label(__('trans.timex.text')),
             TextInput::make('customer')->label(__('trans.customer.text'))->required(),
             TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
             TextInput::make('tel_number')->label(__('trans.tel_number.text'))->required(),
@@ -72,26 +109,66 @@ class CarReceiveResource extends Resource
             TextInput::make('noti_number')->label(__('trans.noti_number.text'))->required(),
             TextInput::make('claim_number')->label(__('trans.claim_number.text'))->required(),
             Radio::make('park_type')->label(__('trans.park_type.text'))->options(['จอดซ่อม' => 'จอดซ่อม','ไม่จอดซ่อม' => 'ไม่จอดซ่อม'])->columns(3),
-            DatePicker::make('car_park')->label(__('trans.car_park.text'))->required(),
-            FileUpload::make('real_claim')->label(__('trans.real_claim.text')),
-            FileUpload::make('copy_claim')->label(__('trans.copy_claim.text')),
-            FileUpload::make('copy_driver_license')->label(__('trans.copy_driver_license.text')),
-            FileUpload::make('copy_vehicle_regis')->label(__('trans.copy_vehicle_regis.text')),
-            FileUpload::make('copy_policy')->label(__('trans.copy_policy.text')),
-            FileUpload::make('power_of_attorney')->label(__('trans.power_of_attorney.text')),
-            FileUpload::make('copy_of_director_id_card')->label(__('trans.copy_of_director_id_card.text')),
-            FileUpload::make('copy_of_person')->label(__('trans.copy_of_person.text')),
-            FileUpload::make('account_book')->label(__('trans.account_book.text')),
-            FileUpload::make('atm_card')->label(__('trans.atm_card.text')),
-            FileUpload::make('front')->label(__('trans.front.text')),
-            FileUpload::make('left')->label(__('trans.left.text')),
-            FileUpload::make('right')->label(__('trans.right.text')),
-            FileUpload::make('back')->label(__('trans.back.text')),
-            FileUpload::make('inside_left')->label(__('trans.inside_left.text')),
-            FileUpload::make('inside_right')->label(__('trans.inside_right.text')),
-            FileUpload::make('inside_truck')->label(__('trans.truck.text')),
-            FileUpload::make('etc')->label(__('trans.etc.text')),
-            ]);
+            MarkdownEditor::make('content')
+                ->label(__('trans.content.text'))
+                ->toolbarButtons([
+                    'bold',
+                    'bulletList',
+                    'codeBlock',
+                    'edit',
+                    'italic',
+                    'orderedList',
+                    'preview',
+                    'strike',
+                ])->required(),
+                DatePicker::make('car_park')->label(__('trans.car_park.text')),
+                TextInput::make('group_checkbox')->label(__('trans.group_checkbox.text'))->disabled()->columnSpanFull(),
+                Checkbox::make('spare_tire')->label(__('trans.spare_tire.text')),
+                Checkbox::make('jack_handle')->label(__('trans.jack_handle.text')),
+                Checkbox::make('boxset')->label(__('trans.boxset.text')),
+                Checkbox::make('batteries')->label(__('trans.batteries.text')),
+                Checkbox::make('cigarette_lighter')->label(__('trans.cigarette_lighter.text')),
+                Checkbox::make('radio')->label(__('trans.radio.text')),
+                Checkbox::make('floor_mat')->label(__('trans.floor_mat.text')),
+                Checkbox::make('spare_removal')->label(__('trans.spare_removal.text')),
+                Checkbox::make('fire_extinguisher')->label(__('trans.fire_extinguisher.text')),
+                Checkbox::make('spining_wheel')->label(__('trans.spining_wheel.text')),
+                Checkbox::make('other')->label(__('trans.other.text')),
+                TextInput::make('group_document')->label(__('trans.group_document.text'))->disabled()->columnSpanFull(),
+                FileUpload::make('real_claim')->label(__('trans.real_claim.text')),
+                FileUpload::make('copy_claim')->label(__('trans.copy_claim.text')),
+                FileUpload::make('copy_driver_license')->label(__('trans.copy_driver_license.text')),
+                FileUpload::make('copy_vehicle_regis')->label(__('trans.copy_vehicle_regis.text')),
+                FileUpload::make('copy_policy')->label(__('trans.copy_policy.text')),
+                FileUpload::make('power_of_attorney')->label(__('trans.power_of_attorney.text')),
+                FileUpload::make('copy_of_director_id_card')->label(__('trans.copy_of_director_id_card.text')),
+                FileUpload::make('copy_of_person')->label(__('trans.copy_of_person.text')),
+                FileUpload::make('account_book')->label(__('trans.account_book.text')),
+                FileUpload::make('atm_card')->label(__('trans.atm_card.text')),
+                TextInput::make('customer_document')->label(__('trans.customer_document.text'))->disabled()->columnSpanFull(),
+                Checkbox::make('real_claim_document')->label(__('trans.real_claim.text')),
+                Checkbox::make('copy_policy_document')->label(__('trans.copy_policy.text')),
+                Checkbox::make('copy_claim_document')->label(__('trans.copy_claim.text')),
+                Checkbox::make('power_of_attorney_document')->label(__('trans.power_of_attorney.text')),
+                Checkbox::make('copy_driver_license_document')->label(__('trans.copy_driver_license.text')),
+                Checkbox::make('copy_of_director_id_card_document')->label(__('trans.copy_of_director_id_card.text')),
+                Checkbox::make('copy_vehicle_regis_document')->label(__('trans.copy_vehicle_regis.text')),
+                Checkbox::make('copy_of_person_document')->label(__('trans.copy_of_person.text')),
+                Checkbox::make('account_book_document')->label(__('trans.account_book.text')),
+                Checkbox::make('atm_card_document')->label(__('trans.atm_card.text')),
+                Checkbox::make('other_document')->label(__('trans.other.text')),
+                TextInput::make('group_car')->label(__('trans.group_car.text'))->disabled()->columnSpanFull(),
+                FileUpload::make('front')->label(__('trans.front.text')),
+                FileUpload::make('left')->label(__('trans.left.text')),
+                FileUpload::make('right')->label(__('trans.right.text')),
+                FileUpload::make('back')->label(__('trans.back.text')),
+                FileUpload::make('inside_left')->label(__('trans.inside_left.text')),
+                FileUpload::make('inside_right')->label(__('trans.inside_right.text')),
+                FileUpload::make('inside_truck')->label(__('trans.truck.text')),
+                FileUpload::make('etc')->label(__('trans.etc.text')),
+                TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
+                TextInput::make('addressee')->label(__('trans.addressee.text'))->required(),
+                ]);
     }
 
     public static function table(Table $table): Table
@@ -102,7 +179,7 @@ class CarReceiveResource extends Resource
                 TextColumn::make('job_number')->label(__('trans.job_number.text')),
                 TextColumn::make('job_number(new_customer)')->label( __ ('trans.new_customer.text')),
                 TextColumn::make('receive_date')->label(__('trans.receive_date.text')),
-                TextColumn::make('time')->label(__('trans.time.text')),
+                TextColumn::make('timex')->label(__('trans.timex.text')),
                 TextColumn::make('customer')->label(__('trans.customer.text')),
                 TextColumn::make('repairman')->label(__('trans.repairman.text')),
                 TextColumn::make('tel_number')->label(__('trans.tel_number.text')),
