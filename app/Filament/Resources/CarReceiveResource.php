@@ -11,8 +11,11 @@ use App\Forms\Components\Search;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Log;
 use Livewire\TemporaryUploadedFile;
+use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Checkbox;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Http\Livewire\GlobalSearch;
@@ -25,11 +28,10 @@ use Filament\Tables\Columns\SelectColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\MultiSelect;
 use Filament\Forms\Components\MarkdownEditor;
+use Filament\Tables\Actions\DeleteBulkAction;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CarReceiveResource\Pages;
 use App\Filament\Resources\CarReceiveResource\RelationManagers;
-use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Group;
 
 class CarReceiveResource extends Resource
 {
@@ -228,7 +230,7 @@ class CarReceiveResource extends Resource
                 FileUpload::make('etc')->label(__('trans.etc.text')),
                 TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
                 TextInput::make('addressee')->label(__('trans.addressee.text'))->required(),
-                ]);
+            ]);
     }
 
     public static function table(Table $table): Table
