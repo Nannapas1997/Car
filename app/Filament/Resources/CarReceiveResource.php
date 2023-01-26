@@ -44,78 +44,18 @@ class CarReceiveResource extends Resource
         return $form
             ->schema([
             Radio::make('choose_garage')->label(__('trans.choose_garage.text'))->options(['SP' => 'SP auto','SBO' => 'SBO'])->columns(3),
-            Select::make('search_regis')->label(__('trans.search_regis.text'))->searchable()->preload()
-            ->options(CarReceive::all()->pluck('vehicle_registration', 'id')->toArray())
-            ->searchable()
+            Select::make('job_number')
+                    ->label(__('trans.job_number.text'))
+                    ->preload()
+                    ->options(CarReceive::query()->pluck('job_number(new_customer)')->toArray())
+                    ->searchable()
                     ->reactive()
                     ->afterStateUpdated(function ($set, $state) {
                         if ($state) {
                             $name = CarReceive::find($state)->toArray();
-                            dd($name);
+                            Log::info($name);
                             if ($name) {
-
-                                $set('choose_garage', $name['choose_garage']);
                                 $set('receive_date', $name['receive_date']);
-                                $set('timex', $name['timex']);
-                                $set('customer', $name['customer']);
-                                $set('repairman', $name['repairman']);
-                                $set('tel_number', $name['tel_number']);
-                                $set('pickup_date', $name['pickup_date']);
-                                $set('vehicle_registration', $name['vehicle_registration']);
-                                $set('brand', $name['brand']);
-                                $set('model', $name['model']);
-                                $set('car_type', $name['car_type']);
-                                $set('mile_number', $name['mile_number']);
-                                $set('repair_code', $name['repair_code']);
-                                $set('options', $name['options']);
-                                $set('insu_company_name', $name['insu_company_name']);
-                                $set('policy_number', $name['policy_number']);
-                                $set('noti_number', $name['noti_number']);
-                                $set('claim_number', $name['claim_number']);
-                                $set('park_type', $name['park_type']);
-                                $set('content', $name['content']);
-                                $set('car_park', $name['car_park']);
-                                $set('spare_tire', $name['spare_tire']);
-                                $set('jack_handle', $name['jack_handle']);
-                                $set('boxset', $name['boxset']);
-                                $set('batteries', $name['batteries']);
-                                $set('cigarette_lighter', $name['cigarette_lighter']);
-                                $set('radio', $name['radio']);
-                                $set('floor_mat', $name['floor_mat']);
-                                $set('spare_removal', $name['spare_removal']);
-                                $set('fire_extinguisher', $name['fire_extinguisher']);
-                                $set('spining_wheel', $name['spining_wheel']);
-                                $set('other', $name['other']);
-                                $set('real_claim_document', $name['real_claim_document']);
-                                $set('copy_policy_document', $name['copy_policy_document']);
-                                $set('copy_claim_document', $name['copy_claim_document']);
-                                $set('power_of_attorney_document', $name['power_of_attorney_document']);
-                                $set('copy_driver_license_document', $name['copy_driver_license_document']);
-                                $set('copy_of_director_id_card_document', $name['copy_of_director_id_card_document']);
-                                $set('copy_vehicle_regis_document', $name['copy_vehicle_regis_document']);
-                                $set('copy_of_person_document', $name['copy_of_person_document']);
-                                $set('account_book_document', $name['account_book_document']);
-                                $set('atm_card_document', $name['atm_card_document']);
-                                $set('other_document', $name['other_document']);
-                                $set('real_claim', $name['real_claim']);
-                                $set('copy_claim', $name['copy_claim']);
-                                $set('copy_driver_license', $name['copy_driver_license']);
-                                $set('copy_vehicle_regis', $name['copy_vehicle_regis']);
-                                $set('copy_policy', $name['copy_policy']);
-                                $set('power_of_attorney', $name['power_of_attorney']);
-                                $set('copy_of_director_id_card', $name['copy_of_director_id_card']);
-                                $set('copy_of_person', $name['copy_of_person']);
-                                $set('account_book', $name['account_book']);
-                                $set('atm_card', $name['atm_card']);
-                                $set('front', $name['front']);
-                                $set('left', $name['left']);
-                                $set('right', $name['right']);
-                                $set('back', $name['back']);
-                                $set('inside_left', $name['inside_left']);
-                                $set('inside_right', $name['inside_right']);
-                                $set('inside_truck', $name['inside_truck']);
-                                $set('etc', $name['etc']);
-                                $set('addressee', $name['addressee']);
                             }
                         }
                     }),

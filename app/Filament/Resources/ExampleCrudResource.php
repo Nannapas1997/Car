@@ -10,14 +10,15 @@ use Filament\Resources\Table;
 
 
 use Filament\Resources\Resource;
+use Filament\Tables\Columns\ViewColumn;
 use Illuminate\Support\Facades\Log;
 use Livewire\TemporaryUploadedFile;
 use Filament\Forms\Components\Select;
 
 use Filament\Tables\Columns\TextColumn;
 
-
 use Filament\Forms\Components\TextInput;
+
 use Filament\Tables\Columns\ImageColumn;
 
 use Filament\Forms\Components\FileUpload;
@@ -69,10 +70,11 @@ class ExampleCrudResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image_url_1')
-                    ->label('ชื่อ'),
+                ViewColumn::make('image_url_1')
+                    ->view('filament.tables.columns.file-display')
+                    ->label('ไฟล์'),
                 TextColumn::make('name')
-                    ->label('รูปภาพ'),
+                    ->label('ชื่อ'),
             ])
             ->filters([
                 //
