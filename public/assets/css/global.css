@@ -6,7 +6,7 @@ body {
 .days {
     color: black;
     width: 400px;
-    height: 270px;
+    height: 330px;
     background-color: white;
     border-radius: 10px;
 }
@@ -18,80 +18,51 @@ body {
     top: 2rem;
     font-weight: bold;
 }
-.day-ten{
-    font-size: 60px;
-    padding-left: 47px;
-    position: relative;
-    top: 3rem;
-    font-weight: bold;
-}
-.item
- {
-    font-size: 26px;
-    padding-left: 40px;
-    position: relative;
-    bottom: 1rem;
-    font-weight: bold;
- }
-.left {
-    border-left: 4px solid black;
-    height: 200px;
-    position: relative;
-    left: 9rem;
-    bottom: 14rem;
-}
-.code {
-    font-size: 20px;
-    padding-left: 68px;
-    font-weight: bold;
-}
-.items {
-    font-size: 20px;
-    padding-left: 80px;
-    font-weight: bold;
-}
 .day-code {
     font-size: 26px;
-    padding-left: 73px;
+    padding-left: 70px;
     position: relative;
     top: 2rem;
     font-weight: bold;
 }
-.code-2 {
-    font-size: 20px;
-    padding-left: 181px;
+.day-ten{
+    font-size: 60px;
+    padding-left: 57px;
+    position: relative;
+    top: 5rem;
     font-weight: bold;
 }
-.items-2 {
+.item
+ {
     font-size: 20px;
-    padding-left: 80px;
+    padding-left: 297px;
+    position: relative;
+    bottom: 105px;
+ }
+.left {
+    border-left: 4px solid black;
+    height: 288px;
+    position: relative;
+    left: 9rem;
+    bottom: 24rem;
+}
+.code {
+    font-size: 20px;
+    padding-left: 172px;
+    font-weight: bold;
+    position: relative;
+    bottom: 75px;
+}
+.items {
+    font-size: 26px;
+    padding-left: 36px;
+    position: relative;
+    top: 140px;
     font-weight: bold;
 }
-.code-3 {
+.count {
     font-size: 20px;
-    padding-left: 181px;
-    position:relative;
-    top: 14px;
-    font-weight: bold;
-}
-.items-3 {
-    font-size: 20px;
-    padding-left: 80px;
-    font-weight: bold;
-    position:relative;
-    top: 14px;
-}
-.code-4 {
-    font-size: 20px;
-    padding-left: 181px;
-    position:relative;
-    top: 26px;
-    font-weight: bold;
-}
-.items-4 {
-    font-size: 20px;
-    padding-left: 80px;
-    font-weight: bold;
-    position:relative;
-    top: 26px;
+    position: relative;
+    bottom: 75px;
+    padding-left: 43px;
 }

@@ -2,7 +2,7 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\ExampleCrud;
+use App\Models\CarReceive;
 use Filament\Widgets\Widget;
 
 class DashBoardWidGet extends Widget
@@ -11,11 +11,24 @@ class DashBoardWidGet extends Widget
 
     protected function getViewData(): array
     {
-        $exampleData = ExampleCrud::all()->toArray();
+        $exampleData = CarReceive::all()->toArray();
+        $a = 0;
+        $data_car = [];
+        while($a < count($exampleData)){
+            $data = $exampleData[$a]['repair_code'];
+
+            $data_car[] = $data;
+            ++$a;
+        }
+        $j =0;
 
         return [
-            'data' => $exampleData,
-            'total' => count($exampleData)
+            'data' => $data_car,
+            'j' => $j,
+            'total' => count($exampleData),
         ];
     }
+
 }
+
+

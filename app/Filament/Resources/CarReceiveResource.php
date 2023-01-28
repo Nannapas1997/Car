@@ -44,21 +44,6 @@ class CarReceiveResource extends Resource
         return $form
             ->schema([
             Radio::make('choose_garage')->label(__('trans.choose_garage.text'))->options(['SP' => 'SP auto','SBO' => 'SBO'])->columns(3),
-            Select::make('job_number')
-                    ->label(__('trans.job_number.text'))
-                    ->preload()
-                    ->options(CarReceive::query()->pluck('job_number(new_customer)')->toArray())
-                    ->searchable()
-                    ->reactive()
-                    ->afterStateUpdated(function ($set, $state) {
-                        if ($state) {
-                            $name = CarReceive::find($state)->toArray();
-                            Log::info($name);
-                            if ($name) {
-                                $set('receive_date', $name['receive_date']);
-                            }
-                        }
-                    }),
             TextInput::make('job_number(new_customer)')->label( __ ('trans.new_customer.text')),
             Select::make('job_number')->label(__('trans.job_number.text'))
             ->preload()
@@ -90,6 +75,7 @@ class CarReceiveResource extends Resource
                                 $set('park_type', $name['park_type']);
                                 $set('content', $name['content']);
                                 $set('car_park', $name['car_park']);
+                                $set('addressee', $name['addressee']);
                             }
                         }
                     }),
