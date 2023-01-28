@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{asset('assets/css/global.css')}}"/>
+{{--    <link rel="stylesheet" href="{{asset('assets/css/global.css')}}"/>--}}
 </head>
 <body>
 
@@ -21,68 +21,20 @@
         <span class="items">รายการ</span>
         <br>
         <span class="code">A</span>
-        <span class="count">
-        @for($i = 0; $i < count($data); $i++)
-
-            @if ($data[$i] == "A")
-            {{++$j}}
-            @endif
-            @if($j !== 0)
-            <input type="hidden" name="" value="{{--$j}}">
-            @endif
-        @endfor
-
-        </span>
+        <span class="count">{{ $a }}</span>
         <span class="item">รายการ</span>
         <br>
         <span class="code">B</span>
-        <span class="count">
-        @for($i = 0; $i < count($data); $i++)
-
-            @if ($data[$i] == "B")
-            {{++$j}}
-
-            @endif
-            @if($j !== 0)
-            <input type="hidden" name="" value="{{--$j}}">
-            @endif
-        @endfor
-
-        </span>
-
-
+        <span class="count">{{ $b }}</span>
         <span class="item">รายการ</span>
         <br>
         <span class="code">C</span>
-        <span class="count">
-        @for($i = 0; $i < count($data); $i++)
-
-            @if ($data[$i] == "C")
-            {{++$j}}
-            @endif
-            @if($j !== 0)
-            <input type="hidden" name="" value="{{--$j}}">
-            @endif
-        @endfor
-
-        </span>
+        <span class="count">{{ $c }}</span>
         <span class="item">รายการ</span>
         <br>
         <span class="code">D</span>
-        <span class="count">
-        @for($i = 0; $i < count($data); $i++)
-
-            @if ($data[$i] == "D")
-            {{++$j}}
-            @endif
-            @if($j !== 0)
-            <input type="hidden" name="" value="{{--$j}}">
-            @endif
-        @endfor
-        </span>
+        <span class="count">{{ $d }}</span>
         <span class="item">รายการ</span>
-        <div class="left"></div>
-
     </div>
 </div>
 

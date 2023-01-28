@@ -21,7 +21,7 @@ return new class extends Migration
             $table->id();
             $table->string('choose_garage')->required();
             $table->string('job_number');
-            $table->string('job_number(new_customer)');
+            $table->string('job_number_new');
             $table->date('receive_date')->required();
             $table->time('timex')->required();
             $table->string('customer')->required();
@@ -42,7 +42,7 @@ return new class extends Migration
             $table->string('park_type')->required();
             $table->string('content')->required();
             $table->date('car_park')->required();
-            $table->string('group_document');
+            $table->string('group_document')->nullable();
             $table->string('real_claim')->required()->nullable();
             $table->string('copy_claim')->required()->nullable();
             $table->string('copy_driver_license')->required()->nullable();

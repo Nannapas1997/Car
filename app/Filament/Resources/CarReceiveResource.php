@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\CarReceive;
@@ -10,6 +11,7 @@ use Filament\Resources\Table;
 use App\Forms\Components\Search;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Livewire\TemporaryUploadedFile;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Radio;
@@ -43,11 +45,21 @@ class CarReceiveResource extends Resource
     {
         return $form
             ->schema([
-            Radio::make('choose_garage')->label(__('trans.choose_garage.text'))->options(['SP' => 'SP auto','SBO' => 'SBO'])->columns(3),
-            TextInput::make('job_number(new_customer)')->label( __ ('trans.new_customer.text')),
-            Select::make('job_number')->label(__('trans.job_number.text'))
-            ->preload()
-            ->options(CarReceive::all()->pluck('job_number(new_customer)', 'id')->toArray())
+            Radio::make('choose_garage')
+                ->label(__('trans.choose_garage.text'))
+                ->options(['SP' => 'SP auto','SBO' => 'SBO'])
+                ->columns(3)
+                ->required(),
+            TextInput::make('job_number_new')
+                ->label( __ ('trans.new_customer.text'))
+                ->reactive()
+                ->afterStateUpdated(function (Closure $set, $state) {
+                    $set('job_number', $state);
+                }),
+            Select::make('job_number')
+                ->label(__('trans.job_number.text'))
+                ->preload()
+                ->options(CarReceive::all()->pluck('job_number', 'id')->toArray())
                     ->searchable()
                     ->reactive()
                     ->afterStateUpdated(function ($set, $state) {
@@ -76,6 +88,7 @@ class CarReceiveResource extends Resource
                                 $set('content', $name['content']);
                                 $set('car_park', $name['car_park']);
                                 $set('addressee', $name['addressee']);
+                                $set('spare_tire', $name['spare_tire']);
                             }
                         }
                     }),
@@ -165,7 +178,6 @@ class CarReceiveResource extends Resource
             ->columns([
                 TextColumn::make('choose_garage')->label(__('trans.choose_garage.text')),
                 TextColumn::make('job_number')->label(__('trans.job_number.text')),
-                TextColumn::make('job_number(new_customer)')->label( __ ('trans.new_customer.text')),
                 TextColumn::make('receive_date')->label(__('trans.receive_date.text')),
                 TextColumn::make('timex')->label(__('trans.timex.text')),
                 TextColumn::make('customer')->label(__('trans.customer.text')),

@@ -11,7 +11,7 @@ class CarReceive extends Model
     protected $fillable = [
         'choose_garage',
         'job_number',
-        'job_number(new_customer)',
+        'job_number_new',
         'receive_date',
         'timex',
         'customer',

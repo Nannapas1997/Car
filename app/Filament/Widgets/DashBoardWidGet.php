@@ -11,23 +11,25 @@ class DashBoardWidGet extends Widget
 
     protected function getViewData(): array
     {
-        $exampleData = CarReceive::all()->toArray();
-        $a = 0;
-        $data_car = [];
-        while($a < count($exampleData)){
-            $data = $exampleData[$a]['repair_code'];
+        $a = CarReceive::query()
+            ->where('repair_code', '=', 'A')
+            ->count();
+        $b = CarReceive::query()
+            ->where('repair_code', '=', 'B')
+            ->count();
+        $c = CarReceive::query()
+            ->where('repair_code', '=', 'C')
+            ->count();
+        $d = CarReceive::query()
+            ->where('repair_code', '=', 'D')
+            ->count();
 
-            $data_car[] = $data;
-            ++$a;
-        }
-        $j =0;
         return [
-            'data' => $data_car,
-            'j' => $j,
-            'total' => count($exampleData),
+            'a' => $a,
+            'b' => $b,
+            'c' => $c,
+            'd' => $d,
+            'total' => $a + $b + $c + $d,
         ];
     }
-
 }
-
-
