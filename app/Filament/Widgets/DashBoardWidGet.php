@@ -21,7 +21,6 @@ class DashBoardWidGet extends Widget
             ++$a;
         }
         $j =0;
-
         return [
             'data' => $data_car,
             'j' => $j,

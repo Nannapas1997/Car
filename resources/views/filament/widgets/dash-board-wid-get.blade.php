@@ -43,7 +43,7 @@
             {{++$j}}
 
             @endif
-            @if($j !== 0) && 
+            @if($j !== 0)
             <input type="hidden" name="" value="{{--$j}}">
             @endif
         @endfor
