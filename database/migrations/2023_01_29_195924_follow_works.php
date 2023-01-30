@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('garage', function (Blueprint $table) {
+        Schema::create('follow_works', function (Blueprint $table) {
             $table->id();
-            $table->string('เลือกอู่')->options(['SP'=> 'SP', 'SBO' => 'SBO']);
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('garage');
+        Schema::dropIfExists('follow_works');
     }
 };

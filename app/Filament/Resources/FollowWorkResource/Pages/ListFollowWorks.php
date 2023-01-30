@@ -2,18 +2,20 @@
 
 namespace App\Filament\Resources\FollowWorkResource\Pages;
 
-use App\Filament\Resources\FollowWorkResource;
+use App\Models\CarReceive;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\FollowWorkResource;
 
 class ListFollowWorks extends ListRecords
 {
     protected static string $resource = FollowWorkResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderWidgets(): array
     {
         return [
-            Actions\CreateAction::make(),
+            FollowWorkResource\Widgets\FollowWork::class,
         ];
     }
+   
 }

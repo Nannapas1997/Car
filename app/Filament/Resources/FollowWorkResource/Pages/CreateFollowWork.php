@@ -2,11 +2,13 @@
 
 namespace App\Filament\Resources\FollowWorkResource\Pages;
 
-use App\Filament\Resources\FollowWorkResource;
-use Filament\Pages\Actions;
+
+use App\Models\CarReceive;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Resources\FollowWorkResource;
 
 class CreateFollowWork extends CreateRecord
 {
-    protected static string $resource = FollowWorkResource::class;
+    
 }

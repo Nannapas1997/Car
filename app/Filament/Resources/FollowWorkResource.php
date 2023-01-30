@@ -2,16 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\FollowWorkResource\Pages;
-use App\Filament\Resources\FollowWorkResource\RelationManagers;
-use App\Models\FollowWork;
+
 use Filament\Forms;
-use Filament\Resources\Form;
-use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use App\Models\FollowWork;
+use Filament\Resources\Form;
+use Filament\Resources\Table;
+use Filament\Resources\Resource;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\FollowWorkResource\Pages;
+use App\Filament\Resources\FollowWorkResource\RelationManagers;
 
 class FollowWorkResource extends Resource
 {
@@ -31,7 +33,7 @@ class FollowWorkResource extends Resource
     {
         return $table
             ->columns([
-                //
+
             ])
             ->filters([
                 //
