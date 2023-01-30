@@ -4,12 +4,15 @@ namespace App\Filament\Resources;
 
 use Closure;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
 use App\Models\CarReceive;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use App\Forms\Components\Search;
 use Filament\Resources\Resource;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
+use Filament\Tables\Columns\ViewColumn;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Livewire\TemporaryUploadedFile;
@@ -169,6 +172,9 @@ class CarReceiveResource extends Resource
                 FileUpload::make('etc')->label(__('trans.etc.text')),
                 TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
                 TextInput::make('addressee')->label(__('trans.addressee.text'))->required(),
+                SpatieMediaLibraryFileUpload::make('other_file')
+                    ->multiple()
+                    ->label(__('trans.etc.text')),
             ]);
     }
 
@@ -215,6 +221,7 @@ class CarReceiveResource extends Resource
                 ImageColumn::make('inside_right')->label(__('trans.inside_right.text')),
                 ImageColumn::make('inside_truck')->label(__('trans.truck.text')),
                 ImageColumn::make('etc')->label(__('trans.etc.text')),
+                SpatieMediaLibraryImageColumn::make('other_file')->conversion('thumb'),
             ])
             ->filters([
                 //
