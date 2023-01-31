@@ -96,7 +96,7 @@ class CarReceiveResource extends Resource
                                 $set('fire_extinguisher', $name['fire_extinguisher']);
                                 $set('spining_wheel', $name['spining_wheel']);
                                 $set('other', $name['other']);
-                                $set('real_claim', $name['real_claim']);
+                                $set('real_claim_document', $name['real_claim_document']);
                                 $set('copy_claim', $name['copy_claim']);
                                 $set('copy_driver_license', $name['copy_driver_license']);
                                 $set('copy_vehicle_regis', $name['copy_vehicle_regis']);
@@ -158,16 +158,16 @@ class CarReceiveResource extends Resource
                                 $set('fire_extinguisher', $name['fire_extinguisher']);
                                 $set('spining_wheel', $name['spining_wheel']);
                                 $set('other', $name['other']);
-                                $set('real_claim', $name['real_claim']);
-                                $set('copy_claim', $name['copy_claim']);
-                                $set('copy_driver_license', $name['copy_driver_license']);
-                                $set('copy_vehicle_regis', $name['copy_vehicle_regis']);
-                                $set('copy_policy', $name['copy_policy']);
-                                $set('power_of_attorney', $name['power_of_attorney']);
-                                $set('copy_of_director_id_card', $name['copy_of_director_id_card']);
-                                $set('copy_of_person', $name['copy_of_person']);
-                                $set('account_book', $name['account_book']);
-                                $set('atm_card', $name['atm_card']);
+                                $set('real_claim_document', $name['real_claim_document']);
+                                $set('copy_claim_document', $name['copy_claim_document']);
+                                $set('copy_driver_license_document', $name['copy_driver_license_document']);
+                                $set('copy_vehicle_regis_document', $name['copy_vehicle_regis_document']);
+                                $set('copy_policy_document', $name['copy_policy_document']);
+                                $set('power_of_attorney_document', $name['power_of_attorney_document']);
+                                $set('copy_of_director_id_card_document', $name['copy_of_director_id_card_document']);
+                                $set('copy_of_person_document', $name['copy_of_person_document']);
+                                $set('account_book_document', $name['account_book_document']);
+                                $set('atm_card_document', $name['atm_card_document']);
                             }
                         }
                     }),
@@ -305,7 +305,7 @@ class CarReceiveResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                DeleteAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

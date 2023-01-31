@@ -60,4 +60,9 @@ return [
     'truck.text' => 'ภายในตู้บรรทุก',
     'etc.text' => 'ภาพอื่นๆ',
     'addressee.text' => 'ผู้รับเรื่อง',
+    'car_year.text' => 'ปีรถ',
+    'expense_item.text' => 'รายการค่าใช้จ่าย',
+    'wage.text' => 'ค่าแรง',
+    'expense_not_receipt.text' => 'ค่าใช้จ่ายที่ไม่มีในใบเสร็จ',
+    'total.text' => 'รวม',
 ];

@@ -18,12 +18,19 @@ class FollowWork extends Widget
     }
     protected function getViewData(): array
     {
-        $a = CarReceive::query()
-            ->where('receive_date', '=', now()->format('Y-m-d'))
-            ->count();
         $b = CarReceive::query()
             ->where('pickup_date', '=', now()->format('Y-m-d'))
             ->count();
+        $a = 0;
+        $data = CarReceive::pluck('receive_date');
+        for($i = 0 ; $i < count($data); $i++){
+            if(CarReceive::pluck('pickup_date')[$i] !== now()->format('Y-m-d')){
+                ++$a;
+            }else{
+                continue;
+            }
+        }
+
         return [
             'a' => $a,
             'b' => $b,
