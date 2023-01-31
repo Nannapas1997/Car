@@ -127,7 +127,16 @@ body {
     position: relative;
     top: 5rem;
 }
-
+.month {
+    color: black;
+    width: 400px;
+    height: 330px;
+    background-color: white;
+    border-radius: 10px;
+    position: absolute;
+    top:8rem;
+    right: 0;
+}
 /* @media  (max-width: 1519px) {
     .all-items {
         color: black;

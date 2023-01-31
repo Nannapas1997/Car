@@ -36,6 +36,30 @@
         <span class="count">{{ $d }}</span>
         <span class="item">รายการ</span>
     </div>
+    <div class="month">
+        <span class="day">เดือน</span>
+        <span class="day-code">รหัสความเสียหาย</span>
+        <br>
+        <span class="day-ten">{{$total}}</span>
+        <br>
+        <span class="items">รายการ</span>
+        <br>
+        <span class="code">A</span>
+        <span class="count">{{ $a }}</span>
+        <span class="item">รายการ</span>
+        <br>
+        <span class="code">B</span>
+        <span class="count">{{ $b }}</span>
+        <span class="item">รายการ</span>
+        <br>
+        <span class="code">C</span>
+        <span class="count">{{ $c }}</span>
+        <span class="item">รายการ</span>
+        <br>
+        <span class="code">D</span>
+        <span class="count">{{ $d }}</span>
+        <span class="item">รายการ</span>
+    </div>
 </div>
 
 
