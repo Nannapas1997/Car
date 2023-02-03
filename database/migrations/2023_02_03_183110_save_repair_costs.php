@@ -15,17 +15,21 @@ return new class extends Migration
     {
         Schema::create('save_repair_costs', function (Blueprint $table) {
             $table->id();
-            $table->string('job_number')->nullable();
+            $table->string('job_number_control')->nullable();
             $table->string('customer')->required();
-            $table->string('vehicle_registration')->required();
+            $table->foreignId('vehicle_registration')->required();
             $table->string('brand')->required();
             $table->string('model')->required();
             $table->string('car_year')->required();
-            $table->string('expense_item')->required();
             $table->string('wage')->required();
             $table->string('expense_not_receipt')->required();
             $table->string('total')->required();
+            $table->string('code_c0_c7');
+            $table->string('price');
+            $table->string('spare_code');
+            $table->string('spare_cost');
         });
+
     }
 
     /**

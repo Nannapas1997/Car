@@ -79,7 +79,8 @@ class CarReceive extends Model implements HasMedia
         'inside_right',
         'inside_truck',
         'etc',
-        'addressee'
+        'addressee',
+        'product_id',
     ];
     // turn off both
 public $timestamps = false;
@@ -87,3 +88,4 @@ public $timestamps = false;
 // turn off only updated_at
 const UPDATED_AT = false;
 }
+

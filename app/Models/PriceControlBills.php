@@ -2,32 +2,28 @@
 
 namespace App\Models;
 
-use App\Models\CarReceive;
 use Illuminate\Database\Eloquent\Model;
+
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class SaveRepairCosts extends Model
+class PriceControlBills extends Model
 {
     use HasFactory;
     protected $fillable = [
         'job_number_control',
+        'number_price_control',
+        'notification_number',
+        'number_ab',
         'customer',
         'vehicle_registration',
-        'brand',
-        'model',
-        'car_year',
-        'wage',
-        'expense_not_receipt',
-        'total',
-        'code_c0_c7',
-        'price',
-        'spare_code',
-        'spare_cost',
-        
+        'insu_company_name',
+        'termination_price',
+        'note',
+        'courier',
+        'price_dealer',
     ];
     public $timestamps = false;
-
 // turn off only updated_at
-const UPDATED_AT = false;
+    const UPDATED_AT = false;
 }

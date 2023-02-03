@@ -62,7 +62,7 @@ class UserPolicy
      * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $userl, User $model) {
+    public function restore(User $user, User $model) {
         return $user->hasAnyRole(['super-admin', 'admin']);
     }
 }

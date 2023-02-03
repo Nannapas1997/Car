@@ -22,13 +22,13 @@ return new class extends Migration
             $table->string('choose_garage')->required();
             $table->string('job_number');
             $table->string('job_number_new');
-            $table->date('receive_date')->required();
+            $table->date('receive_date')->nullable();
             $table->time('timex')->required();
             $table->string('customer')->required();
             $table->string('repairman')->required();
             $table->string('tel_number')->required();
-            $table->date('pickup_date')->required();
-            $table->string('vehicle_registration')->required();
+            $table->date('pickup_date')->nullable();
+            $table->foreignId('vehicle_registration')->constrained();
             $table->string('brand')->required();
             $table->string('model')->required();
             $table->string('car_type')->required();
@@ -87,6 +87,7 @@ return new class extends Migration
             $table->string('inside_truck')->required()->nullable();
             $table->string('etc')->required()->nullable();
             $table->string('addressee')->required();
+            $table->string('car_year');
         });
     }
 

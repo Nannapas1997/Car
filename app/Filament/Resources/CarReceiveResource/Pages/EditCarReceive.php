@@ -10,10 +10,14 @@ class EditCarReceive extends EditRecord
 {
     protected static string $resource = CarReceiveResource::class;
 
-    protected function getActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
+
+    public function deleteAny() {
+        return true;
+    }
+    public function forceDelete() {
+        return false;
+    }
+    public function forceDeleteAny() {
+        return false;
     }
 }

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\SaveRepairCostsResource\Pages;
+namespace App\Filament\Resources\SaveRepairCostResource\Pages;
 
-use App\Filament\Resources\SaveRepairCostsResource;
+use App\Filament\Resources\SaveRepairCostResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListSaveRepairCosts extends ListRecords
 {
-    protected static string $resource = SaveRepairCostsResource::class;
+    protected static string $resource = SaveRepairCostResource::class;
 
     protected function getActions(): array
     {
