@@ -2,16 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\SaveRepairCost;
 use Spatie\MediaLibrary\HasMedia;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CarReceive extends Model implements HasMedia
 {
     use InteractsWithMedia;
     use HasFactory;
     protected $fillable = [
+        'id',
         'choose_garage',
         'job_number',
         'job_number_new',
@@ -82,10 +87,33 @@ class CarReceive extends Model implements HasMedia
         'addressee',
         'product_id',
     ];
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function saveRepair():HasMany
+    {
+        return $this->hasMany(SaveRepairCost::class);
+    }
+    public function getViewData(): array
+    {   $SP = "SP";
+        $SBO = "SBO";
+        $day = now()->format('y-m-d');
+        $j = 1;
+        $str = "-000";
+        for($i=0;$i<= 1000;$i++) {
+            $total_sp[] = $SP.''.$day.''.$str.''.$j;
+        }
+
+        return [
+            'total_sp' => $total_sp,
+        ];
+    }
     // turn off both
 public $timestamps = false;
 
 // turn off only updated_at
-const UPDATED_AT = false;
+const UPDATED_AT = null;
+protected $primaryKey = 'id';
 }
 

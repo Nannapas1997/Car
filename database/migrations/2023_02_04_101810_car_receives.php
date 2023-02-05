@@ -1,12 +1,8 @@
 <?php
 
-use Filament\Facades\Filament;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use AlperenErsoy\FilamentExport\FilamentExport;
-use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
-use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -28,7 +24,7 @@ return new class extends Migration
             $table->string('repairman')->required();
             $table->string('tel_number')->required();
             $table->date('pickup_date')->nullable();
-            $table->foreignId('vehicle_registration')->constrained();
+            $table->string('vehicle_registration');
             $table->string('brand')->required();
             $table->string('model')->required();
             $table->string('car_type')->required();
@@ -86,8 +82,8 @@ return new class extends Migration
             $table->string('inside_right')->required()->nullable();
             $table->string('inside_truck')->required()->nullable();
             $table->string('etc')->required()->nullable();
-            $table->string('addressee')->required();
-            $table->string('car_year');
+            $table->string('addressee')->nullable();
+            $table->string('car_year')->nullable();
         });
     }
 
@@ -98,6 +94,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('car_receives');
+        //
     }
 };

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('job_number_control')->nullable();
             $table->string('customer')->required();
-            $table->foreignId('vehicle_registration')->required();
+            $table->string('vehicle_registration')->required();
             $table->string('brand')->required();
             $table->string('model')->required();
             $table->string('car_year')->required();
@@ -29,7 +29,6 @@ return new class extends Migration
             $table->string('spare_code');
             $table->string('spare_cost');
         });
-
     }
 
     /**

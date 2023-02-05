@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
-use App\Models\CarReceive;
+use App\Models\User;
+use App\Models\SaveRepairCostItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class SaveRepairCosts extends Model
+class SaveRepairCost extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'id',
         'job_number_control',
         'customer',
         'vehicle_registration',
@@ -24,10 +27,19 @@ class SaveRepairCosts extends Model
         'price',
         'spare_code',
         'spare_cost',
-        
+
     ];
     public $timestamps = false;
-
+    public function user():BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function saveRepairCostItems():HasMany
+    {
+        return $this->hasMany(SaveRepairCostItem::class);
+    }
 // turn off only updated_at
 const UPDATED_AT = false;
+protected $primaryKey = 'id';
+
 }
