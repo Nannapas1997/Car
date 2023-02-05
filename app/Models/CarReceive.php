@@ -10,11 +10,12 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CarReceive extends Model implements HasMedia
 {
     use InteractsWithMedia;
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
         'id',
         'choose_garage',
@@ -94,20 +95,6 @@ class CarReceive extends Model implements HasMedia
     public function saveRepair():HasMany
     {
         return $this->hasMany(SaveRepairCost::class);
-    }
-    public function getViewData(): array
-    {   $SP = "SP";
-        $SBO = "SBO";
-        $day = now()->format('y-m-d');
-        $j = 1;
-        $str = "-000";
-        for($i=0;$i<= 1000;$i++) {
-            $total_sp[] = $SP.''.$day.''.$str.''.$j;
-        }
-
-        return [
-            'total_sp' => $total_sp,
-        ];
     }
     // turn off both
 public $timestamps = false;

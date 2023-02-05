@@ -39,7 +39,7 @@ return [
     'other.text' => 'อื่นๆ',
     'car_park.text' => 'วันที่รถเข้ามาจอด',
     'group_document.text' => 'สำหรับเอกสาร',
-    'group_car.text' => 'สำหรับรถ',
+    'group_car.text' => 'ภาพรถวันเข้าซ่อม',
     'real_claim.text' => 'ใบเคลมฉบับจริง',
     'copy_claim.text' => 'สำเนาใบเคลม',
     'copy_driver_license.text' => 'สำเนาใบขับขี่',

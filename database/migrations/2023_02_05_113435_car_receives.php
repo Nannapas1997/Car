@@ -84,6 +84,8 @@ return new class extends Migration
             $table->string('etc')->required()->nullable();
             $table->string('addressee')->nullable();
             $table->string('car_year')->nullable();
+            $table->string('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
         });
     }
 
@@ -94,6 +96,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('car_receives');
     }
 };

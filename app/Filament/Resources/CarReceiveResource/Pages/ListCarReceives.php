@@ -16,10 +16,5 @@ class ListCarReceives extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
-    protected function getHeaderWidgets(): array
-    {
-        return [
-            CarReceiveResource\Widgets\carReceives::class,
-        ];
-    }
+   
 }
