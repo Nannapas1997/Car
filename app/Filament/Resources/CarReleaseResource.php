@@ -16,8 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CarReleaseResource extends Resource
 {
     protected static ?string $model = CarRelease::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroup = 'Account';
+    protected static ?string $navigationIcon = 'heroicon-o-arrows-expand';
 
     public static function form(Form $form): Form
     {

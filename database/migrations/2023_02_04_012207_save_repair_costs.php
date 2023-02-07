@@ -20,14 +20,15 @@ return new class extends Migration
             $table->string('vehicle_registration')->required();
             $table->string('brand')->required();
             $table->string('model')->required();
-            $table->string('car_year')->required();
-            $table->string('wage')->required();
-            $table->string('expense_not_receipt')->required();
-            $table->string('total')->required();
-            $table->string('code_c0_c7');
-            $table->string('price');
-            $table->string('spare_code');
-            $table->string('spare_cost');
+            $table->string('car_year')->nullable()->required();
+            $table->string('wage')->nullable()->required();
+            $table->string('expense_not_receipt')->nullable()->required();
+            $table->string('total')->nullable()->required();
+            $table->string('code_c0_c7')->nullable();
+            $table->string('price')->nullable();
+            $table->string('spare_code')->nullable();
+            $table->string('spare_cost')->nullable();
+            $table->string('store')->nullable();
         });
     }
 

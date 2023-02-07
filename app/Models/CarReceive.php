@@ -88,14 +88,6 @@ class CarReceive extends Model implements HasMedia
         'addressee',
         'product_id',
     ];
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-    public function saveRepair():HasMany
-    {
-        return $this->hasMany(SaveRepairCost::class);
-    }
     // turn off both
 public $timestamps = false;
 

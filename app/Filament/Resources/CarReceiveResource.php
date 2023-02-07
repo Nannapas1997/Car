@@ -85,7 +85,59 @@ class CarReceiveResource extends Resource
                     $array[1],
                     $array[2],
 
-                ]),
+                ])
+                ->reactive()
+                ->afterStateUpdated(function ($set, $state) {
+                    if ($state) {
+                        $name = CarReceive::find($state)->toArray();
+                        if ($name) {
+                            $set('choose_garage', $name['choose_garage']);
+                            $set('receive_date', $name['receive_date']);
+                            $set('timex', $name['timex']);
+                            $set('customer', $name['customer']);
+                            $set('repairman', $name['repairman']);
+                            $set('tel_number', $name['tel_number']);
+                            $set('pickup_date', $name['pickup_date']);
+                            $set('vehicle_registration', $name['vehicle_registration']);
+                            $set('brand', $name['brand']);
+                            $set('model', $name['model']);
+                            $set('car_type', $name['car_type']);
+                            $set('car_year', $name['car_year']);
+                            $set('mile_number', $name['mile_number']);
+                            $set('repair_code', $name['repair_code']);
+                            $set('options', $name['options']);
+                            $set('insu_company_name', $name['insu_company_name']);
+                            $set('policy_number', $name['policy_number']);
+                            $set('noti_number', $name['noti_number']);
+                            $set('claim_number', $name['claim_number']);
+                            $set('park_type', $name['park_type']);
+                            $set('content', $name['content']);
+                            $set('car_park', $name['car_park']);
+                            $set('addressee', $name['addressee']);
+                            $set('spare_tire', $name['spare_tire']);
+                            $set('jack_handle', $name['jack_handle']);
+                            $set('boxset', $name['boxset']);
+                            $set('batteries', $name['batteries']);
+                            $set('cigarette_lighter', $name['cigarette_lighter']);
+                            $set('radio', $name['radio']);
+                            $set('floor_mat', $name['floor_mat']);
+                            $set('spare_removal', $name['spare_removal']);
+                            $set('fire_extinguisher', $name['fire_extinguisher']);
+                            $set('spining_wheel', $name['spining_wheel']);
+                            $set('other', $name['other']);
+                            $set('real_claim_document', $name['real_claim_document']);
+                            $set('copy_claim_document', $name['copy_claim_document']);
+                            $set('copy_driver_license_document', $name['copy_driver_license_document']);
+                            $set('copy_vehicle_regis_document', $name['copy_vehicle_regis_document']);
+                            $set('copy_policy_document', $name['copy_policy_document']);
+                            $set('power_of_attorney_document', $name['power_of_attorney_document']);
+                            $set('copy_of_director_id_card_document', $name['copy_of_director_id_card_document']);
+                            $set('copy_of_person_document', $name['copy_of_person_document']);
+                            $set('account_book_document', $name['account_book_document']);
+                            $set('atm_card_document', $name['atm_card_document']);
+                        }
+                    }
+                }),
         ];
     }elseif($SBO == 'SBO') {
         return [
@@ -99,7 +151,59 @@ class CarReceiveResource extends Resource
                     $array_sbo[1],
                     $array_sbo[2],
 
-                ]),
+                ])
+                ->reactive()
+                ->afterStateUpdated(function ($set, $state) {
+                    if ($state) {
+                        $name = CarReceive::find($state)->toArray();
+                        if ($name) {
+                            $set('choose_garage', $name['choose_garage']);
+                            $set('receive_date', $name['receive_date']);
+                            $set('timex', $name['timex']);
+                            $set('customer', $name['customer']);
+                            $set('repairman', $name['repairman']);
+                            $set('tel_number', $name['tel_number']);
+                            $set('pickup_date', $name['pickup_date']);
+                            $set('vehicle_registration', $name['vehicle_registration']);
+                            $set('brand', $name['brand']);
+                            $set('model', $name['model']);
+                            $set('car_type', $name['car_type']);
+                            $set('car_year', $name['car_year']);
+                            $set('mile_number', $name['mile_number']);
+                            $set('repair_code', $name['repair_code']);
+                            $set('options', $name['options']);
+                            $set('insu_company_name', $name['insu_company_name']);
+                            $set('policy_number', $name['policy_number']);
+                            $set('noti_number', $name['noti_number']);
+                            $set('claim_number', $name['claim_number']);
+                            $set('park_type', $name['park_type']);
+                            $set('content', $name['content']);
+                            $set('car_park', $name['car_park']);
+                            $set('addressee', $name['addressee']);
+                            $set('spare_tire', $name['spare_tire']);
+                            $set('jack_handle', $name['jack_handle']);
+                            $set('boxset', $name['boxset']);
+                            $set('batteries', $name['batteries']);
+                            $set('cigarette_lighter', $name['cigarette_lighter']);
+                            $set('radio', $name['radio']);
+                            $set('floor_mat', $name['floor_mat']);
+                            $set('spare_removal', $name['spare_removal']);
+                            $set('fire_extinguisher', $name['fire_extinguisher']);
+                            $set('spining_wheel', $name['spining_wheel']);
+                            $set('other', $name['other']);
+                            $set('real_claim_document', $name['real_claim_document']);
+                            $set('copy_claim_document', $name['copy_claim_document']);
+                            $set('copy_driver_license_document', $name['copy_driver_license_document']);
+                            $set('copy_vehicle_regis_document', $name['copy_vehicle_regis_document']);
+                            $set('copy_policy_document', $name['copy_policy_document']);
+                            $set('power_of_attorney_document', $name['power_of_attorney_document']);
+                            $set('copy_of_director_id_card_document', $name['copy_of_director_id_card_document']);
+                            $set('copy_of_person_document', $name['copy_of_person_document']);
+                            $set('account_book_document', $name['account_book_document']);
+                            $set('atm_card_document', $name['atm_card_document']);
+                        }
+                    }
+                }),
         ];
     }
     }
@@ -176,7 +280,6 @@ class CarReceiveResource extends Resource
             TextInput::make('timex')->label(__('trans.timex.text'))->default(now()->format('H:i:s')),
             TextInput::make('customer')->label(__('trans.customer.text'))->required(),
             TextInput::make('car_year')->label(__('trans.car_year.text'))->required(),
-            TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
             TextInput::make('tel_number')->label(__('trans.tel_number.text'))->required(),
             DatePicker::make('pickup_date')->label(__('trans.pickup_date.text')),
             TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
@@ -318,6 +421,7 @@ class CarReceiveResource extends Resource
                 TextColumn::make('brand')->label(__('trans.brand.text')),
                 TextColumn::make('model')->label(__('trans.model.text')),
                 TextColumn::make('car_type')->label(__('trans.car_type.text')),
+                TextColumn::make('car_year')->label(__('trans.car_year.text')),
                 TextColumn::make('mile_number')->label(__('trans.mile_number.text')),
                 TextColumn::make('repair_code')->label(__('trans.repair_code.text')),
                 TextColumn::make('options')->label(__('trans.options.text')),

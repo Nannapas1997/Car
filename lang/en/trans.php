@@ -77,4 +77,12 @@ return [
     'spare_code.text' => 'รหัสอะไหล่',
     'spare_cost.text' => 'ราคาค่าอะไหล่',
     'add_to_cost.text' => 'เพิ่มรายการค่าใช้จ่าย',
+    'store.text' => 'ร้านค้า',
+    'approval_number.text' => 'เลขที่ใบขออนุมัติ',
+    'amount.text' => 'จำนวนเงิน',
+    'vat.text' => 'VAT 7%',
+    'aggregate.text' => 'ยอดรวม',
+    'condition_value.text' => 'ค่าเงื่อนไข(นำส่ง)',
+    'courier_document.text' => 'ผู้นำส่งเอกสาร',
+    'recipient_document.text' => 'ผู้รับเอกสาร',
 ];
