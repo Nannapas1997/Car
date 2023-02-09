@@ -15,6 +15,6 @@ use App\Http\Controllers\WelcomeController;
 |
 */
 
-Route::get('/',[WelcomeController::class, 'index']);
+Route::get('/',[WelcomeController::class, 'index'])->middleware(\App\Http\Middleware\Authenticate::class);
 
-Route::get('users', Users::class);
+Route::get('users', Users::class)->middleware(\App\Http\Middleware\Authenticate::class);
