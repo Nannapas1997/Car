@@ -59,7 +59,15 @@ class SaveRepairCostResource extends Resource
                 TextInput::make('brand')->label(__('trans.brand.text'))->required(),
                 TextInput::make('model')->label(__('trans.model.text'))->required(),
                 TextInput::make('car_year')->label(__('trans.car_year.text'))->required(),
-                TextInput::make('store')->label(__('trans.store.text'))->required(),
+                Select::make('store')->label(__('trans.store.text'))
+                    ->required()
+                    ->preload()
+                    ->options([
+                        'ร้านA'=>'ร้านA',
+                        'ร้านB'=>'ร้านB',
+                        'ร้านC'=>'ร้านC',
+                        'ร้านD'=>'ร้านD',
+                    ]),
                 Card::make()
                     ->schema([
                         Placeholder::make('รายการค่าใช้จ่าย'),
@@ -112,8 +120,8 @@ class SaveRepairCostResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('job_number')->label(__('trans.job_number.text')),
-                TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text')),
+                TextColumn::make('job_number')->label(__('trans.job_number.text'))->searchable(),
+                TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->searchable(),
                 TextColumn::make('customer')->label(__('trans.customer.text')),
                 TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text')),
                 TextColumn::make('brand')->label(__('trans.brand.text')),

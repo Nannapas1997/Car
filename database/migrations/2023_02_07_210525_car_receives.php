@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('choose_garage')->required();
             $table->string('job_number');
-            $table->string('job_number_new');
             $table->date('receive_date')->nullable();
             $table->time('timex')->required();
             $table->string('customer')->required();
@@ -86,6 +85,8 @@ return new class extends Migration
             $table->string('car_year')->nullable();
             $table->string('deleted_at')->nullable();
             $table->string('created_at')->nullable();
+            $table->string('car_accident')->nullable();
+            $table->string('car_accident_choose')->nullable();
         });
     }
 

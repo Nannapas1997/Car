@@ -85,4 +85,8 @@ return [
     'condition_value.text' => 'ค่าเงื่อนไข(นำส่ง)',
     'courier_document.text' => 'ผู้นำส่งเอกสาร',
     'recipient_document.text' => 'ผู้รับเอกสาร',
+    'invoice_number.text' => 'เลขที่ใบแจ้งหนี้',
+    'good_code.text' => 'รหัสสินค้า',
+    'items.text' => 'รายการ',
+    'bill_number.text' => 'เลขที่ใบวางบิล'
 ];

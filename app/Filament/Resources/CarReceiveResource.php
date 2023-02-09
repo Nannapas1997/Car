@@ -284,14 +284,78 @@ class CarReceiveResource extends Resource
             DatePicker::make('pickup_date')->label(__('trans.pickup_date.text')),
             TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
             Select::make('brand')->label(__('trans.brand.text'))->required()
-            ->options(['Toyota' => 'Toyota','Isuzu' => 'Isuzu','Honda' => 'Honda', 'Mitsubishi'=>'Mitsubishi','Nissan'=>'Nissan','Mazda'=>'Mazda','Ford'=>'Ford','MG'=>'MG','Suzuki'=>'Suzuki','Kia'=>'Kia','Hyundai'=>'Hyundai','Volvo'=>'Volvo','Subaru'=>'Subaru'])->columns(14),
+            ->options([
+                'Toyota' => 'Toyota',
+                'Honda' => 'Honda',
+                'Nissan' => 'Nissan',
+                'Mitsubishi'=>'Mitsubishi',
+                'Isuzu'=>'Isuzu',
+                'Mazda'=>'Mazda',
+                'Ford'=>'Ford',
+                'Suzuki'=>'Suzuki',
+                'Chevrolet'=>'Chevrolet',
+                'Alfa Romeo'=>'Alfo Romeo',
+                'Aston Martin'=>'Aston Martin',
+                'Audi'=>'Audi',
+                'Bentley'=>'Bentley',
+                'BMW'=>'BMW',
+                'Chery'=>'Chery',
+                'Chrysler'=>'Chrysler',
+                'Citroen'=>'Citroen',
+                'Daewoo'=>'Daewoo',
+                'Daihatsu'=>'Daihatsu',
+                'DFM'=>'DFM',
+                'DFSK'=>'DFSK',
+                'Ferrari'=>'Ferrari',
+                'Fiat'=>'Fiat',
+                'FOMM'=>'FOMM',
+                'Foton'=>'Foton',
+                'Great Wall Motor'=>'Great Wall Motor',
+                'Haval'=>'Haval',
+                'Holden'=>'Holden',
+                'Hummer'=>'Hummer',
+                'Hyundai'=>'Hyundai',
+                'Jaguar'=>'Jaguar',
+                'Jeep'=>'Jeep',
+                'Kia'=>'Kia',
+                'Lamborghini'=>'Lamborghini',
+                'Land Rover'=>'Land Rover',
+                'Lexus'=>'Lexus',
+                'Lotus'=>'Lotus',
+                'Maserati'=>'Maserati',
+                'Maxus'=>'Maxus',
+                'McLaren'=>'McLaren',
+                'Mercedes-Benz'=>'Mercedes-Benz',
+                'MG'=>'MG',
+                'Mini'=>'Mini',
+                'Mitsuoka'=>'Mitsuoka',
+                'Naza'=>'Naza',
+                'Opel'=>'Opel',
+                'ORA'=>'ORA',
+                'Peugeot'=>'Peugeot',
+                'Polarsun'=>'Polarsun',
+                'Porsche'=>'Porsche',
+                'Proton'=>'Proton',
+                'Rolls-Royce'=>'Rolls-Royce',
+                'Rover'=>'Rover',
+                'Saab'=>'Saab',
+                'Seat'=>'Seat',
+                'Skoda'=>'Skoda',
+                'Spyker'=>'Spyker',
+                'Ssangyong'=>'Ssangyong',
+                'Subaru'=>'Subaru',
+                'Tata'=>'Tata',
+                'Thairung'=>'Thairung',
+                'Volkswagen'=>'Volkswagen',
+                'Volvo'=>'Volvo',
+                ])->columns(64),
             TextInput::make('model')->label(__('trans.model.text'))->required(),
             TextInput::make('car_type')->label(__('trans.car_type.text'))->required(),
             TextInput::make('mile_number')->label(__('trans.mile_number.text'))->required(),
             Select::make('repair_code')->label(__('trans.repair_code.text'))->required()->options(['A' => 'A','B' => 'B', 'C'=>'C', 'D'=>'D'])->columns(5),
             Fieldset::make('ประเภทของรถที่เกิดอุบัติเหตุ')
             ->schema([
-                Radio::make('ระบุตัวเลือกที่ต้องการ')
+                Radio::make('car_accident')
                 ->required()
                 ->options([
                     'รถประกัน' => 'รถประกัน',
@@ -300,7 +364,7 @@ class CarReceiveResource extends Resource
             ]),
             Fieldset::make('เลือกฝ่ายหรือคดีที่เกิดอุบัติเหตุ')
             ->schema([
-                Radio::make('ระบุตัวเลือกที่ต้องการ')
+                Radio::make('car_accident_choose')
                 ->required()
                 ->options([
                     'ฝ่ายถูก'=>'ฝ่ายถูก',
@@ -317,7 +381,36 @@ class CarReceiveResource extends Resource
                     'เงินสด'=>'เงินสด'
                 ])
             ]),
-            TextInput::make('insu_company_name')->label(__('trans.insu_company_name.text'))->required(),
+            Select::make('insu_company_name')
+                ->label(__('trans.insu_company_name.text'))
+                ->preload()
+                ->required()
+                ->options([
+                    'กรุงเทพประกันภัย' => 'กรุงเทพประกันภัย',
+                    'กรุงไทยพานิชประกันภัย' => 'กรุงไทยพานิชประกันภัย',
+                    'คุ้มภัยโตเกียวมารีน' => 'คุ้มภัยโตเกียวมารีน',
+                    'เคเอสเค ประกันภัย' => 'เคเอสเค ประกันภัย',
+                    'เจมาร์ท ประกันภัย' => 'เจมาร์ท ประกันภัย',
+                    'ชับบ์สามัคคีประกันภัย' => 'ชับบ์สามัคคีประกันภัย',
+                    'ทิพยประกันภัย' => 'ทิพยประกันภัย',
+                    'เทเวศประกันภัย' => 'เทเวศประกันภัย',
+                    'ไทยไพบูลย์' => 'ไทยไพบูลย์',
+                    'ไทยวิวัฒน์' => 'ไทยวิวัฒน์',
+                    'ไทยศรี' => 'ไทยศรี',
+                    'ไทยเศรษฐฯ' => 'ไทยเศรษฐฯ',
+                    'นวกิจประกันภัย' => 'นวกิจประกันภัย',
+                    'บริษัทกลางฯ' => 'บริษัทกลางฯ',
+                    'แปซิฟิค ครอส' => 'แปซิฟิค ครอส',
+                    'เมืองไทยประกันภัย' => 'เมืองไทยประกันภัย',
+                    'วิริยะประกันภัย' => 'วิริยะประกันภัย',
+                    'สินมั่นคง' => 'สินมั่นคง',
+                    'อลิอันซ์ อยุธยา' => 'อลิอันซ์ อยุธยา',
+                    'อินทรประกันภัย' => 'อินทรประกันภัย',
+                    'เอ็ทน่า' => 'เอ็ทน่า',
+                    'เอ็มเอสไอจี' => 'เอ็มเอสไอจี',
+                    'แอกซ่าประกันภัย' => 'แอกซ่าประกันภัย',
+                    'แอลเอ็มจี ประกันภัย' => 'แอลเอ็มจี ประกันภัย',
+                ]),
             TextInput::make('policy_number')->label(__('trans.policy_number.text'))->required(),
             TextInput::make('noti_number')->label(__('trans.noti_number.text'))->required(),
             TextInput::make('claim_number')->label(__('trans.claim_number.text'))->required(),
@@ -485,7 +578,7 @@ class CarReceiveResource extends Resource
 
             ])
             ->actions([
-
+                Tables\Actions\EditAction::make(),
 
             ])
             ->bulkActions([
