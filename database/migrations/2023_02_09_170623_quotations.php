@@ -42,6 +42,7 @@ return new class extends Migration
             $table->string('spare_value')->nullable();
             $table->string('including_spare_parts')->nullable();
             $table->string('total_wage')->nullable();
+            $table->string('order')->nullable();
         });
     }
 

@@ -9,13 +9,20 @@ use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Illuminate\Support\Carbon;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Repeater;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\Placeholder;
 use App\Filament\Resources\QuotationResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\QuotationResource\RelationManagers;
+use Filament\Tables\Columns\BadgeColumn;
 
 class QuotationResource extends Resource
 {
@@ -106,7 +113,177 @@ class QuotationResource extends Resource
                     'Volkswagen'=>'Volkswagen',
                     'Volvo'=>'Volvo',
                 ])->columns(64),
-                
+                TextInput::make('model')
+                ->required()
+                ->label(__('trans.model.text')),
+                Select::make('car_year')
+                ->label(__('trans.car_year.text'))
+                ->required()
+                ->preload()
+                ->options([
+
+                ]),
+                TextInput::make('vehicle_registration')
+                ->required()
+                ->label(__('trans.vehicle_registration.text')),
+                TextInput::make('number_items')
+                ->required()
+                ->label(__('trans.number_items.text')),
+                TextInput::make('price')
+                ->required()
+                ->label(__('trans.price.text')),
+                TextInput::make('repair_code')
+                ->required()
+                ->label(__('trans.repair_code.text')),
+                TextInput::make('car_type')
+                ->required()
+                ->label(__('trans.car_type.text')),
+                TextInput::make('sum_insured')
+                ->required()
+                ->label(__('trans.sum_insured.text')),
+                DatePicker::make('creation_date')
+                ->required()
+                ->label(__('trans.creation_date.text')),
+                TextInput::make('claim_number')
+                ->required()
+                ->label(__('trans.claim_number.text')),
+                TextInput::make('accident_number')
+                ->required()
+                ->label(__('trans.accident_number.text')),
+                Select::make('insu_company_name')
+                ->label(__('trans.insu_company_name.text'))
+                ->required()
+                ->preload()
+                ->options([
+                    'กรุงเทพประกันภัย' => 'กรุงเทพประกันภัย',
+                    'กรุงไทยพานิชประกันภัย' => 'กรุงไทยพานิชประกันภัย',
+                    'คุ้มภัยโตเกียวมารีน' => 'คุ้มภัยโตเกียวมารีน',
+                    'เคเอสเค ประกันภัย' => 'เคเอสเค ประกันภัย',
+                    'เจมาร์ท ประกันภัย' => 'เจมาร์ท ประกันภัย',
+                    'ชับบ์สามัคคีประกันภัย' => 'ชับบ์สามัคคีประกันภัย',
+                    'ทิพยประกันภัย' => 'ทิพยประกันภัย',
+                    'เทเวศประกันภัย' => 'เทเวศประกันภัย',
+                    'ไทยไพบูลย์' => 'ไทยไพบูลย์',
+                    'ไทยวิวัฒน์' => 'ไทยวิวัฒน์',
+                    'ไทยศรี' => 'ไทยศรี',
+                    'ไทยเศรษฐฯ' => 'ไทยเศรษฐฯ',
+                    'นวกิจประกันภัย' => 'นวกิจประกันภัย',
+                    'บริษัทกลางฯ' => 'บริษัทกลางฯ',
+                    'แปซิฟิค ครอส' => 'แปซิฟิค ครอส',
+                    'เมืองไทยประกันภัย' => 'เมืองไทยประกันภัย',
+                    'วิริยะประกันภัย' => 'วิริยะประกันภัย',
+                    'สินมั่นคง' => 'สินมั่นคง',
+                    'อลิอันซ์ อยุธยา' => 'อลิอันซ์ อยุธยา',
+                    'อินทรประกันภัย' => 'อินทรประกันภัย',
+                    'เอ็ทน่า' => 'เอ็ทน่า',
+                    'เอ็มเอสไอจี' => 'เอ็มเอสไอจี',
+                    'แอกซ่าประกันภัย' => 'แอกซ่าประกันภัย',
+                    'แอลเอ็มจี ประกันภัย' => 'แอลเอ็มจี ประกันภัย',
+                ]),
+                DatePicker::make('accident_date')
+                ->required()
+                ->label(__('trans.accident_date.text')),
+                DatePicker::make('repair_date')
+                ->required()
+                ->label(__('trans.repair_date.text')),
+                DatePicker::make('quotation_date')
+                ->required()
+                ->label(__('trans.quotation_date.text')),
+                Card::make()
+                    ->schema([
+                        Placeholder::make('รายการอะไหล่ที่เสียหาย'),
+                        Repeater::make('quotationitems')
+                        ->relationship()
+                        ->schema(
+                            [
+                                TextInput::make('order')->label(__('trans.order.text'))
+                                ->columnSpan([
+                                    'md' => 1,
+                                ])
+                                ->required(),
+                                Select::make('code_c0_c7')->label(__('trans.code_c0_c7.text'))
+                                ->options([
+                                    'C0' => 'C0',
+                                    'C1' => 'C1',
+                                    'C2' => 'C2',
+                                    'C3' => 'C3',
+                                    'C4' => 'C4',
+                                    'C5' => 'C5',
+                                    'C6' => 'C6',
+                                    'C7' => 'C7',
+                                ])
+                                ->required()
+                                ->reactive()
+                                ->columnSpan([
+                                    'md' => 3,
+                                ]),
+
+                                TextInput::make('list_damaged_parts')->label(__('trans.list_damaged_parts.text'))
+                                ->columnSpan([
+                                    'md' => 3,
+                                ])
+                                ->required(),
+                                TextInput::make('quantity')->label(__('trans.quantity.text'))
+                                ->numeric()
+                                ->columnSpan([
+                                    'md' => 2,
+                                ])->required(),
+                                TextInput::make('spare_value')->label(__('trans.spare_value.text'))
+                                ->columnSpan([
+                                    'md' => 3,
+                                ])->required(),
+                            ])
+                        ->defaultItems(count: 1)
+                        ->columns([
+                            'md' => 12,
+                        ]) ->createItemButtonLabel('เพิ่มรายการอะไหล่ที่เสียหาย'),
+
+                    ])->columnSpan('full'),
+                    TextInput::make('sks')
+                    ->required()
+                    ->label(__('trans.sks.text')),
+                    TextInput::make('wchp')
+                    ->required()
+                    ->label(__('trans.wchp.text')),
+                    Select::make('store')->label(__('trans.store.text'))
+                    ->required()
+                    ->preload()
+                    ->options([
+                        'ร้านA'=>'ร้านA',
+                        'ร้านB'=>'ร้านB',
+                        'ร้านC'=>'ร้านC',
+                        'ร้านD'=>'ร้านD',
+                    ]),
+                    TextInput::make('wage')
+                    ->required()
+                    ->label(__('trans.wage.text')),
+                    TextInput::make('total')
+                    ->required()
+                    ->label(__('trans.total.text')),
+                    TextInput::make('including_spare_parts')
+                    ->required()
+                    ->label(__('trans.including_spare_parts.text')),
+                    TextInput::make('total_wage')
+                    ->required()
+                    ->label(__('trans.total_wage.text')),
+                    TextInput::make('vat')
+                    ->required()
+                    ->label(__('trans.vat.text')),
+                    TextInput::make('overall')
+                    ->required()
+                    ->label(__('trans.overall.text')),
+                    Fieldset::make('สถานะการจัดการใบเสนอราคา')
+                    ->schema([
+                        Radio::make('status')
+                        ->label(__('trans.status.text'))
+                        ->required()
+                        ->options([
+                            'รออนุมัติ' => 'รออนุมัติ',
+                            'กำลังดำเนินการ' => 'กำลังดำเนินการ',
+                            'เสร็จสิ้น' => 'เสร็จสิ้น',
+                        ])
+                    ]),
+
             ]);
     }
 
@@ -115,6 +292,39 @@ class QuotationResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('job_number')->label(__('trans.job_number.text'))->searchable(),
+                TextColumn::make('customer')->label(__('trans.customer.text')),
+                TextColumn::make('brand')->label(__('trans.brand.text')),
+                TextColumn::make('model')->label(__('trans.model.text')),
+                TextColumn::make('car_year')->label(__('trans.car_year.text')),
+                TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->searchable(),
+                TextColumn::make('number_items')->label(__('trans.number_items.text')),
+                TextColumn::make('price')->label(__('trans.price.text')),
+                TextColumn::make('repair_code')->label(__('trans.repair_code.text')),
+                TextColumn::make('car_type')->label(__('trans.car_type.text')),
+                TextColumn::make('sum_insured')->label(__('trans.sum_insured.text')),
+                TextColumn::make('creation_date')->label(__('trans.creation_date.text')),
+                TextColumn::make('claim_number')->label(__('trans.claim_number.text')),
+                TextColumn::make('accident_number')->label(__('trans.accident_number.text')),
+                TextColumn::make('insu_company_name')->label(__('trans.insu_company_name.text')),
+                TextColumn::make('accident_date')->label(__('trans.accident_date.text')),
+                TextColumn::make('repair_date')->label(__('trans.repair_date.text')),
+                TextColumn::make('sks')->label(__('trans.sks.text')),
+                TextColumn::make('wchp')->label(__('trans.wchp.text')),
+                TextColumn::make('list_damaged_parts')->label(__('trans.quotation_date.text')),
+                TextColumn::make('store')->label(__('trans.store.text')),
+                TextColumn::make('wage')->label(__('trans.wage.text')),
+                TextColumn::make('total')->label(__('trans.total.text')),
+                TextColumn::make('including_spare_parts')->label(__('trans.including_spare_parts.text')),
+                TextColumn::make('total_wage')->label(__('trans.total_wage.text')),
+                TextColumn::make('vat')->label(__('trans.vat.text')),
+                TextColumn::make('overall')->label(__('trans.overall.text')),
+                BadgeColumn::make('status')
+                ->label(__('trans.status.text'))
+                ->colors([
+                    'danger' => 'รออนุมัติ',
+                    'warning' => 'กำลังดำเนินการ',
+                    'success' => 'เสร็จสิ้น',
+                ]),
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')

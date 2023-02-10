@@ -46,7 +46,7 @@ class Quotation extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function quotationitem():HasMany
+    public function quotationitems():HasMany
     {
         return $this->hasMany(QuotationItem::class);
     }

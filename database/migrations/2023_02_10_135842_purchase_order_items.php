@@ -13,12 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('quotations_items', function (Blueprint $table) {
-            $table->string('number')->nullable();
-            $table->string('spare_code')->nullable();
-            $table->string('list_damaged_parts')->nullable();
+        Schema::create('purchase_order_items', function (Blueprint $table) {
+            $table->id();
+            $table->string('job_number')->nullable();
+            $table->string('parts_list')->nullable()->required();
+            $table->string('spare_code')->nullable()->required();
+            $table->string('price')->nullable();
             $table->string('quantity')->nullable();
-            $table->foreignId('quotations_id');
+            $table->string('aggregate_price')->nullable();
+
         });
     }
 
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quotations_items');
+        Schema::dropIfExists('purchase_order_items');
     }
 };

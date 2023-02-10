@@ -107,5 +107,10 @@ return [
     'total_wage.text' => 'รวมค่าแรง',
     'pending_approval.text' => 'รออนุม้ติ',
     'processing.text' => 'กำลังดำเนินการ',
-    'finish.text' => 'เสร็จ'
+    'finish.text' => 'เสร็จ',
+    'order.text' => 'ลำดับ',
+    'overall.text' => 'รวมทั้งสิ้น(บาท)',
+    'parts_list.text' =>'รายการอะไหล่',
+    'aggregate_price.text' => 'รวมราคา',
+    'parts_list_total.text' => 'รายการอะไหล่ทั้งหมด(รายการ)'
 ];
