@@ -7,7 +7,7 @@ use Filament\Forms;
 use App\Models\User;
 
 use Filament\Tables;
-use App\Models\carReceive;
+use App\Models\CarReceive;
 use Illuminate\Support\Str;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
