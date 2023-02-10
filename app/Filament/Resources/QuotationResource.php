@@ -76,6 +76,7 @@ class QuotationResource extends Resource
                     'Foton'=>'Foton',
                     'Great Wall Motor'=>'Great Wall Motor',
                     'Haval'=>'Haval',
+                    'HINO' =>'HINO',
                     'Holden'=>'Holden',
                     'Hummer'=>'Hummer',
                     'Hyundai'=>'Hyundai',
@@ -112,7 +113,7 @@ class QuotationResource extends Resource
                     'Thairung'=>'Thairung',
                     'Volkswagen'=>'Volkswagen',
                     'Volvo'=>'Volvo',
-                ])->columns(64),
+                ])->columns(65),
                 TextInput::make('model')
                 ->required()
                 ->label(__('trans.model.text')),
@@ -132,12 +133,41 @@ class QuotationResource extends Resource
                 TextInput::make('price')
                 ->required()
                 ->label(__('trans.price.text')),
-                TextInput::make('repair_code')
+                Select::make('repair_code')->label(__('trans.repair_code.text'))
                 ->required()
-                ->label(__('trans.repair_code.text')),
-                TextInput::make('car_type')
-                ->required()
-                ->label(__('trans.car_type.text')),
+                ->options([
+                    'A' => 'A',
+                    'B' => 'B',
+                    'C'=>'C',
+                    'D'=>'D'
+                ])->columns(5),
+                Select::make('car_type')->label(__('trans.car_type.text'))->required()
+                ->options([
+                'รถหัวลาก 10 ล้อ' => 'รถหัวลาก 10 ล้อ',
+                'รถหัวลาก 6 ล้อ' => 'รถหัวลาก 6 ล้อ',
+                'รถตู้แห้ง 10 ล้อ' => 'รถตู้แห้ง 10 ล้อ',
+                'รถตู้แห้ง 6 ล้อ'=>'รถตู้แห้ง 6 ล้อ',
+                'รถตู้แห้ง 4 ล้อใหญ่'=>'รถตู้แห้ง 4 ล้อใหญ่',
+                'รถกระบะตู้แห้ง'=>'รถกระบะตู้แห้ง',
+                'รถตู้เย็น 10 ล้อ'=>'รถตู้เย็น 10 ล้อ',
+                'รถตู้เย็น 6 ล้อ'=>'รถตู้เย็น 6 ล้อ',
+                'รถตู้เย็น 4 ล้อใหญ่'=>'รถตู้เย็น 4 ล้อใหญ่',
+                'รถบรรทุกกระบะคอกสูง 10 ล้อ'=>'รถบรรทุกกระบะคอกสูง 10 ล้อ',
+                'รถบรรทุกกระบะคอกสูง 6 ล้อ'=>'รถบรรทุกกระบะคอกสูง 6 ล้อ',
+                'รถบรรทุกกระบะคอกเตี้ย 10 ล้อ'=>'รถบรรทุกกระบะคอกเตี้ย 10 ล้อ',
+                'รถบรรทุกกระบะคอกเตี้ย 6 ล้อ'=>'รถบรรทุกกระบะคอกเตี้ย 6 ล้อ',
+                'รถหางพ่วง'=>'รถหางพ่วง',
+                'รถหางพ่วง ตู้แห้ง'=>'รถหางพ่วง ตู้แห้ง',
+                'รถหางพ่วง พื้นเรียบ'=>'รถหางพ่วง พื้นเรียบ',
+                'รถหางเทรนเลอร์ '=>'รถหางเทรนเลอร์',
+                'รถหางเทรนเลอร์ ผ้าใบ'=>'รถหางเทรนเลอร์ ผ้าใบ',
+                'รถกระบะ 4 ประตู'=>'รถกระบะ 4 ประตู',
+                'รถกระบะแคป'=>'รถกระบะแคป',
+                'รถกระบะตอนเดียว'=>'รถกระบะตอนเดียว',
+                'รถเก๋ง 4 ประตู'=>'รถเก๋ง 4 ประตู',
+                'รถตู้'=>'รถตู้',
+                'รถสามล้อ'=>'รถสามล้อ',
+                ])->columns(25),
                 TextInput::make('sum_insured')
                 ->required()
                 ->label(__('trans.sum_insured.text')),
