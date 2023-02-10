@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('quotation_items', function (Blueprint $table) {
-            $table->string('number')->nullable();
-            $table->string('spare_code')->nullable();
-            $table->string('list_damaged_parts')->nullable();
-            $table->string('quantity')->nullable();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('garage')->after('email')->nullable();
         });
     }
 
@@ -28,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quotation_items');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('garage');
+        });
     }
 };

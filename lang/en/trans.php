@@ -3,7 +3,8 @@
 return [
     'choose_garage.text' => 'เลือกอู่',
     'search_regis.text' => 'ค้นหาทะเบียนรถ',
-    'job_number.text' => 'เลขที่JOB',
+    'current_garage.text' => 'อู่ ',
+    'job_number.text' => 'เลขที่ JOB',
     'new_customer.text' => 'เลขที่งาน(กรณีลูกค้ารายใหม่)',
     'receive_date.text' => 'วันที่รับเรื่อง',
     'timex.text' => 'เวลา',
