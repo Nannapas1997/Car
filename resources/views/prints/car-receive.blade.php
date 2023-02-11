@@ -25,7 +25,7 @@
                                         เอกสารรับรถ
                                     </h1>
                                     <p>
-                                        เลขที่ {{ data_get($data, 'job_number', '') }}
+                                        เลขที่ {{ data_get($data, 'job_number', 'NULL') }}
                                     </p>
                                 </div>
 
@@ -200,7 +200,7 @@
             </article>
         </div>
         <div class="flex justify-center p-4">
-            <button onclick="window.print()" class="bg-gray-400 py-2 px-4 text-gray-50 rounded">Print</button>
+            <button onclick="window.print()" class="bg-green-400 py-2 px-4 text-gray-50 rounded">Print</button>
         </div>
     </section>
 </body>

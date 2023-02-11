@@ -88,6 +88,7 @@ class CarReceive extends Model implements HasMedia
         'etc',
         'addressee',
         'product_id',
+        'options-car',
     ];
     // turn off both
     public $timestamps = false;

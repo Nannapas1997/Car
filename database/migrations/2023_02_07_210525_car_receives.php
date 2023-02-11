@@ -87,6 +87,7 @@ return new class extends Migration
             $table->string('created_at')->nullable();
             $table->string('car_accident')->nullable();
             $table->string('car_accident_choose')->nullable();
+            $table->string('options-car')->nullable();
         });
     }
 

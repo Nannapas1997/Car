@@ -346,6 +346,7 @@ class CarReceiveResource extends Resource
             Fieldset::make('ประเภทของรถที่เกิดอุบัติเหตุ')
                 ->schema([
                     Radio::make('car_accident')
+                    ->label('ระบุตัวเลือกที่ต้องการ')
                     ->required()
                     ->options([
                         'รถประกัน' => 'รถประกัน',
@@ -355,6 +356,7 @@ class CarReceiveResource extends Resource
             Fieldset::make('เลือกฝ่ายหรือคดีที่เกิดอุบัติเหตุ')
                 ->schema([
                     Radio::make('car_accident_choose')
+                    ->label('ระบุตัวเลือกที่ต้องการ')
                     ->required()
                     ->options([
                         'ฝ่ายถูก'=>'ฝ่ายถูก',
@@ -406,7 +408,7 @@ class CarReceiveResource extends Resource
             TextInput::make('claim_number')->label(__('trans.claim_number.text'))->required(),
             Fieldset::make('ประเภทการจอด')
                 ->schema([
-                    Radio::make('options')->label(__('trans.options.text'))
+                    Radio::make('options-car')->label(__('trans.options.text'))
                     ->required()
                     ->options([
                         'จอดซ่อม' => 'จอดซ่อม',
