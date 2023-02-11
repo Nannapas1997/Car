@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('price')->nullable();
             $table->string('quantity')->nullable();
             $table->string('aggregate_price')->nullable();
+            $table->string('overall')->nullable();
+            $table->string('overall-price')->nullable();
             $table->string('note')->nullable();
             $table->string('courier_document')->nullable();
             $table->string('recipient_document')->nullable();

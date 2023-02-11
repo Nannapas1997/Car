@@ -287,9 +287,9 @@ class QuotationResource extends Resource
                     TextInput::make('wage')
                     ->required()
                     ->label(__('trans.wage.text')),
-                    TextInput::make('total')
+                    TextInput::make('overall_price')
                     ->required()
-                    ->label(__('trans.total.text')),
+                    ->label(__('trans.overall_price.text')),
                     TextInput::make('including_spare_parts')
                     ->required()
                     ->label(__('trans.including_spare_parts.text')),

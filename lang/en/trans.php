@@ -110,7 +110,14 @@ return [
     'finish.text' => 'เสร็จ',
     'order.text' => 'ลำดับ',
     'overall.text' => 'รวมทั้งสิ้น(บาท)',
+    'overall_price.text' => 'รวมทั้งสิ้น(รายการ)',
     'parts_list.text' =>'รายการอะไหล่',
     'aggregate_price.text' => 'รวมราคา',
-    'parts_list_total.text' => 'รายการอะไหล่ทั้งหมด(รายการ)'
+    'parts_list_total.text' => 'รายการอะไหล่ทั้งหมด(รายการ)',
+    'date.text' => 'วันที่',
+    'picking_list.text' => 'รายการเบิก',
+    'forerunner.text' => 'ผู้เบิก',
+    'approver.text' => 'ผู้อนุมัติ',
+    'unit.text' => 'หน่วย',
+    'pickup_time.text' => 'เวลาเบิก',
 ];
