@@ -3,11 +3,15 @@
 namespace App\Filament\Resources;
 
 use Closure;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use App\Models\User;
 
+use Filament\Forms\Components\ViewField;
 use Filament\Tables;
 use App\Models\CarReceive;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
@@ -53,29 +57,114 @@ class CarReceiveResource extends Resource
     protected static ?string $navigationGroup = 'My Work';
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
+    public static function getViewData(): array{
+        $currentGarage =  Filament::auth()->user()->garage;
+        $optionData = CarReceive::query()
+            ->where('choose_garage', $currentGarage)
+            ->orderBy('job_number', 'desc')
+            ->get('job_number')
+            ->pluck('job_number', 'jub_number')
+            ->toArray();
+        $optionValue = [];
+
+        if (!$optionData) {
+            $optionValue[$currentGarage] = $currentGarage . now()->format('-y-m-d-') . '0001';
+        } else {
+            $lastValue = Arr::first($optionData);
+            if ($lastValue) {
+                $lastValueExplode = explode('-', $lastValue);
+                $lastValue = intval($lastValueExplode[count($lastValueExplode) - 1]);
+                $lastValue += 1;
+                $lastValue = $lastValue < 10 ? "0000{$lastValue}" :
+                    ($lastValue < 100 ? "000{$lastValue}" :
+                        ($lastValue < 1000 ? "00{$lastValue}" :
+                            ($lastValue < 10000 ? "0{$lastValue}" : $lastValue)));
+
+                $lastValue = $currentGarage . now()->format('-y-m-d-') . $lastValue;
+                $optionValue[$lastValue] = $lastValue;
+            }
+
+            foreach ($optionData as $val) {
+                $optionValue[$val] = $val;
+            }
+        }
+
+        return [
+            Select::make('job_number')
+                ->label(' ' . __('trans.job_number.text') . ' ' . __('trans.current_garage.text') . $currentGarage)
+                ->preload()
+                ->required()
+                ->searchable()
+                ->options($optionValue)
+                ->reactive()
+                ->afterStateUpdated(function ($set, $state) {
+                    if ($state) {
+                        $name = CarReceive::query()->where('job_number', $state)->first();
+                        if ($name) {
+                            $name = $name->toArray();
+                            $set('choose_garage', $name['choose_garage']);
+                            $set('receive_date', $name['receive_date']);
+                            $set('timex', $name['timex']);
+                            $set('customer', $name['customer']);
+                            $set('repairman', $name['repairman']);
+                            $set('tel_number', $name['tel_number']);
+                            $set('pickup_date', $name['pickup_date']);
+                            $set('vehicle_registration', $name['vehicle_registration']);
+                            $set('brand', $name['brand']);
+                            $set('model', $name['model']);
+                            $set('car_type', $name['car_type']);
+                            $set('car_year', $name['car_year']);
+                            $set('mile_number', $name['mile_number']);
+                            $set('repair_code', $name['repair_code']);
+                            $set('options', $name['options']);
+                            $set('insu_company_name', $name['insu_company_name']);
+                            $set('policy_number', $name['policy_number']);
+                            $set('noti_number', $name['noti_number']);
+                            $set('claim_number', $name['claim_number']);
+                            $set('park_type', $name['park_type']);
+                            $set('content', $name['content']);
+                            $set('car_park', $name['car_park']);
+                            $set('addressee', $name['addressee']);
+                            $set('spare_tire', $name['spare_tire']);
+                            $set('jack_handle', $name['jack_handle']);
+                            $set('boxset', $name['boxset']);
+                            $set('batteries', $name['batteries']);
+                            $set('cigarette_lighter', $name['cigarette_lighter']);
+                            $set('radio', $name['radio']);
+                            $set('floor_mat', $name['floor_mat']);
+                            $set('spare_removal', $name['spare_removal']);
+                            $set('fire_extinguisher', $name['fire_extinguisher']);
+                            $set('spining_wheel', $name['spining_wheel']);
+                            $set('other', $name['other']);
+                            $set('real_claim_document', $name['real_claim_document']);
+                            $set('copy_claim_document', $name['copy_claim_document']);
+                            $set('copy_driver_license_document', $name['copy_driver_license_document']);
+                            $set('copy_vehicle_regis_document', $name['copy_vehicle_regis_document']);
+                            $set('copy_policy_document', $name['copy_policy_document']);
+                            $set('power_of_attorney_document', $name['power_of_attorney_document']);
+                            $set('copy_of_director_id_card_document', $name['copy_of_director_id_card_document']);
+                            $set('copy_of_person_document', $name['copy_of_person_document']);
+                            $set('account_book_document', $name['account_book_document']);
+                            $set('atm_card_document', $name['atm_card_document']);
+                        }
+                    }
+                }),
+        ];
+    }
+
     public static function form(Form $form): Form
     {
-
         return $form
             ->schema([
-                Radio::make('choose_garage')
-                ->label(__('trans.choose_garage.text'))
-                ->options(['SP' => 'SP auto','SBO' => 'SBO'])
-                ->columns(3)
-                ->required(),
-
-                Select::make('job_number')
-                ->label(__('trans.job_number.text'))
-                ->required()
-                ->preload()
-                ->options([
-
-                ]),
+                TextInput::make('choose_garage')
+                    ->default(Filament::auth()->user()->garage)
+                    ->disabled(),
+                Card::make()->schema(static::getViewData('job_number')),
 
                 Select::make('search_regis')
-                ->label(__('trans.search_regis.text'))
-                ->preload()
-                ->options(CarReceive::all()->pluck('vehicle_registration', 'id')->toArray())
+                    ->label(__('trans.search_regis.text'))
+                    ->preload()
+                    ->options(CarReceive::all()->pluck('vehicle_registration', 'id')->toArray())
                     ->searchable()
                     ->reactive()
                     ->afterStateUpdated(function ($set, $state) {
@@ -128,145 +217,160 @@ class CarReceiveResource extends Resource
                             }
                         }
                     }),
-            DatePicker::make('receive_date')->label(__('trans.receive_date.text'))->required(),
-            TextInput::make('timex')->label(__('trans.timex.text'))->default(now()->format('H:i:s')),
-            TextInput::make('customer')->label(__('trans.customer.text'))->required(),
-            TextInput::make('car_year')->label(__('trans.car_year.text'))->required(),
+                DatePicker::make('receive_date')->label(__('trans.receive_date.text'))->required(),
+                TextInput::make('timex')->label(__('trans.timex.text'))->default(now()->format('H:i:s')),
+                TextInput::make('customer')->label(__('trans.customer.text'))->required(),
+                Select::make('car_year')
+                    ->label(__('trans.car_year.text'))
+                    ->preload()
+                    ->required()
+                    ->searchable()
+                    ->options(function () {
+                        $currentYear = intval(now()->format('Y'));
+                        $options = [];
+
+                        while ($currentYear > 1999) {
+                            $options[$currentYear] = $currentYear;
+                            $currentYear--;
+                        }
+
+                        return $options;
+                    }),
             TextInput::make('tel_number')->label(__('trans.tel_number.text'))->required(),
             DatePicker::make('pickup_date')->label(__('trans.pickup_date.text')),
             TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
             Select::make('brand')->label(__('trans.brand.text'))->required()
-            ->options([
-                'Toyota' => 'Toyota',
-                'Honda' => 'Honda',
-                'Nissan' => 'Nissan',
-                'Mitsubishi'=>'Mitsubishi',
-                'Isuzu'=>'Isuzu',
-                'Mazda'=>'Mazda',
-                'Ford'=>'Ford',
-                'Suzuki'=>'Suzuki',
-                'Chevrolet'=>'Chevrolet',
-                'Alfa Romeo'=>'Alfo Romeo',
-                'Aston Martin'=>'Aston Martin',
-                'Audi'=>'Audi',
-                'Bentley'=>'Bentley',
-                'BMW'=>'BMW',
-                'Chery'=>'Chery',
-                'Chrysler'=>'Chrysler',
-                'Citroen'=>'Citroen',
-                'Daewoo'=>'Daewoo',
-                'Daihatsu'=>'Daihatsu',
-                'DFM'=>'DFM',
-                'DFSK'=>'DFSK',
-                'Ferrari'=>'Ferrari',
-                'Fiat'=>'Fiat',
-                'FOMM'=>'FOMM',
-                'Foton'=>'Foton',
-                'Great Wall Motor'=>'Great Wall Motor',
-                'Haval'=>'Haval',
-                'HINO' =>'HINO',
-                'Holden'=>'Holden',
-                'Hummer'=>'Hummer',
-                'Hyundai'=>'Hyundai',
-                'Jaguar'=>'Jaguar',
-                'Jeep'=>'Jeep',
-                'Kia'=>'Kia',
-                'Lamborghini'=>'Lamborghini',
-                'Land Rover'=>'Land Rover',
-                'Lexus'=>'Lexus',
-                'Lotus'=>'Lotus',
-                'Maserati'=>'Maserati',
-                'Maxus'=>'Maxus',
-                'McLaren'=>'McLaren',
-                'Mercedes-Benz'=>'Mercedes-Benz',
-                'MG'=>'MG',
-                'Mini'=>'Mini',
-                'Mitsuoka'=>'Mitsuoka',
-                'Naza'=>'Naza',
-                'Opel'=>'Opel',
-                'ORA'=>'ORA',
-                'Peugeot'=>'Peugeot',
-                'Polarsun'=>'Polarsun',
-                'Porsche'=>'Porsche',
-                'Proton'=>'Proton',
-                'Rolls-Royce'=>'Rolls-Royce',
-                'Rover'=>'Rover',
-                'Saab'=>'Saab',
-                'Seat'=>'Seat',
-                'Skoda'=>'Skoda',
-                'Spyker'=>'Spyker',
-                'Ssangyong'=>'Ssangyong',
-                'Subaru'=>'Subaru',
-                'Tata'=>'Tata',
-                'Thairung'=>'Thairung',
-                'Volkswagen'=>'Volkswagen',
-                'Volvo'=>'Volvo',
-                ])->columns(65),
+                ->options([
+                    'Toyota' => 'Toyota',
+                    'Honda' => 'Honda',
+                    'Nissan' => 'Nissan',
+                    'Mitsubishi'=>'Mitsubishi',
+                    'Isuzu'=>'Isuzu',
+                    'Mazda'=>'Mazda',
+                    'Ford'=>'Ford',
+                    'Suzuki'=>'Suzuki',
+                    'Chevrolet'=>'Chevrolet',
+                    'Alfa Romeo'=>'Alfo Romeo',
+                    'Aston Martin'=>'Aston Martin',
+                    'Audi'=>'Audi',
+                    'Bentley'=>'Bentley',
+                    'BMW'=>'BMW',
+                    'Chery'=>'Chery',
+                    'Chrysler'=>'Chrysler',
+                    'Citroen'=>'Citroen',
+                    'Daewoo'=>'Daewoo',
+                    'Daihatsu'=>'Daihatsu',
+                    'DFM'=>'DFM',
+                    'DFSK'=>'DFSK',
+                    'Ferrari'=>'Ferrari',
+                    'Fiat'=>'Fiat',
+                    'FOMM'=>'FOMM',
+                    'Foton'=>'Foton',
+                    'Great Wall Motor'=>'Great Wall Motor',
+                    'Haval'=>'Haval',
+                    'HINO' =>'HINO',
+                    'Holden'=>'Holden',
+                    'Hummer'=>'Hummer',
+                    'Hyundai'=>'Hyundai',
+                    'Jaguar'=>'Jaguar',
+                    'Jeep'=>'Jeep',
+                    'Kia'=>'Kia',
+                    'Lamborghini'=>'Lamborghini',
+                    'Land Rover'=>'Land Rover',
+                    'Lexus'=>'Lexus',
+                    'Lotus'=>'Lotus',
+                    'Maserati'=>'Maserati',
+                    'Maxus'=>'Maxus',
+                    'McLaren'=>'McLaren',
+                    'Mercedes-Benz'=>'Mercedes-Benz',
+                    'MG'=>'MG',
+                    'Mini'=>'Mini',
+                    'Mitsuoka'=>'Mitsuoka',
+                    'Naza'=>'Naza',
+                    'Opel'=>'Opel',
+                    'ORA'=>'ORA',
+                    'Peugeot'=>'Peugeot',
+                    'Polarsun'=>'Polarsun',
+                    'Porsche'=>'Porsche',
+                    'Proton'=>'Proton',
+                    'Rolls-Royce'=>'Rolls-Royce',
+                    'Rover'=>'Rover',
+                    'Saab'=>'Saab',
+                    'Seat'=>'Seat',
+                    'Skoda'=>'Skoda',
+                    'Spyker'=>'Spyker',
+                    'Ssangyong'=>'Ssangyong',
+                    'Subaru'=>'Subaru',
+                    'Tata'=>'Tata',
+                    'Thairung'=>'Thairung',
+                    'Volkswagen'=>'Volkswagen',
+                    'Volvo'=>'Volvo',
+                    ])->columns(65),
             TextInput::make('model')->label(__('trans.model.text'))->required(),
             Select::make('car_type')->label(__('trans.car_type.text'))->required()
-            ->options([
-                'รถหัวลาก 10 ล้อ' => 'รถหัวลาก 10 ล้อ',
-                'รถหัวลาก 6 ล้อ' => 'รถหัวลาก 6 ล้อ',
-                'รถตู้แห้ง 10 ล้อ' => 'รถตู้แห้ง 10 ล้อ',
-                'รถตู้แห้ง 6 ล้อ'=>'รถตู้แห้ง 6 ล้อ',
-                'รถตู้แห้ง 4 ล้อใหญ่'=>'รถตู้แห้ง 4 ล้อใหญ่',
-                'รถกระบะตู้แห้ง'=>'รถกระบะตู้แห้ง',
-                'รถตู้เย็น 10 ล้อ'=>'รถตู้เย็น 10 ล้อ',
-                'รถตู้เย็น 6 ล้อ'=>'รถตู้เย็น 6 ล้อ',
-                'รถตู้เย็น 4 ล้อใหญ่'=>'รถตู้เย็น 4 ล้อใหญ่',
-                'รถบรรทุกกระบะคอกสูง 10 ล้อ'=>'รถบรรทุกกระบะคอกสูง 10 ล้อ',
-                'รถบรรทุกกระบะคอกสูง 6 ล้อ'=>'รถบรรทุกกระบะคอกสูง 6 ล้อ',
-                'รถบรรทุกกระบะคอกเตี้ย 10 ล้อ'=>'รถบรรทุกกระบะคอกเตี้ย 10 ล้อ',
-                'รถบรรทุกกระบะคอกเตี้ย 6 ล้อ'=>'รถบรรทุกกระบะคอกเตี้ย 6 ล้อ',
-                'รถหางพ่วง'=>'รถหางพ่วง',
-                'รถหางพ่วง ตู้แห้ง'=>'รถหางพ่วง ตู้แห้ง',
-                'รถหางพ่วง พื้นเรียบ'=>'รถหางพ่วง พื้นเรียบ',
-                'รถหางเทรนเลอร์ '=>'รถหางเทรนเลอร์',
-                'รถหางเทรนเลอร์ ผ้าใบ'=>'รถหางเทรนเลอร์ ผ้าใบ',
-                'รถกระบะ 4 ประตู'=>'รถกระบะ 4 ประตู',
-                'รถกระบะแคป'=>'รถกระบะแคป',
-                'รถกระบะตอนเดียว'=>'รถกระบะตอนเดียว',
-                'รถเก๋ง 4 ประตู'=>'รถเก๋ง 4 ประตู',
-                'รถตู้'=>'รถตู้',
-                'รถสามล้อ'=>'รถสามล้อ',
-                ])->columns(25),
+                ->options([
+                    'รถหัวลาก 10 ล้อ' => 'รถหัวลาก 10 ล้อ',
+                    'รถหัวลาก 6 ล้อ' => 'รถหัวลาก 6 ล้อ',
+                    'รถตู้แห้ง 10 ล้อ' => 'รถตู้แห้ง 10 ล้อ',
+                    'รถตู้แห้ง 6 ล้อ'=>'รถตู้แห้ง 6 ล้อ',
+                    'รถตู้แห้ง 4 ล้อใหญ่'=>'รถตู้แห้ง 4 ล้อใหญ่',
+                    'รถกระบะตู้แห้ง'=>'รถกระบะตู้แห้ง',
+                    'รถตู้เย็น 10 ล้อ'=>'รถตู้เย็น 10 ล้อ',
+                    'รถตู้เย็น 6 ล้อ'=>'รถตู้เย็น 6 ล้อ',
+                    'รถตู้เย็น 4 ล้อใหญ่'=>'รถตู้เย็น 4 ล้อใหญ่',
+                    'รถบรรทุกกระบะคอกสูง 10 ล้อ'=>'รถบรรทุกกระบะคอกสูง 10 ล้อ',
+                    'รถบรรทุกกระบะคอกสูง 6 ล้อ'=>'รถบรรทุกกระบะคอกสูง 6 ล้อ',
+                    'รถบรรทุกกระบะคอกเตี้ย 10 ล้อ'=>'รถบรรทุกกระบะคอกเตี้ย 10 ล้อ',
+                    'รถบรรทุกกระบะคอกเตี้ย 6 ล้อ'=>'รถบรรทุกกระบะคอกเตี้ย 6 ล้อ',
+                    'รถหางพ่วง'=>'รถหางพ่วง',
+                    'รถหางพ่วง ตู้แห้ง'=>'รถหางพ่วง ตู้แห้ง',
+                    'รถหางพ่วง พื้นเรียบ'=>'รถหางพ่วง พื้นเรียบ',
+                    'รถหางเทรนเลอร์ '=>'รถหางเทรนเลอร์',
+                    'รถหางเทรนเลอร์ ผ้าใบ'=>'รถหางเทรนเลอร์ ผ้าใบ',
+                    'รถกระบะ 4 ประตู'=>'รถกระบะ 4 ประตู',
+                    'รถกระบะแคป'=>'รถกระบะแคป',
+                    'รถกระบะตอนเดียว'=>'รถกระบะตอนเดียว',
+                    'รถเก๋ง 4 ประตู'=>'รถเก๋ง 4 ประตู',
+                    'รถตู้'=>'รถตู้',
+                    'รถสามล้อ'=>'รถสามล้อ',
+                    ])->columns(25),
             TextInput::make('mile_number')->label(__('trans.mile_number.text'))->required(),
             Select::make('repair_code')->label(__('trans.repair_code.text'))
-            ->required()
-            ->options([
-                'A' => 'A',
-                'B' => 'B',
-                'C'=>'C',
-                'D'=>'D'
-            ])->columns(5),
+                ->required()
+                ->options([
+                    'A' => 'A',
+                    'B' => 'B',
+                    'C' => 'C',
+                    'D' => 'D'
+                ])->columns(5),
             Fieldset::make('ประเภทของรถที่เกิดอุบัติเหตุ')
-            ->schema([
-                Radio::make('car_accident')
-                ->required()
-                ->options([
-                    'รถประกัน' => 'รถประกัน',
-                    'รถคู่กรณี' => 'รถคู่กรณี'
-                ])
-            ]),
+                ->schema([
+                    Radio::make('car_accident')
+                    ->required()
+                    ->options([
+                        'รถประกัน' => 'รถประกัน',
+                        'รถคู่กรณี' => 'รถคู่กรณี'
+                    ])
+                ]),
             Fieldset::make('เลือกฝ่ายหรือคดีที่เกิดอุบัติเหตุ')
-            ->schema([
-                Radio::make('car_accident_choose')
-                ->required()
-                ->options([
-                    'ฝ่ายถูก'=>'ฝ่ายถูก',
-                    'ฝ่ายผิด'=>'ฝ่ายผิด',
-                    'คดี'=>'คดี',
-                ])
-            ]),
+                ->schema([
+                    Radio::make('car_accident_choose')
+                    ->required()
+                    ->options([
+                        'ฝ่ายถูก'=>'ฝ่ายถูก',
+                        'ฝ่ายผิด'=>'ฝ่ายผิด',
+                        'คดี'=>'คดี',
+                    ])
+                ]),
             Fieldset::make('เลือกตัวเลือกในการจ่ายค่าเสียหาย')
-            ->schema([
-                Radio::make('options')->label(__('trans.options.text'))
-                ->required()
-                ->options([
-                    'เคลมประกันบริษัท'=>'เคลมประกันบริษัท',
-                    'เงินสด'=>'เงินสด'
-                ])
-            ]),
+                ->schema([
+                    Radio::make('options')->label(__('trans.options.text'))
+                    ->required()
+                    ->options([
+                        'เคลมประกันบริษัท'=>'เคลมประกันบริษัท',
+                        'เงินสด'=>'เงินสด'
+                    ])
+                ]),
             Select::make('insu_company_name')
                 ->label(__('trans.insu_company_name.text'))
                 ->preload()
@@ -301,15 +405,15 @@ class CarReceiveResource extends Resource
             TextInput::make('noti_number')->label(__('trans.noti_number.text'))->required(),
             TextInput::make('claim_number')->label(__('trans.claim_number.text'))->required(),
             Fieldset::make('ประเภทการจอด')
-            ->schema([
-                Radio::make('options')->label(__('trans.options.text'))
-                ->required()
-                ->options([
-                    'จอดซ่อม' => 'จอดซ่อม',
-                    'ไม่จอดซ่อม' => 'ไม่จอดซ่อม'
+                ->schema([
+                    Radio::make('options')->label(__('trans.options.text'))
+                    ->required()
+                    ->options([
+                        'จอดซ่อม' => 'จอดซ่อม',
+                        'ไม่จอดซ่อม' => 'ไม่จอดซ่อม'
+                    ]),
+                    DatePicker::make('car_park')->label(__('trans.car_park.text')),
                 ]),
-                DatePicker::make('car_park')->label(__('trans.car_park.text')),
-            ]),
             MarkdownEditor::make('content')
                 ->label(__('trans.content.text'))
                 ->required()
@@ -323,7 +427,7 @@ class CarReceiveResource extends Resource
                     'preview',
                     'strike',
                 ]),
-                Fieldset::make('สภาพรถและอุปกรณ์')
+            Fieldset::make('สภาพรถและอุปกรณ์')
                 ->schema([
                     Checkbox::make('spare_tire')->label(__('trans.spare_tire.text')),
                     Checkbox::make('jack_handle')->label(__('trans.jack_handle.text')),
@@ -337,7 +441,7 @@ class CarReceiveResource extends Resource
                     Checkbox::make('spining_wheel')->label(__('trans.spining_wheel.text')),
                     Checkbox::make('other')->label(__('trans.other.text')),
                 ]),
-                Fieldset::make('สำหรับเอกสาร')
+            Fieldset::make('สำหรับเอกสาร')
                 ->schema([
                     FileUpload::make('real_claim')->label(__('trans.real_claim.text')),
                     FileUpload::make('copy_claim')->label(__('trans.copy_claim.text')),
@@ -350,7 +454,7 @@ class CarReceiveResource extends Resource
                     FileUpload::make('account_book')->label(__('trans.account_book.text')),
                     FileUpload::make('atm_card')->label(__('trans.atm_card.text')),
                 ]),
-                Fieldset::make('เอกสารที่ลูกค้านำมาวันรับรถ')
+            Fieldset::make('เอกสารที่ลูกค้านำมาวันรับรถ')
                 ->schema([
                     Checkbox::make('real_claim_document')->label(__('trans.real_claim.text')),
                     Checkbox::make('copy_policy_document')->label(__('trans.copy_policy.text')),
@@ -365,7 +469,7 @@ class CarReceiveResource extends Resource
                     Checkbox::make('other_document')->label(__('trans.other.text')),
                 ]),
 
-                Fieldset::make('ภาพรถวันเข้าซ่อม')
+            Fieldset::make('ภาพรถวันเข้าซ่อม')
                 ->schema([
                     FileUpload::make('front')->label(__('trans.front.text')),
                     FileUpload::make('left')->label(__('trans.left.text')),
@@ -379,9 +483,8 @@ class CarReceiveResource extends Resource
                         ->multiple()
                         ->label(__('trans.etc.text')),
                 ]),
-            TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
-            TextInput::make('user.name')->label(__('trans.addressee.text'))->required(),
-            ]);
+            TextInput::make('repairman')->label(__('trans.repairman.text'))->required(), ViewField::make('user_admin')->view('filament.resources.forms.components.user-admin'),
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -465,7 +568,7 @@ class CarReceiveResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-
+                Tables\Actions\DeleteAction::make()->disabled(Filament::auth()->user()->email !== 'super@admin.com'),
             ])
             ->bulkActions([
 
@@ -488,6 +591,10 @@ class CarReceiveResource extends Resource
         ];
     }
 
+    public static function canDelete(Model $record): bool
+    {
+        return Filament::auth()->user()->email === 'super@admin.com';
+    }
 }
 
 

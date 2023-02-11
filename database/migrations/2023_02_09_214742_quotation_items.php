@@ -14,6 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('quotation_items', function (Blueprint $table) {
+            $table->id();
             $table->string('number')->nullable();
             $table->string('spare_code')->nullable();
             $table->string('list_damaged_parts')->nullable();
