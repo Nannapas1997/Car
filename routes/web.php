@@ -18,3 +18,8 @@ use App\Http\Controllers\WelcomeController;
 Route::get('/',[WelcomeController::class, 'index'])->middleware(\App\Http\Middleware\Authenticate::class);
 
 Route::get('users', Users::class)->middleware(\App\Http\Middleware\Authenticate::class);
+
+Route::get(
+    '/prints/{id}',
+    [\App\Http\Controllers\CarReceivePrintController::class, 'carReceive']
+)->middleware(\App\Http\Middleware\Authenticate::class);

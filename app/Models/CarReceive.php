@@ -16,6 +16,7 @@ class CarReceive extends Model implements HasMedia
 {
     use InteractsWithMedia;
     use HasFactory, SoftDeletes;
+
     protected $fillable = [
         'id',
         'choose_garage',
@@ -89,10 +90,15 @@ class CarReceive extends Model implements HasMedia
         'product_id',
     ];
     // turn off both
-public $timestamps = false;
+    public $timestamps = false;
 
-// turn off only updated_at
-const UPDATED_AT = null;
-protected $primaryKey = 'id';
+    // turn off only updated_at
+    const UPDATED_AT = null;
+    protected $primaryKey = 'id';
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('real-claim');
+    }
 }
 

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('job_number')->nullable();
             $table->string('picking_list')->nullable()->required();
-            $table->foreignId('requisition_items.requisition_id');
             $table->string('spare_code')->nullable();
             $table->string('quantity')->nullable();
             $table->string('unit')->nullable();

@@ -2,6 +2,8 @@
 
 return [
     'choose_garage.text' => 'เลือกอู่',
+    'choose_garage.error' => 'กรุณาเลือกอู่',
+    'current_garage.text' => 'อู่ ',
     'job_number.text' => 'เลขที่งาน',
     'new_customer.text' => 'เลขที่งาน(กรณีลูกค้ารายใหม่)',
     'receive_date.text' => 'วันที่รับเรื่อง',

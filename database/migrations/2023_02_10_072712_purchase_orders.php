@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
             $table->string('job_number')->nullable();
-            $table->foreignId('purchase_orders.purchase_order_id');
             $table->string('vehicle_registration')->nullable()->required();
             $table->string('model')->required();
             $table->string('car_year')->nullable()->required();
