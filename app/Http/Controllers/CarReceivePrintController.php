@@ -7,12 +7,18 @@ use Illuminate\Http\Request;
 
 class CarReceivePrintController extends Controller
 {
-    public function index(Request $request) {
-        $carReceive = CarReceive::find($request->route('id'))->toArray();
+    public function carReceive(Request $request) {
+        $id = $request->route('id');
+        $carReceive = CarReceive::find($id);
 
         if (!$carReceive) {
             return redirect('/');
         }
+
+        $carReceive = $carReceive->toArray();
+
+        // $carReceive['id']
+        // $carReceive->id
 
         return view('prints.car-receive', ['data' => $carReceive]);
     }

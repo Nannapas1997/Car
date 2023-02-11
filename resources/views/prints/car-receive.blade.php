@@ -25,7 +25,7 @@
                                         เอกสารรับรถ
                                     </h1>
                                     <p>
-                                        เลขที่ {{ data_get($data, 'job_number') }}
+                                        เลขที่ {{ data_get($data, 'job_number', '') }}
                                     </p>
                                 </div>
 
@@ -46,7 +46,7 @@
                                         เบอร์โทร : {{ data_get($data, 'tel_number') }}
                                     </p>
                                     <p>
-                                        ยี่ห้อง : {{ data_get($data, 'tel_number') }} (รุ่น {{ data_get($data, 'tel_number') }})
+                                        ยี่ห้อง : {{ data_get($data, 'brand') }} (รุ่น {{ data_get($data, 'model', '-') }})
                                     </p>
                                     <p>
                                         ไมล์หน้ารถ : {{ data_get($data, 'mile_number') }}

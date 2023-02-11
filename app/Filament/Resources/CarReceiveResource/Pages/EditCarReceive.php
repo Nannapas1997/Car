@@ -16,7 +16,7 @@ class EditCarReceive extends EditRecord
             Action::make('print')
                 ->label('print')
                 ->openUrlInNewTab()
-                ->viewData(['id' => 1])
+                ->viewData(['id' => $this->data['id']])
                 ->view('prints.car-receive-link'),
         ];
     }
