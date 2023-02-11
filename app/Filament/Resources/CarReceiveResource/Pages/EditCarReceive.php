@@ -3,12 +3,21 @@
 namespace App\Filament\Resources\CarReceiveResource\Pages;
 
 use App\Filament\Resources\CarReceiveResource;
-use Filament\Pages\Actions;
+use Filament\Pages\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 
 class EditCarReceive extends EditRecord
 {
     protected static string $resource = CarReceiveResource::class;
 
-
+    protected function getActions(): array
+    {
+        return [
+            Action::make('print')
+                ->label('print')
+                ->openUrlInNewTab()
+                ->viewData(['id' => 1])
+                ->view('prints.car-receive-link'),
+        ];
+    }
 }
