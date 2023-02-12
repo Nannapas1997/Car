@@ -101,9 +101,10 @@ class CarReceiveResource extends Resource
                 ->reactive()
                 ->afterStateUpdated(function ($set, $state) {
                     if ($state) {
-                        $name = CarReceive::query()->where('job_number', $state);
+                        $name = CarReceive::query()->where('job_number', $state)->first();
                         if ($name) {
                             $name = $name->toArray();
+
                             $set('choose_garage', $name['choose_garage']);
                             $set('receive_date', $name['receive_date']);
                             $set('timex', $name['timex']);
@@ -173,6 +174,7 @@ class CarReceiveResource extends Resource
                     ->afterStateUpdated(function ($set, $state) {
                         if ($state) {
                             $name = CarReceive::find($state)->toArray();
+
                             if ($name) {
                                 $set('choose_garage', $name['choose_garage']);
                                 $set('receive_date', $name['receive_date']);
