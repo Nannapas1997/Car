@@ -104,7 +104,6 @@ class CarReceiveResource extends Resource
                         $name = CarReceive::query()->where('job_number', $state);
                         if ($name) {
                             $name = $name->toArray();
-                            dd($name);
                             $set('choose_garage', $name['choose_garage']);
                             $set('receive_date', $name['receive_date']);
                             $set('timex', $name['timex']);
@@ -550,8 +549,7 @@ class CarReceiveResource extends Resource
                 TextColumn::make('park_type')
                     ->label(__('trans.park_type.text')),
                 TextColumn::make('car_park')
-                    ->label(__('trans.car_park.text'))
-                    ->formatStateUsing(fn (string $state): string => convertYmdToThaiShort($state)),
+                    ->label(__('trans.car_park.text')),
                 ImageColumn::make('real_claim')
                     ->label(__('trans.real_claim.text')),
                 ImageColumn::make('copy_claim')->label(__('trans.copy_claim.text')),
