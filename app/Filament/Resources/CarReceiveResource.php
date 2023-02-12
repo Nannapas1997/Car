@@ -241,7 +241,6 @@ class CarReceiveResource extends Resource
                             $currentYear--;
                         }
                         return $options;
-                        dd($options);
                     }
                     ),
             TextInput::make('tel_number')->label(__('trans.tel_number.text'))->required(),
