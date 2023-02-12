@@ -43,6 +43,7 @@ return [
     'inside_right.text' => 'ภายในเก๋งด้านขวา',
     'truck.text' => 'ภายในตู้บรรทุก',
     'etc.text' => 'ภาพอื่นๆ',
-
+    'date_diff.text' => 'จำนวนวัน',
+    'attach_file.text' => 'ไฟล์',
 
 ];
