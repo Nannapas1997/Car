@@ -68,7 +68,8 @@ class CarReceiveResource extends Resource
         $optionValue = [];
 
         if (!$optionData) {
-            $optionValue[$currentGarage] = $currentGarage . now()->format('-y-m-d-') . '0001';
+            $jobNumberFirst = $currentGarage . now()->format('-y-m-d-') . '0001';
+            $optionValue[$jobNumberFirst] = $jobNumberFirst;
         } else {
             $lastValue = Arr::first($optionData);
             if ($lastValue) {
@@ -408,7 +409,7 @@ class CarReceiveResource extends Resource
             TextInput::make('claim_number')->label(__('trans.claim_number.text'))->required(),
             Fieldset::make('ประเภทการจอด')
                 ->schema([
-                    Radio::make('options-car')->label(__('trans.options.text'))
+                    Radio::make('park_type')->label(__('trans.options.text'))
                     ->required()
                     ->options([
                         'จอดซ่อม' => 'จอดซ่อม',
