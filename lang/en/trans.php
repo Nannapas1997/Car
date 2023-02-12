@@ -25,7 +25,6 @@ return [
     'claim_number.text' => 'เลขที่เคลม',
     'park_type.text' => 'ประเภทการจอด',
     'content.text' => 'บันทึกรายการความเสียหาย',
-    'group_checkbox.text' => 'สภาพรถและอุปกรณ์',
     'spare_tire.text' => 'ยางอะไหล่',
     'jack_handle.text' => 'แม่แรง+ด้าม',
     'boxset.text' => 'ชุดเครื่องมือ คีม, ประแจ, ไขควง',
@@ -149,5 +148,7 @@ return [
     'other_money.text' => 'เงินอื่น',
     'employee_termination_date.text' => 'สิ้นสุดการเป็นพนักงานวันที่',
     'cause.text' => 'สาเหตุการลาออก',
-    'resignation_document.text' => 'เอกสารลาออก'
+    'resignation_document.text' => 'เอกสารลาออก',
+    'date_diff.text' => 'จำนวนวัน',
+    'attach_file.text' => 'ไฟล์',
 ];
