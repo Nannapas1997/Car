@@ -10,6 +10,7 @@
             height: 40px;
             border-radius: 10px;
             background-color: #d57709;
+            cursor: pointer;
         }
     </style>
 </head>

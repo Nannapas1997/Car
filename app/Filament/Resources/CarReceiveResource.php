@@ -63,7 +63,7 @@ class CarReceiveResource extends Resource
             ->where('choose_garage', $currentGarage)
             ->orderBy('job_number', 'desc')
             ->get('job_number')
-            ->pluck('job_number', 'jub_number')
+            ->pluck('job_number', 'job_number')
             ->toArray();
         $optionValue = [];
 
@@ -71,6 +71,7 @@ class CarReceiveResource extends Resource
             $optionValue[$currentGarage] = $currentGarage . now()->format('-y-m-d-') . '0001';
         } else {
             $lastValue = Arr::first($optionData);
+
             if ($lastValue) {
                 $lastValueExplode = explode('-', $lastValue);
                 $lastValue = intval($lastValueExplode[count($lastValueExplode) - 1]);
@@ -99,9 +100,10 @@ class CarReceiveResource extends Resource
                 ->reactive()
                 ->afterStateUpdated(function ($set, $state) {
                     if ($state) {
-                        $name = CarReceive::query()->where('job_number', $state)->first();
+                        $name = CarReceive::query()->where('job_number', $state);
                         if ($name) {
                             $name = $name->toArray();
+                            dd($name);
                             $set('choose_garage', $name['choose_garage']);
                             $set('receive_date', $name['receive_date']);
                             $set('timex', $name['timex']);
@@ -124,7 +126,6 @@ class CarReceiveResource extends Resource
                             $set('park_type', $name['park_type']);
                             $set('content', $name['content']);
                             $set('car_park', $name['car_park']);
-                            $set('addressee', $name['addressee']);
                             $set('spare_tire', $name['spare_tire']);
                             $set('jack_handle', $name['jack_handle']);
                             $set('boxset', $name['boxset']);
@@ -137,15 +138,18 @@ class CarReceiveResource extends Resource
                             $set('spining_wheel', $name['spining_wheel']);
                             $set('other', $name['other']);
                             $set('real_claim_document', $name['real_claim_document']);
-                            $set('copy_claim_document', $name['copy_claim_document']);
-                            $set('copy_driver_license_document', $name['copy_driver_license_document']);
-                            $set('copy_vehicle_regis_document', $name['copy_vehicle_regis_document']);
-                            $set('copy_policy_document', $name['copy_policy_document']);
-                            $set('power_of_attorney_document', $name['power_of_attorney_document']);
-                            $set('copy_of_director_id_card_document', $name['copy_of_director_id_card_document']);
-                            $set('copy_of_person_document', $name['copy_of_person_document']);
-                            $set('account_book_document', $name['account_book_document']);
-                            $set('atm_card_document', $name['atm_card_document']);
+                            $set('copy_claim', $name['copy_claim']);
+                            $set('copy_driver_license', $name['copy_driver_license']);
+                            $set('copy_vehicle_regis', $name['copy_vehicle_regis']);
+                            $set('copy_policy', $name['copy_policy']);
+                            $set('power_of_attorney', $name['power_of_attorney']);
+                            $set('copy_of_director_id_card', $name['copy_of_director_id_card']);
+                            $set('copy_of_person', $name['copy_of_person']);
+                            $set('account_book', $name['account_book']);
+                            $set('car_accident', $name['car_accident']);
+                            $set('car_accident_choose', $name['car_accident_choose']);
+                            $set('options-car', $name['options-car']);
+                            $set('atm_card', $name['atm_card']);
                         }
                     }
                 }),
@@ -160,7 +164,6 @@ class CarReceiveResource extends Resource
                     ->default(Filament::auth()->user()->garage)
                     ->disabled(),
                 Card::make()->schema(static::getViewData('job_number')),
-
                 Select::make('search_regis')
                     ->label(__('trans.search_regis.text'))
                     ->preload()
@@ -182,9 +185,13 @@ class CarReceiveResource extends Resource
                                 $set('brand', $name['brand']);
                                 $set('model', $name['model']);
                                 $set('car_type', $name['car_type']);
+                                $set('car_year', $name['car_year']);
                                 $set('mile_number', $name['mile_number']);
                                 $set('repair_code', $name['repair_code']);
                                 $set('options', $name['options']);
+                                $set('car_accident', $name['car_accident']);
+                                $set('car_accident_choose', $name['car_accident_choose']);
+                                $set('options-car', $name['options-car']);
                                 $set('insu_company_name', $name['insu_company_name']);
                                 $set('policy_number', $name['policy_number']);
                                 $set('noti_number', $name['noti_number']);
@@ -192,7 +199,6 @@ class CarReceiveResource extends Resource
                                 $set('park_type', $name['park_type']);
                                 $set('content', $name['content']);
                                 $set('car_park', $name['car_park']);
-                                $set('addressee', $name['addressee']);
                                 $set('spare_tire', $name['spare_tire']);
                                 $set('jack_handle', $name['jack_handle']);
                                 $set('boxset', $name['boxset']);
@@ -233,9 +239,10 @@ class CarReceiveResource extends Resource
                             $options[$currentYear] = $currentYear;
                             $currentYear--;
                         }
-
                         return $options;
-                    }),
+                        dd($options);
+                    }
+                    ),
             TextInput::make('tel_number')->label(__('trans.tel_number.text'))->required(),
             DatePicker::make('pickup_date')->label(__('trans.pickup_date.text')),
             TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),

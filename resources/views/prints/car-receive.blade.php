@@ -64,7 +64,7 @@
                                     <p class="mt-2 text-sm font-normal text-slate-700">
                                         วันรับเรื่อง
                                     </p>
-                                    <p>{{ convertYmdToThai(data_get($data, 'pickup_date')) }}</p>
+                                    <p>{{ convertYmdToThai(data_get($data, 'receive_date')) }}</p>
                                 </div>
                             </div>
                         </div>
