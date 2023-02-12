@@ -494,29 +494,60 @@ class CarReceiveResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('choose_garage')->label(__('trans.choose_garage.text')),
-                TextColumn::make('job_number')->label(__('trans.job_number.text'))->searchable()->toggleable()->sortable(),
-                TextColumn::make('receive_date')->label(__('trans.receive_date.text')),
-                TextColumn::make('timex')->label(__('trans.timex.text')),
-                TextColumn::make('customer')->label(__('trans.customer.text')),
-                TextColumn::make('repairman')->label(__('trans.repairman.text')),
-                TextColumn::make('tel_number')->label(__('trans.tel_number.text')),
-                TextColumn::make('pickup_date')->label(__('trans.pickup_date.text')),
-                TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->searchable()->toggleable()->sortable(),
-                TextColumn::make('brand')->label(__('trans.brand.text')),
-                TextColumn::make('model')->label(__('trans.model.text')),
-                TextColumn::make('car_type')->label(__('trans.car_type.text')),
-                TextColumn::make('car_year')->label(__('trans.car_year.text')),
-                TextColumn::make('mile_number')->label(__('trans.mile_number.text')),
-                TextColumn::make('repair_code')->label(__('trans.repair_code.text')),
-                TextColumn::make('options')->label(__('trans.options.text')),
-                TextColumn::make('insu_company_name')->label(__('trans.insu_company_name.text')),
-                TextColumn::make('policy_number')->label(__('trans.policy_number.text')),
-                TextColumn::make('noti_number')->label(__('trans.noti_number.text')),
-                TextColumn::make('claim_number')->label(__('trans.claim_number.text')),
-                TextColumn::make('park_type')->label(__('trans.park_type.text')),
-                TextColumn::make('car_park')->label(__('trans.car_park.text')),
-                ImageColumn::make('real_claim')->label(__('trans.real_claim.text')),
+                TextColumn::make('choose_garage')
+                    ->label(__('trans.choose_garage.text')),
+                TextColumn::make('job_number')
+                    ->label(__('trans.job_number.text'))
+                    ->searchable()->toggleable()->sortable(),
+                TextColumn::make('receive_date')
+                    ->label(__('trans.receive_date.text'))
+                    ->formatStateUsing(fn (string $state): string => convertYmdToThaiShort($state)),
+                TextColumn::make('timex')
+                    ->label(__('trans.timex.text'))
+                    ->formatStateUsing(fn (string $state): string => convertHisToHi($state)),
+                TextColumn::make('customer')
+                    ->label(__('trans.customer.text')),
+                TextColumn::make('repairman')
+                    ->label(__('trans.repairman.text')),
+                TextColumn::make('tel_number')
+                    ->label(__('trans.tel_number.text')),
+                TextColumn::make('pickup_date')
+                    ->label(__('trans.pickup_date.text'))
+                    ->formatStateUsing(fn (string $state): string => convertYmdToThaiShort($state)),
+                TextColumn::make('vehicle_registration')
+                    ->label(__('trans.vehicle_registration.text'))
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
+                TextColumn::make('brand')
+                    ->label(__('trans.brand.text')),
+                TextColumn::make('model')
+                    ->label(__('trans.model.text')),
+                TextColumn::make('car_type')
+                    ->label(__('trans.car_type.text')),
+                TextColumn::make('car_year')
+                    ->label(__('trans.car_year.text')),
+                TextColumn::make('mile_number')
+                    ->label(__('trans.mile_number.text')),
+                TextColumn::make('repair_code')
+                    ->label(__('trans.repair_code.text')),
+                TextColumn::make('options')
+                    ->label(__('trans.options.text')),
+                TextColumn::make('insu_company_name')
+                    ->label(__('trans.insu_company_name.text')),
+                TextColumn::make('policy_number')
+                    ->label(__('trans.policy_number.text')),
+                TextColumn::make('noti_number')
+                    ->label(__('trans.noti_number.text')),
+                TextColumn::make('claim_number')
+                    ->label(__('trans.claim_number.text')),
+                TextColumn::make('park_type')
+                    ->label(__('trans.park_type.text')),
+                TextColumn::make('car_park')
+                    ->label(__('trans.car_park.text'))
+                    ->formatStateUsing(fn (string $state): string => convertYmdToThaiShort($state)),
+                ImageColumn::make('real_claim')
+                    ->label(__('trans.real_claim.text')),
                 ImageColumn::make('copy_claim')->label(__('trans.copy_claim.text')),
                 ImageColumn::make('copy_driver_license')->label(__('trans.copy_driver_license.text')),
                 ImageColumn::make('copy_vehicle_regis')->label(__('trans.copy_vehicle_regis.text')),

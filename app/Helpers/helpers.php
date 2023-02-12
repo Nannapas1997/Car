@@ -105,3 +105,12 @@ if (! function_exists('convertYmdToThaiShort')) {
         return "{$day} {$monthStr} {$year}";
     }
 }
+
+if (! function_exists('convertHisToHi')) {
+    function convertHisToHi($time)
+    {
+        $timeArr = explode(':', $time);
+
+        return "{$timeArr[0]}:{$timeArr[1]} น.";
+    }
+}
