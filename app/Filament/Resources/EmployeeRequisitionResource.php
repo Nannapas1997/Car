@@ -38,7 +38,7 @@ class EmployeeRequisitionResource extends Resource
                 Card::make()
                 ->schema([
                     Placeholder::make('รายการเบิกเงินพนักงาน'),
-                    Repeater::make('employeeitems')
+                    Repeater::make('employeerequisitionitems')
                     ->relationship()
                     ->schema(
                         [

@@ -28,12 +28,14 @@ class PurchaseOrder extends Model
     public $timestamps = false;
 // turn off only updated_at
     const UPDATED_AT = false;
+
     public function user():BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
     public function purchaseorderitems():HasMany
     {
-        return $this->hasMany(PurchaseOrder::class);
+        return $this->hasMany(PurchaseOrderItem::class);
     }
 }
