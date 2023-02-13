@@ -31,7 +31,6 @@ return new class extends Migration
             $table->string('note')->nullable();
             $table->string('courier_document')->nullable();
             $table->string('recipient_document')->nullable();
-            $table->foreignId('purchase_orders.purchase_order_id');
         });
     }
 
