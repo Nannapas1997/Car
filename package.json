@@ -17,6 +17,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "bcmath": "^2.3.5"
+        "bcmath": "^2.3.5",
+        "moment": "^2.29.4",
+        "pikaday": "^1.8.2"
     }
 }

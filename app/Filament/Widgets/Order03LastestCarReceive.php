@@ -12,8 +12,9 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use stdClass;
 
-class Order02LastestCarReceive extends BaseWidget
+class Order03LastestCarReceive extends BaseWidget
 {
+    protected static ?string $pollingInterval = '60s';
     protected int | string | array $columnSpan = 'full';
 
     protected function getTableHeading(): string | Htmlable | Closure | null
@@ -28,7 +29,13 @@ class Order02LastestCarReceive extends BaseWidget
 
     protected function getTableQuery(): Builder
     {
-        return CarReceive::query()->latest();
+        $dateSelect = request()->query('date');
+
+        if (!$dateSelect) {
+            $dateSelect = Carbon::now()->format('Y-m-d');
+        }
+
+        return CarReceive::query()->where('receive_date', $dateSelect)->latest();
     }
 
     protected function getTableColumns(): array

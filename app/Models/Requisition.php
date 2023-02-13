@@ -13,7 +13,7 @@ class Requisition extends Model
     protected $fillable = [
         'job_number',
         'vehicle_registration',
-        'date',
+        'input',
         'pickup_time',
         'picking_list',
         'parts_list',

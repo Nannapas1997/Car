@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "03aebb7d1b9cee02d4092ff1ecb5eb2c",
+    "content-hash": "3cfa65f88ac1e0a15a0016296fe41e0a",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -2254,6 +2254,69 @@
                 }
             ],
             "time": "2021-10-07T12:57:01+00:00"
+        },
+        {
+            "name": "haringsrob/livewire-datepicker",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/haringsrob/livewire-datepicker.git",
+                "reference": "c75bf055a8e481036ec7d30479e7756ff2b1b1e6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/haringsrob/livewire-datepicker/zipball/c75bf055a8e481036ec7d30479e7756ff2b1b1e6",
+                "reference": "c75bf055a8e481036ec7d30479e7756ff2b1b1e6",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~9",
+                "livewire/livewire": "^2",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "~7",
+                "phpunit/phpunit": "~9.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Haringsrob\\LivewireDatepicker\\LivewireDatepickerServiceProvider"
+                    ],
+                    "aliases": {
+                        "LivewireDatepicker": "Haringsrob\\LivewireDatepicker\\Facades\\LivewireDatepicker"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Haringsrob\\LivewireDatepicker\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Harings Rob",
+                    "email": "haringsrob@gmail.com",
+                    "homepage": "https://harings.be"
+                }
+            ],
+            "description": "A standalone livewire datepicker component without dependencies",
+            "homepage": "https://github.com/haringsrob/livewire-datepicker",
+            "keywords": [
+                "LivewireDatepicker",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/haringsrob/livewire-datepicker/issues",
+                "source": "https://github.com/haringsrob/livewire-datepicker/tree/main"
+            },
+            "time": "2022-12-15T16:53:20+00:00"
         },
         {
             "name": "intervention/image",

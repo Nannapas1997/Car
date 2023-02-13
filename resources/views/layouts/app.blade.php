@@ -10,6 +10,7 @@
         <title>{{ config('app.name') }}</title>
 
         <style>[x-cloak] { display: none !important; }</style>
+        <link href="{{ asset('css/pikaday.css') }}" rel="stylesheet">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
         @livewireScripts

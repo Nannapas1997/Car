@@ -3,21 +3,47 @@
 namespace App\Filament\Widgets;
 
 use App\Models\CarReceive;
+use Carbon\Carbon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Card;
 
 class Order01TotalCarReceive extends BaseWidget
 {
+    protected static ?string $pollingInterval = '60s';
+
     protected function getCards(): array
     {
-        $total = CarReceive::query()->count();
-        $pending = CarReceive::query()->where('status', 'pending')->count();
-        $completed = CarReceive::query()->where('status', 'completed')->count();
+        $dateSelect = request()->query('date');
+
+        if (!$dateSelect) {
+            $dateSelect = Carbon::now()->format('Y-m-d');
+        }
+
+        $total = CarReceive::query()
+            ->where('receive_date', $dateSelect)
+            ->count();
+        $pending = CarReceive::query()
+            ->where('status', 'pending')
+            ->where('receive_date', $dateSelect)
+            ->count();
+        $completed = CarReceive::query()
+            ->where('status', 'completed')
+            ->where('receive_date', $dateSelect)
+            ->count();
 
         return [
-            Card::make('รายการทั้งหมด', $total),
-            Card::make('กำลังดำเนินการ', $pending),
-            Card::make('สำเร็จ', $completed),
+            Card::make('รายการทั้งหมด', $total)
+                ->extraAttributes([
+                    'class' => 'text-center text-xl',
+                ]),
+            Card::make('กำลังดำเนินการ', $pending)
+                ->extraAttributes([
+                    'class' => 'text-center text-xl',
+                ]),
+            Card::make('สำเร็จ', $completed)
+                ->extraAttributes([
+                    'class' => 'text-center text-xl',
+                ]),
         ];
     }
 }
