@@ -14,7 +14,6 @@
         "filament/spatie-laravel-media-library-plugin": "^2.0",
         "filament/tables": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
-        "haringsrob/livewire-datepicker": "dev-main",
         "laravel/framework": "^9.19",
         "laravel/jetstream": "^2.14",
         "laravel/sanctum": "^3.0",
