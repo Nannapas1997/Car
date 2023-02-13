@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('spare_code')->nullable();
             $table->string('spare_cost')->nullable();
             $table->string('store')->nullable();
+            $table->string('receipt_number')->nullable();
         });
     }
 
