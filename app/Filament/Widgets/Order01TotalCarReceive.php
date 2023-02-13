@@ -6,7 +6,6 @@ use App\Models\CarReceive;
 use Carbon\Carbon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Card;
-use Nette\Utils\Html;
 
 class Order01TotalCarReceive extends BaseWidget
 {
@@ -20,9 +19,17 @@ class Order01TotalCarReceive extends BaseWidget
             $dateSelect = Carbon::now()->format('Y-m-d');
         }
 
-        $total = CarReceive::query()->where('receive_date', $dateSelect)->count();
-        $pending = CarReceive::query()->where('status', 'pending')->where('receive_date', $dateSelect)->count();
-        $completed = CarReceive::query()->where('status', 'completed')->where('receive_date', $dateSelect)->count();
+        $total = CarReceive::query()
+            ->where('receive_date', $dateSelect)
+            ->count();
+        $pending = CarReceive::query()
+            ->where('status', 'pending')
+            ->where('receive_date', $dateSelect)
+            ->count();
+        $completed = CarReceive::query()
+            ->where('status', 'completed')
+            ->where('receive_date', $dateSelect)
+            ->count();
 
         return [
             Card::make('รายการทั้งหมด', $total)
