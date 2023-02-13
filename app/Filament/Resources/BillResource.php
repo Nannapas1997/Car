@@ -5,10 +5,14 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use App\Models\Bill;
 use Filament\Tables;
+use App\Models\CarReceive;
+use Illuminate\Support\Arr;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
+use Filament\Facades\Filament;
 use Illuminate\Support\Carbon;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -22,17 +26,65 @@ class BillResource extends Resource
     protected static ?string $model = Bill::class;
     protected static ?string $navigationGroup = 'Account';
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    public static function getViewData(): array{
+        $currentGarage =  Filament::auth()->user()->garage;
+        $optionData = CarReceive::query()
+            ->where('choose_garage', $currentGarage)
+            ->orderBy('job_number', 'desc')
+            ->get('job_number')
+            ->pluck('job_number', 'job_number')
+            ->toArray();
+        $optionValue = [];
 
+        if (!$optionData) {
+            $jobNumberFirst = $currentGarage . now()->format('-y-m-d-') . '0001';
+            $optionValue[$jobNumberFirst] = $jobNumberFirst;
+        } else {
+            $lastValue = Arr::first($optionData);
+
+            if ($lastValue) {
+                $lastValueExplode = explode('-', $lastValue);
+                $lastValue = intval($lastValueExplode[count($lastValueExplode) - 1]);
+                $lastValue += 1;
+                $lastValue = $lastValue < 10 ? "0000{$lastValue}" :
+                    ($lastValue < 100 ? "000{$lastValue}" :
+                        ($lastValue < 1000 ? "00{$lastValue}" :
+                            ($lastValue < 10000 ? "0{$lastValue}" : $lastValue)));
+
+                $lastValue = $currentGarage . now()->format('-y-m-d-') . $lastValue;
+                $optionValue[$lastValue] = $lastValue;
+            }
+
+            foreach ($optionData as $val) {
+                $optionValue[$val] = $val;
+            }
+        }
+
+        return [
+            Select::make('job_number')
+                ->label(' ' . __('trans.job_number.text') . ' ' . __('trans.current_garage.text') . $currentGarage)
+                ->preload()
+                ->required()
+                ->searchable()
+                ->options($optionData)
+                ->reactive()
+                ->afterStateUpdated(function ($set, $state) {
+                    if ($state) {
+                        $name = CarReceive::query()->where('job_number', $state)->first();
+                        if ($name) {
+                            $name = $name->toArray();
+                            $set('vehicle_registration', $name['vehicle_registration']);
+                            $set('customer', $name['customer']);
+                        }
+                    }
+                }),
+        ];
+    }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('job_number')
-                ->required()
-                ->preload()
-                ->options([
-
-                ]),
+                Card::make()->schema(static::getViewData('job_number')),
                 TextInput::make('customer')->label(__('trans.customer.text'))->required(),
                 TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
                 TextInput::make('invoice_number')->label(__('trans.invoice_number.text'))->required(),

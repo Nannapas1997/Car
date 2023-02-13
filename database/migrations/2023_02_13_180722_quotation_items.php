@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('spare_code')->nullable();
             $table->string('list_damaged_parts')->nullable();
             $table->string('quantity')->nullable();
+            $table->foreignId('quotation_items.quotation_id');
         });
     }
 

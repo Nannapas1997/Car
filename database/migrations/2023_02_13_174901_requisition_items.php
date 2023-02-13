@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('unit')->nullable();
             $table->string('forerunner')->nullable();
             $table->string('approver')->nullable();
+            $table->foreignId('requisition_items.requisition_id');
         });
     }
 

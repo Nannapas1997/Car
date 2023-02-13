@@ -5,11 +5,14 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\CarReceive;
+use Illuminate\Support\Arr;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
+use Filament\Facades\Filament;
 use Illuminate\Support\Carbon;
 use Filament\Resources\Resource;
 use App\Models\PriceControlBills;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -23,29 +26,67 @@ class PriceControlBillsResource extends Resource
     protected static ?string $model = PriceControlBills::class;
     protected static ?string $navigationGroup = 'Account';
     protected static ?string $navigationIcon = 'heroicon-o-receipt-tax';
+    public static function getViewData(): array{
+        $currentGarage =  Filament::auth()->user()->garage;
+        $optionData = CarReceive::query()
+            ->where('choose_garage', $currentGarage)
+            ->orderBy('job_number', 'desc')
+            ->get('job_number')
+            ->pluck('job_number', 'job_number')
+            ->toArray();
+        $optionValue = [];
 
+        if (!$optionData) {
+            $jobNumberFirst = $currentGarage . now()->format('-y-m-d-') . '0001';
+            $optionValue[$jobNumberFirst] = $jobNumberFirst;
+        } else {
+            $lastValue = Arr::first($optionData);
+
+            if ($lastValue) {
+                $lastValueExplode = explode('-', $lastValue);
+                $lastValue = intval($lastValueExplode[count($lastValueExplode) - 1]);
+                $lastValue += 1;
+                $lastValue = $lastValue < 10 ? "0000{$lastValue}" :
+                    ($lastValue < 100 ? "000{$lastValue}" :
+                        ($lastValue < 1000 ? "00{$lastValue}" :
+                            ($lastValue < 10000 ? "0{$lastValue}" : $lastValue)));
+
+                $lastValue = $currentGarage . now()->format('-y-m-d-') . $lastValue;
+                $optionValue[$lastValue] = $lastValue;
+            }
+
+            foreach ($optionData as $val) {
+                $optionValue[$val] = $val;
+            }
+        }
+
+        return [
+            Select::make('job_number')
+                ->label(' ' . __('trans.job_number.text') . ' ' . __('trans.current_garage.text') . $currentGarage)
+                ->preload()
+                ->required()
+                ->searchable()
+                ->options($optionData)
+                ->reactive()
+                ->afterStateUpdated(function ($set, $state) {
+                    if ($state) {
+                        $name = CarReceive::query()->where('job_number', $state)->first();
+                        if ($name) {
+                            $name = $name->toArray();
+                            $set('vehicle_registration', $name['vehicle_registration']);
+                            $set('customer', $name['customer']);
+                            $set('insu_company_name', $name['insu_company_name']);
+                            $set('noti_number', $name['noti_number']);
+                        }
+                    }
+                }),
+        ];
+    }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-
-                Select::make('job_number_control')
-                ->label(__('trans.job_number.text'))
-                ->preload()
-                ->options(CarReceive::pluck('job_number', 'id')->toArray())
-                    ->searchable()
-                    ->reactive()
-                    ->afterStateUpdated(function ($set, $state) {
-                        if ($state) {
-                            $name = CarReceive::find($state)->toArray();
-                            if ($name) {
-                                $set('job_number_control', $name['job_number']);
-                                $set('customer', $name['customer']);
-                                $set('vehicle_registration', $name['vehicle_registration']);
-                                $set('insu_company_name', $name['insu_company_name']);
-                            }
-                        }
-                    }),
+                Card::make()->schema(static::getViewData('job_number')),
                 TextInput::make('number_price_control')->label(__('trans.number_price_control.text'))->required(),
                 TextInput::make('notification_number')->label(__('trans.notification_number.text'))->required(),
                 TextInput::make('number_ab')->label(__('trans.number_ab.text'))->required(),
