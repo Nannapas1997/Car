@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('order')->nullable();
             $table->string('employee_lists')->nullable()->required();
             $table->string('disbursement_amount')->nullable()->required();
-            $table->string('date')->nullable();
+            $table->string('input')->nullable();
             $table->string('courier_document')->nullable();
             $table->string('recipient_document')->nullable();
         });

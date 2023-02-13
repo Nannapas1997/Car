@@ -12,7 +12,7 @@ class EmployeeRequisitionItem extends Model
         'order',
         'employee_lists',
         'disbursement_amount',
-        'date',
+        'input',
         'financial',
 
     ];

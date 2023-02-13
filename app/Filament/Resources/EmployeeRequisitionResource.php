@@ -31,8 +31,8 @@ class EmployeeRequisitionResource extends Resource
     {
         return $form
             ->schema([
-                DatePicker::make('date')
-                ->label(__('trans.date.text'))
+                DatePicker::make('input')
+                ->label(__('trans.input.text'))
                 ->required()
                 ->default(now()->format('Y-m-d')),
                 Card::make()
@@ -75,7 +75,7 @@ class EmployeeRequisitionResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('date')->label(__('trans.date.text')),
+                TextColumn::make('input')->label(__('trans.input.text')),
                 TextColumn::make('courier_document')->label(__('trans.courier_document.text')),
                 TextColumn::make('recipient_document')->label(__('trans.recipient_document.text')),
             ])

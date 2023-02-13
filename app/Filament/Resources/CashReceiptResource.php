@@ -33,8 +33,8 @@ class CashReceiptResource extends Resource
                 TextInput::make('disbursement_amount')
                 ->label(__('trans.disbursement_amount.text'))
                 ->required(),
-                DatePicker::make('date')
-                ->label(__('trans.date.text')),
+                DatePicker::make('input')
+                ->label(__('trans.input.text')),
                 Fieldset::make('ประเภทของการค่าใช้จ่ายต่างๆ')
                 ->schema([
                     CheckboxList::make('group_checkbox')
@@ -68,7 +68,7 @@ class CashReceiptResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('disbursement_amount')->label(__('trans.disbursement_amount.text')),
-                TextColumn::make('date')->label(__('trans.date.text')),
+                TextColumn::make('input')->label(__('trans.input.text')),
                 TextColumn::make('other')->label(__('trans.other.text')),
                 TextColumn::make('forerunner')->label(__('trans.forerunner.text')),
                 TextColumn::make('financial')->label(__('trans.financial.text')),

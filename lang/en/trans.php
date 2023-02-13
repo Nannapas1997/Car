@@ -114,7 +114,7 @@ return [
     'parts_list.text' =>'รายการอะไหล่',
     'aggregate_price.text' => 'รวมราคา',
     'parts_list_total.text' => 'รายการอะไหล่ทั้งหมด(รายการ)',
-    'date.text' => 'วันที่',
+    'input.text' => 'วันที่',
     'picking_list.text' => 'รายการเบิก',
     'forerunner.text' => 'ผู้เบิก',
     'approver.text' => 'ผู้อนุมัติ',

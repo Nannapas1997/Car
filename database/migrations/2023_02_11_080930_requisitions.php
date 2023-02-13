@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('job_number')->nullable();
             $table->string('vehicle_registration')->nullable()->required();
-            $table->string('date')->nullable();
+            $table->string('input')->nullable();
             $table->string('pickup_time')->nullable();
             $table->string('picking_list')->nullable()->required();
             $table->string('spare_code')->nullable();
