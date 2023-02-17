@@ -20,7 +20,6 @@
                     'dark:border-danger-400 dark:ring-danger-400': ('data.admin_name' in $wire.__instance.serverMemo.errors) &amp;&amp; true,
                 }" value="{{ \Filament\Facades\Filament::auth()->user()->name }}" disabled>
         </div>
-
     </div>
 
 

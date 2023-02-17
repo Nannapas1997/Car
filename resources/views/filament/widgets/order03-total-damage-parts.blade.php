@@ -21,6 +21,7 @@
         <br>
         <span class="items">รายการ</span>
         <br>
+
         <span class="code">A</span>
         <span class="count">{{ $a }}</span>
         <span class="item">รายการ</span>

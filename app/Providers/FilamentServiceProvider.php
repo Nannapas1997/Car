@@ -35,10 +35,12 @@ class FilamentServiceProvider extends ServiceProvider
                     UserMenuItem::make()->label('Manage Users')->url(UserResource::getUrl())->icon('heroicon-s-users'),
                     UserMenuItem::make()->label('Manage Roles')->url(RoleResource::getUrl())->icon('heroicon-s-cog'),
                     UserMenuItem::make()->label('Manage Permissions')->url(PermissionResource::getUrl())->icon('heroicon-s-key'),
+
                 ]);
+                
             }
 
-            }
+        }
         });
     }
 }

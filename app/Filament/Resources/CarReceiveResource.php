@@ -228,6 +228,7 @@ class CarReceiveResource extends Resource
                 DatePicker::make('receive_date')->label(__('trans.receive_date.text'))->required(),
                 TextInput::make('timex')->label(__('trans.timex.text'))->default(now()->format('H:i:s')),
                 TextInput::make('customer')->label(__('trans.customer.text'))->required(),
+                
                 Select::make('car_year')
                     ->label(__('trans.car_year.text'))
                     ->preload()
@@ -493,7 +494,8 @@ class CarReceiveResource extends Resource
                         ->multiple()
                         ->label(__('trans.etc.text')),
                 ]),
-            TextInput::make('repairman')->label(__('trans.repairman.text'))->required(), ViewField::make('user_admin')->view('filament.resources.forms.components.user-admin'),
+            TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
+            ViewField::make('user_admin')->view('filament.resources.forms.components.user-admin'),
         ]);
     }
 

@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+
+use App\Models\Menu;
 use App\Models\User;
+use App\Policies\MenuPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\UserPolicy;
 use App\Policies\PermissionPolicy;
@@ -22,6 +25,7 @@ class AuthServiceProvider extends ServiceProvider
         Permission::class => PermissionPolicy::class,
         Role::class => RolePolicy::class,
         User::class => UserPolicy::class,
+        Menu::class => MenuPolicy::class,
     ];
 
     /**

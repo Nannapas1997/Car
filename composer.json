@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.0.2",
         "alperenersoy/filament-export": "^0.2.6",
+        "bezhansalleh/filament-shield": "^2.4",
         "blade-ui-kit/blade-heroicons": "^1.4",
         "blade-ui-kit/blade-icons": "^1.5",
         "doctrine/dbal": "^3.5",

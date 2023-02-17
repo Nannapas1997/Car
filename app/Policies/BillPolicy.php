@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Spatie\Permission\Models\Role;
+use App\Models\Bill;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class RolePolicy
+class BillPolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +18,19 @@ class RolePolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view_any_role');
+        return $user->can('view_any_bill');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Role  $role
+     * @param  \App\Models\Bill  $bill
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Role $role)
+    public function view(User $user, Bill $bill)
     {
-        return $user->can('view_role');
+        return $user->can('view_bill');
     }
 
     /**
@@ -41,31 +41,31 @@ class RolePolicy
      */
     public function create(User $user)
     {
-        return $user->can('create_role');
+        return $user->can('create_bill');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Role  $role
+     * @param  \App\Models\Bill  $bill
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Role $role)
+    public function update(User $user, Bill $bill)
     {
-        return $user->can('update_role');
+        return $user->can('update_bill');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Role  $role
+     * @param  \App\Models\Bill  $bill
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Role $role)
+    public function delete(User $user, Bill $bill)
     {
-        return $user->can('delete_role');
+        return $user->can('delete_bill');
     }
 
     /**
@@ -76,19 +76,19 @@ class RolePolicy
      */
     public function deleteAny(User $user)
     {
-        return $user->can('delete_any_role');
+        return $user->can('delete_any_bill');
     }
 
     /**
      * Determine whether the user can permanently delete.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Role  $role
+     * @param  \App\Models\Bill  $bill
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Role $role)
+    public function forceDelete(User $user, Bill $bill)
     {
-        return $user->can('force_delete_role');
+        return $user->can('force_delete_bill');
     }
 
     /**
@@ -99,19 +99,19 @@ class RolePolicy
      */
     public function forceDeleteAny(User $user)
     {
-        return $user->can('force_delete_any_role');
+        return $user->can('force_delete_any_bill');
     }
 
     /**
      * Determine whether the user can restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Role  $role
+     * @param  \App\Models\Bill  $bill
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Role $role)
+    public function restore(User $user, Bill $bill)
     {
-        return $user->can('restore_role');
+        return $user->can('restore_bill');
     }
 
     /**
@@ -122,19 +122,19 @@ class RolePolicy
      */
     public function restoreAny(User $user)
     {
-        return $user->can('restore_any_role');
+        return $user->can('restore_any_bill');
     }
 
     /**
      * Determine whether the user can replicate.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Role  $role
+     * @param  \App\Models\Bill  $bill
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function replicate(User $user, Role $role)
+    public function replicate(User $user, Bill $bill)
     {
-        return $user->can('replicate_role');
+        return $user->can('replicate_bill');
     }
 
     /**
@@ -145,7 +145,7 @@ class RolePolicy
      */
     public function reorder(User $user)
     {
-        return $user->can('reorder_role');
+        return $user->can('reorder_bill');
     }
 
 }

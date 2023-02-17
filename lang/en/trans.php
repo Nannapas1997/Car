@@ -151,5 +151,6 @@ return [
     'resignation_document.text' => 'เอกสารลาออก',
     'date_diff.text' => 'จำนวนวัน',
     'attach_file.text' => 'ไฟล์',
-    'receipt_number.text' => 'เลขที่ใบเสร็จ'
+    'receipt_number.text' => 'เลขที่ใบเสร็จ',
+    'driver_name' => 'ชื่อผู้ขับขี่'
 ];
