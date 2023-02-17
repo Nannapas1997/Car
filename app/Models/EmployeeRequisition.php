@@ -24,7 +24,7 @@ class EmployeeRequisition extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function employeeitems():HasMany
+    public function employeerequisitionitems():HasMany
     {
         return $this->hasMany(EmployeeRequisitionItem::class);
     }

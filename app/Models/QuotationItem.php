@@ -16,6 +16,6 @@ class QuotationItem extends Model
         'quantity',
     ];
     public $timestamps = false;
-    // turn off only updated_at
-        const UPDATED_AT = false;
+
+    const UPDATED_AT = false;
 }
