@@ -104,5 +104,13 @@ class CarReceive extends Model implements HasMedia
     {
         $this->addMediaCollection('real-claim');
     }
+    public function user():BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function carreceiveItems():HasMany
+    {
+        return $this->hasMany(CarReceiveItem::class);
+    }
 }
 

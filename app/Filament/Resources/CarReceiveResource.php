@@ -228,7 +228,7 @@ class CarReceiveResource extends Resource
                 DatePicker::make('receive_date')->label(__('trans.receive_date.text'))->required(),
                 TextInput::make('timex')->label(__('trans.timex.text'))->default(now()->format('H:i:s')),
                 TextInput::make('customer')->label(__('trans.customer.text'))->required(),
-                
+                TextInput::make('driver_name')->label(__('trans.driver_name.text'))->required(),
                 Select::make('car_year')
                     ->label(__('trans.car_year.text'))
                     ->preload()
@@ -246,6 +246,12 @@ class CarReceiveResource extends Resource
                     }
                     ),
             TextInput::make('tel_number')->label(__('trans.tel_number.text'))->required(),
+            TextInput::make('address')->label(__('trans.address.text'))->required()->columnSpanFull(),
+            Fieldset::make('ที่อยู่')
+                ->schema([
+                    ViewField::make('addresss-1')->view('filament.resources.forms.components.address'),
+                ]),
+
             DatePicker::make('pickup_date')->label(__('trans.pickup_date.text')),
             TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
             Select::make('brand')->label(__('trans.brand.text'))->required()
@@ -425,20 +431,30 @@ class CarReceiveResource extends Resource
                     ]),
                     DatePicker::make('car_park')->label(__('trans.car_park.text')),
                 ]),
-            MarkdownEditor::make('content')
-                ->label(__('trans.content.text'))
-                ->required()
-                ->toolbarButtons([
-                    'bold',
-                    'bulletList',
-                    'codeBlock',
-                    'edit',
-                    'italic',
-                    'orderedList',
-                    'preview',
-                    'strike',
-                ]),
-            Fieldset::make('สภาพรถและอุปกรณ์')
+                Card::make()
+                ->schema([
+                    Placeholder::make('บันทึกรายการความเสียหาย'),
+                    Repeater::make('carreceiveItems')
+                    ->relationship()
+                    ->schema(
+                        [
+                            TextInput::make('order')->label(__('trans.order.text'))
+                            ->columnSpan([
+                                'md' => 1,
+                            ])
+                            ->required(),
+                            TextInput::make('content')->label(__('trans.content.text'))
+                            ->columnSpan([
+                                'md' => 6,
+                            ])->required(),
+                        ])
+                    ->defaultItems(count: 1)
+                    ->columns([
+                        'md' => 7,
+                    ]) ->createItemButtonLabel('เพิ่มรายการความเสียหาย'),
+
+                ])->columnSpan('full'),
+            Fieldset::make('สภาพรถและอุปกรณ์ที่มีติดรถในวันที่รถเข้าซ่อม')
                 ->schema([
                     Checkbox::make('spare_tire')->label(__('trans.spare_tire.text')),
                     Checkbox::make('jack_handle')->label(__('trans.jack_handle.text')),
@@ -450,9 +466,21 @@ class CarReceiveResource extends Resource
                     Checkbox::make('spare_removal')->label(__('trans.spare_removal.text')),
                     Checkbox::make('fire_extinguisher')->label(__('trans.fire_extinguisher.text')),
                     Checkbox::make('spining_wheel')->label(__('trans.spining_wheel.text')),
-                    Checkbox::make('other')->label(__('trans.other.text')),
+                    Checkbox::make('other')->label(__('trans.other.text'))->columnSpanFull(),
+                    MarkdownEditor::make('content_other')
+                    ->label(__('trans.content_other.text'))
+                    ->required()
+                    ->toolbarButtons([
+                        'bold',
+                        'bulletList',
+                        'edit',
+                        'italic',
+                        'orderedList',
+                        'preview',
+                        'strike',
+                    ]),
                 ]),
-            Fieldset::make('สำหรับเอกสาร')
+            Fieldset::make('เอกสารที่ได้รับในวันที่รถเข้าซ่อม')
                 ->schema([
                     FileUpload::make('real_claim')->label(__('trans.real_claim.text')),
                     FileUpload::make('copy_claim')->label(__('trans.copy_claim.text')),
@@ -477,7 +505,19 @@ class CarReceiveResource extends Resource
                     Checkbox::make('copy_of_person_document')->label(__('trans.copy_of_person.text')),
                     Checkbox::make('account_book_document')->label(__('trans.account_book.text')),
                     Checkbox::make('atm_card_document')->label(__('trans.atm_card.text')),
-                    Checkbox::make('other_document')->label(__('trans.other.text')),
+                    Checkbox::make('other_document')->label(__('trans.other.text'))->columnSpanFull(),
+                    MarkdownEditor::make('content_document')
+                    ->label(__('trans.content_document.text'))
+                    ->required()
+                    ->toolbarButtons([
+                        'bold',
+                        'bulletList',
+                        'edit',
+                        'italic',
+                        'orderedList',
+                        'preview',
+                        'strike',
+                    ]),
                 ]),
 
             Fieldset::make('ภาพรถวันเข้าซ่อม')
@@ -495,6 +535,7 @@ class CarReceiveResource extends Resource
                         ->label(__('trans.etc.text')),
                 ]),
             TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
+            FileUpload::make('id_card_attachment')->label(__('trans.id_card_attachment.text'))->required(),
             ViewField::make('user_admin')->view('filament.resources.forms.components.user-admin'),
         ]);
     }

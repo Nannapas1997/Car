@@ -59,7 +59,7 @@ return [
     'inside_right.text' => 'ภายในเก๋งด้านขวา',
     'truck.text' => 'ภายในตู้บรรทุก',
     'etc.text' => 'ภาพอื่นๆ',
-    'addressee.text' => 'ผู้รับเรื่อง',
+    'addressee.text' => 'ผู้รับรถ',
     'car_year.text' => 'ปีรถ',
     'expense_item.text' => 'รายการค่าใช้จ่าย',
     'wage.text' => 'ค่าแรง',
@@ -152,5 +152,12 @@ return [
     'date_diff.text' => 'จำนวนวัน',
     'attach_file.text' => 'ไฟล์',
     'receipt_number.text' => 'เลขที่ใบเสร็จ',
-    'driver_name' => 'ชื่อผู้ขับขี่'
+    'driver_name.text' => 'ชื่อผู้ขับขี่',
+    'id_card_attachment.text' => 'แนบไฟล์บัตรประชาชน',
+    'content_other.text' => 'อุปกรณ์อื่นๆ',
+    'content_document.text' => 'เอกสารอื่นๆ',
+    'postal_code.text' => 'รหัสไปรษณีย์',
+    'district.text' => 'ตำบล',
+    'amphoe.text' => 'อำเภอ',
+    'province.text' => 'จังหวัด'
 ];
