@@ -23,3 +23,8 @@ Route::get(
     '/prints/{id}',
     [\App\Http\Controllers\CarReceivePrintController::class, 'carReceive']
 )->middleware(\App\Http\Middleware\Authenticate::class);
+
+Route::get(
+    '/car-release-prints/{id}',
+    [\App\Http\Controllers\CarReleasePrintController::class, 'print']
+);

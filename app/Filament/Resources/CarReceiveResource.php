@@ -161,7 +161,7 @@ class CarReceiveResource extends Resource
     public static function form(Form $form): Form
     {
 //        $thaiAddress = collect(json_decode(Storage::get('thaiAddress.json')));
-//        dd($thaiAddress->where('zipcode', '81120'));
+
         return $form
             ->schema([
                 TextInput::make('choose_garage')
@@ -446,7 +446,7 @@ class CarReceiveResource extends Resource
                                 'md' => 1,
                             ])
                             ->required(),
-                            TextInput::make('content')->label(__('trans.content.text'))
+                            TextInput::make('content')->label(__('trans.content.text'))->default('sdfsdf')
                             ->columnSpan([
                                 'md' => 6,
                             ])->required(),
