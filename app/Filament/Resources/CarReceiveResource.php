@@ -12,6 +12,7 @@ use Filament\Tables;
 use App\Models\CarReceive;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
@@ -163,6 +164,8 @@ class CarReceiveResource extends Resource
 
     public static function form(Form $form): Form
     {
+//        $thaiAddress = collect(json_decode(Storage::get('thaiAddress.json')));
+
         return $form
             ->schema([
                 TextInput::make('choose_garage')
@@ -446,7 +449,7 @@ class CarReceiveResource extends Resource
                                 'md' => 1,
                             ])
                             ->required(),
-                            TextInput::make('content')->label(__('trans.content.text'))
+                            TextInput::make('content')->label(__('trans.content.text'))->default('sdfsdf')
                             ->columnSpan([
                                 'md' => 6,
                             ])->required(),
@@ -554,10 +557,10 @@ class CarReceiveResource extends Resource
                     ->searchable()->toggleable()->sortable(),
                 TextColumn::make('receive_date')
                     ->label(__('trans.receive_date.text'))
-                    ->formatStateUsing(fn (string $state): string => convertYmdToThaiShort($state)),
+                    ->formatStateUsing(fn (?string $state): string => convertYmdToThaiShort($state)),
                 TextColumn::make('timex')
                     ->label(__('trans.timex.text'))
-                    ->formatStateUsing(fn (string $state): string => convertHisToHi($state)),
+                    ->formatStateUsing(fn (?string $state): string => convertHisToHi($state)),
                 TextColumn::make('customer')
                     ->label(__('trans.customer.text')),
                 TextColumn::make('repairman')
@@ -566,7 +569,7 @@ class CarReceiveResource extends Resource
                     ->label(__('trans.tel_number.text')),
                 TextColumn::make('pickup_date')
                     ->label(__('trans.pickup_date.text'))
-                    ->formatStateUsing(fn (string $state): string => convertYmdToThaiShort($state)),
+                    ->formatStateUsing(fn (?string $state): string => convertYmdToThaiShort($state)),
                 TextColumn::make('vehicle_registration')
                     ->label(__('trans.vehicle_registration.text'))
                     ->searchable()
