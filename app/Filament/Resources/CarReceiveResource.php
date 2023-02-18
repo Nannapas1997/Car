@@ -151,6 +151,10 @@ class CarReceiveResource extends Resource
                             $set('car_accident_choose', $name['car_accident_choose']);
                             $set('options-car', $name['options-car']);
                             $set('atm_card', $name['atm_card']);
+                            $set('postal_code', $name['postal_code']);
+                            $set('district', $name['district']);
+                            $set('amphoe', $name['amphoe']);
+                            $set('province', $name['province']);
                         }
                     }
                 }),
@@ -164,6 +168,7 @@ class CarReceiveResource extends Resource
                 TextInput::make('choose_garage')
                     ->default(Filament::auth()->user()->garage)
                     ->disabled(),
+
                 Card::make()->schema(static::getViewData('job_number')),
                 Select::make('search_regis')
                     ->label(__('trans.search_regis.text'))
@@ -248,10 +253,8 @@ class CarReceiveResource extends Resource
             TextInput::make('tel_number')->label(__('trans.tel_number.text'))->required(),
             TextInput::make('address')->label(__('trans.address.text'))->required()->columnSpanFull(),
             Fieldset::make('ที่อยู่')
-                ->schema([
-                    ViewField::make('addresss-1')->view('filament.resources.forms.components.address'),
-                ]),
-
+            ->schema([
+                ViewField::make('addresss-1')->view('filament.resources.forms.components.address')]),
             DatePicker::make('pickup_date')->label(__('trans.pickup_date.text')),
             TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
             Select::make('brand')->label(__('trans.brand.text'))->required()

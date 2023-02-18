@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/JQL.min.js"></script>
     <script type="text/javascript" src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/typeahead.bundle.js"></script>
@@ -14,6 +12,7 @@
         background-color: white !important;
     }
 </style>
+
 </head>
 <body>
 <div class="filament-forms-field-wrapper">
@@ -27,11 +26,16 @@
                 </span>
             </label>
         </div>
-
-
-        <input type="text" id="zipcode"  class="bg-white block w-full transition duration-75 rounded-lg shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-inset focus:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus:border-primary-500 border-gray-300 dark:border-gray-600">
-
-
+        <div class="filament-forms-text-input-component flex items-center space-x-2 rtl:space-x-reverse group">
+            <div class="flex-1">
+                <input type="text" id="zipcode" required="" class="bg-white block w-full transition duration-75 rounded-lg shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-inset focus:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus:border-primary-500 border-gray-300 dark:border-gray-600" x-bind:class="{
+                        'border-gray-300': ! ('zipcode' in $wire.__instance.serverMemo.errors),
+                        'dark:border-gray-600': ! ('zipcode' in $wire.__instance.serverMemo.errors) &amp;&amp; true,
+                        'border-danger-600 ring-danger-600': ('zipcode' in $wire.__instance.serverMemo.errors),
+                        'dark:border-danger-400 dark:ring-danger-400': ('zipcode' in $wire.__instance.serverMemo.errors) &amp;&amp; true,
+                    }">
+            </div>
+        </div>
     </div>
     <br>
     <div class="space-y-2">
@@ -50,7 +54,12 @@
 
     <div class="filament-forms-text-input-component flex items-center space-x-2 rtl:space-x-reverse group">
         <div class="flex-1">
-            <input type="text" id="district"  class="bg-white block w-full transition duration-75 rounded-lg shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-inset focus:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus:border-primary-500 border-gray-300 dark:border-gray-600" >
+            <input type="text" id="district" required="" class="bg-white block w-full transition duration-75 rounded-lg shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-inset focus:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus:border-primary-500 border-gray-300 dark:border-gray-600" x-bind:class="{
+                    'border-gray-300': ! ('district' in $wire.__instance.serverMemo.errors),
+                    'dark:border-gray-600': ! ('district' in $wire.__instance.serverMemo.errors) &amp;&amp; true,
+                    'border-danger-600 ring-danger-600': ('district' in $wire.__instance.serverMemo.errors),
+                    'dark:border-danger-400 dark:ring-danger-400': ('district' in $wire.__instance.serverMemo.errors) &amp;&amp; true,
+                }">
         </div>
     </div>
     </div>
@@ -76,7 +85,12 @@
 
 
         <div class="flex-1">
-            <input type="text" id="amphoe" required="" class="bg-white block w-full transition duration-75 rounded-lg shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-inset focus:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus:border-primary-500 border-gray-300 dark:border-gray-600" >
+            <input type="text" id="amphoe" required="" class="bg-white block w-full transition duration-75 rounded-lg shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-inset focus:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus:border-primary-500 border-gray-300 dark:border-gray-600" x-bind:class="{
+                    'border-gray-300': ! ('amphoe' in $wire.__instance.serverMemo.errors),
+                    'dark:border-gray-600': ! ('amphoe' in $wire.__instance.serverMemo.errors) &amp;&amp; true,
+                    'border-danger-600 ring-danger-600': ('amphoe' in $wire.__instance.serverMemo.errors),
+                    'dark:border-danger-400 dark:ring-danger-400': ('amphoe' in $wire.__instance.serverMemo.errors) &amp;&amp; true,
+                }">
         </div>
 
 
@@ -107,7 +121,12 @@
 
 
         <div class="flex-1">
-            <input  type="text" id="province" class="bg-white block w-full transition duration-75 rounded-lg shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-inset focus:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus:border-primary-500 border-gray-300 dark:border-gray-600" >
+            <input  type="text" id="province" required="" class="bg-white block w-full transition duration-75 rounded-lg shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-inset focus:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus:border-primary-500 border-gray-300 dark:border-gray-600" x-bind:class="{
+                    'border-gray-300': ! ('province' in $wire.__instance.serverMemo.errors),
+                    'dark:border-gray-600': ! ('province' in $wire.__instance.serverMemo.errors) &amp;&amp; true,
+                    'border-danger-600 ring-danger-600': ('province' in $wire.__instance.serverMemo.errors),
+                    'dark:border-danger-400 dark:ring-danger-400': ('province' in $wire.__instance.serverMemo.errors) &amp;&amp; true,
+                }">
         </div>
 
 

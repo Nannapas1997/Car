@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\InvoiceResource\Pages;
 
-use App\Filament\Resources\InvoiceResource;
 use Filament\Pages\Actions;
+use Filament\Pages\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\InvoiceResource;
 
 class EditInvoice extends EditRecord
 {
@@ -13,7 +14,11 @@ class EditInvoice extends EditRecord
     protected function getActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Action::make('print')
+                ->label('print')
+                ->openUrlInNewTab()
+                ->viewData(['id' => $this->data['id']])
+                ->view('prints.invoice-link'),
         ];
     }
 }
