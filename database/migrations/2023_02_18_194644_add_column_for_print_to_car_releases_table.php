@@ -15,13 +15,16 @@ return new class extends Migration
     {
         Schema::table('car_releases', function (Blueprint $table) {
             $table->bigIncrements('id')->first();
-            $table->string('staff_name');
-            $table->string('staff_position');
-            $table->string('car_brand');
-            $table->string('garage');
-            $table->string('insurance_name');
-            $table->string('policy_number');
-            $table->string('claim_number');
+            $table->string('staff_name')->nullable();
+            $table->string('staff_position')->nullable();
+            $table->string('brand')->nullable();
+            $table->string('choose_garage')->nullable();
+            $table->string('insu_company_name')->nullable();
+            $table->string('policy_number')->nullable();
+            $table->string('claim_number')->nullable();
+            $table->string('code_c0_c7')->nullable();
+            $table->string('price')->nullable();
+            $table->string('spare_code')->nullable();
             $table->softDeletes();
         });
     }
@@ -37,11 +40,14 @@ return new class extends Migration
             $table->dropColumn('id');
             $table->dropColumn('staff_name');
             $table->dropColumn('staff_position');
-            $table->dropColumn('car_brand');
-            $table->dropColumn('garage');
-            $table->dropColumn('insurance_name');
+            $table->dropColumn('brand');
+            $table->dropColumn('choose_garage');
+            $table->dropColumn('insu_company_name');
             $table->dropColumn('policy_number');
             $table->dropColumn('claim_number');
+            $table->dropColumn('code_c0_c7');
+            $table->dropColumn('price');
+            $table->dropColumn('spare_code');
             $table->dropSoftDeletes();
         });
     }

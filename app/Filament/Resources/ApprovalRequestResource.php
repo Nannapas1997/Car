@@ -38,7 +38,7 @@ class ApprovalRequestResource extends Resource
         $optionValue = [];
 
         if (!$optionData) {
-            $jobNumberFirst = $currentGarage . now()->format('-y-m-d-') . '0001';
+            $jobNumberFirst = $currentGarage . now()->format('-y-m-d-') . '00001';
             $optionValue[$jobNumberFirst] = $jobNumberFirst;
         } else {
             $lastValue = Arr::first($optionData);
@@ -158,7 +158,6 @@ class ApprovalRequestResource extends Resource
                 TextColumn::make('job_number')->label(__('trans.job_number.text'))->searchable()->sortable(),
                 TextColumn::make('approval_number')->label(__('trans.approval_number.text')),
                 TextColumn::make('notification_number')->label(__('trans.notification_number.text')),
-                TextColumn::make('number_ab')->label(__('trans.number_ab.text')),
                 TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->searchable()->sortable(),
                 TextColumn::make('amount')->label(__('trans.amount.text')),
                 TextColumn::make('vat')->label(__('trans.vat.text')),

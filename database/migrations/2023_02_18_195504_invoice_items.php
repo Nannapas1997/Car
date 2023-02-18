@@ -13,8 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('car_receive_items', function (Blueprint $table) {
-            $table->unsignedBigInteger('car_receive_id');
+        Schema::create('invoice_items', function (Blueprint $table) {
+            $table->id();
+            $table->string('job_number')->nullable();
+            $table->foreignId('invoice_id');
+            $table->string('code_c0_c7')->nullable();
+            $table->string('price')->nullable();
+            $table->string('spare_code')->nullable();
         });
     }
 
@@ -25,8 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('car_receive_items', function (Blueprint $table) {
-            $table->dropColumn('car_receive_id');
-        });
+        Schema::dropIfExists('invoice_items');
     }
 };

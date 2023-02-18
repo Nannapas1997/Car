@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('disbursement_amount')->nullable();
             $table->string('buy_consumables')->nullable()->required();
-            $table->string('group_checkbox')->nullable()->required();
             $table->string('buy_spare')->nullable();
             $table->string('oil')->nullable();
             $table->string('common_expenses')->nullable();
@@ -26,6 +25,7 @@ return new class extends Migration
             $table->string('insurance_certification')->nullable();
             $table->string('internal_certification_fee')->nullable();
             $table->string('financial')->nullable();
+            $table->string('forerunner')->nullable();
         });
     }
 

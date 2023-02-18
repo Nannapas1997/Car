@@ -69,7 +69,7 @@ class CarReceiveResource extends Resource
         $optionValue = [];
 
         if (!$optionData) {
-            $jobNumberFirst = $currentGarage . now()->format('-y-m-d-') . '0001';
+            $jobNumberFirst = $currentGarage . now()->format('-y-m-d-') . '00001';
             $optionValue[$jobNumberFirst] = $jobNumberFirst;
         } else {
             $lastValue = Arr::first($optionData);
@@ -364,6 +364,18 @@ class CarReceiveResource extends Resource
                     'C' => 'C',
                     'D' => 'D'
                 ])->columns(5),
+                MarkdownEditor::make('content')
+                    ->label(__('trans.content.text'))
+                    ->required()
+                    ->toolbarButtons([
+                        'bold',
+                        'bulletList',
+                        'edit',
+                        'italic',
+                        'orderedList',
+                        'preview',
+                        'strike',
+                    ]),
             Fieldset::make('ประเภทของรถที่เกิดอุบัติเหตุ')
                 ->schema([
                     Radio::make('car_accident')
@@ -437,29 +449,7 @@ class CarReceiveResource extends Resource
                     ]),
                     DatePicker::make('car_park')->label(__('trans.car_park.text')),
                 ]),
-                Card::make()
-                ->schema([
-                    Placeholder::make('บันทึกรายการความเสียหาย'),
-                    Repeater::make('carreceiveItems')
-                    ->relationship()
-                    ->schema(
-                        [
-                            TextInput::make('order')->label(__('trans.order.text'))
-                            ->columnSpan([
-                                'md' => 1,
-                            ])
-                            ->required(),
-                            TextInput::make('content')->label(__('trans.content.text'))->default('sdfsdf')
-                            ->columnSpan([
-                                'md' => 6,
-                            ])->required(),
-                        ])
-                    ->defaultItems(count: 1)
-                    ->columns([
-                        'md' => 7,
-                    ]) ->createItemButtonLabel('เพิ่มรายการความเสียหาย'),
 
-                ])->columnSpan('full'),
             Fieldset::make('สภาพรถและอุปกรณ์ที่มีติดรถในวันที่รถเข้าซ่อม')
                 ->schema([
                     Checkbox::make('spare_tire')->label(__('trans.spare_tire.text')),

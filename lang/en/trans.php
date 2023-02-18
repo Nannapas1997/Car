@@ -159,5 +159,6 @@ return [
     'postal_code.text' => 'รหัสไปรษณีย์',
     'district.text' => 'ตำบล',
     'amphoe.text' => 'อำเภอ',
-    'province.text' => 'จังหวัด'
+    'province.text' => 'จังหวัด',
+    'date.text' => 'วันที่'
 ];

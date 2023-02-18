@@ -155,7 +155,7 @@ class RequisitionResource extends Resource
                 TextColumn::make('pickup_time')->label(__('trans.pickup_time.text')),
                 TextColumn::make('parts_list')->label(__('trans.parts_list.text')),
                 TextColumn::make('spare_code')->label(__('trans.spare_code.text')),
-                TextColumn::make('forerunner')->label(__('trans.pickforerunnerup_time.text')),
+                TextColumn::make('forerunner')->label(__('trans.forerunner.text')),
                 TextColumn::make('approver')->label(__('trans.approver.text')),
             ])
             ->filters([

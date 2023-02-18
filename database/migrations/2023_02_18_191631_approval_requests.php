@@ -14,11 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('approval_requests', function (Blueprint $table) {
-            $table->string('job_number')->nullable();
-            $table->string('approval_number')->required();
-            $table->string('vehicle_registration')->required();
-            $table->string('notification_number')->required();
-            $table->string('number_ab')->required();
+            $table->id();
+            $table->string('job_number');
+            $table->string('approval_number')->nullable()->required();
+            $table->string('vehicle_registration')->nullable()->required();
+            $table->string('notification_number')->nullable()->required();
+            $table->string('number_ab')->nullable()->required();
             $table->string('amount')->nullable()->required();
             $table->string('vat')->nullable()->required();
             $table->string('aggregate')->nullable()->required();

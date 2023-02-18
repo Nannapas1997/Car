@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('car_receives', function (Blueprint $table) {
-            $table->string('content_other');
+            $table->string('content_other')->nullable();
         });
     }
 

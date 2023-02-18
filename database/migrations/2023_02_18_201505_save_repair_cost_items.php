@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('save_repair_cost_items', function (Blueprint $table) {
             $table->id();
-            $table->string('vehicle_registration');
+            $table->string('vehicle_registration')->nullable();
             $table->foreignId('save_repair_cost_id');
-            $table->string('code_c0_c7');
-            $table->string('price');
-            $table->string('spare_code');
+            $table->string('code_c0_c7')->nullable();
+            $table->string('price')->nullable();
+            $table->string('spare_code')->nullable();
         });
     }
 

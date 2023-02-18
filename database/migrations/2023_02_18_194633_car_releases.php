@@ -17,9 +17,6 @@ return new class extends Migration
             $table->string('job_number');
             $table->string('vehicle_registration');
             $table->foreignId('save_repair_cost_id');
-            $table->string('code_c0_c7');
-            $table->string('price');
-            $table->string('spare_code');
         });
     }
 

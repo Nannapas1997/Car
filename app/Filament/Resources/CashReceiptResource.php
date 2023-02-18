@@ -37,19 +37,14 @@ class CashReceiptResource extends Resource
                 ->label(__('trans.input.text')),
                 Fieldset::make('ประเภทของการค่าใช้จ่ายต่างๆ')
                 ->schema([
-                    CheckboxList::make('group_checkbox')
-                    ->label(__('trans.group_checkbox.text'))
-                    ->required()
-                    ->options([
-                        'ซื้อวัสดุสิ้นเปลือง' => 'ซื้อวัสดุสิ้นเปลือง',
-                        'ซื้ออะไหล่' => 'ซื้ออะไหล่',
-                        'น้ำมัน' => 'น้ำมัน',
-                        'ค่าใช้จ่ายส่วนกลาง' => 'ค่าใช้จ่ายส่วนกลาง',
-                        'ค่างานขนส่ง' => 'ค่างานขนส่ง',
-                        'ค่ารับรองลูกค้า' => 'ค่ารับรองลูกค้า',
-                        'ค่ารับรองประกัน' => 'ค่ารับรองประกัน',
-                        'ค่ารับรองภายใน' => 'ค่ารับรองภายใน',
-                    ])
+                    Checkbox::make('buy_consumables')->label(__('trans.buy_consumables.text')),
+                    Checkbox::make('buy_spare')->label(__('trans.buy_spare.text')),
+                    Checkbox::make('oil')->label(__('trans.oil.text')),
+                    Checkbox::make('common_expenses')->label(__('trans.common_expenses.text')),
+                    Checkbox::make('transportation_cost')->label(__('trans.transportation_cost.text')),
+                    Checkbox::make('customer_testimonials')->label(__('trans.customer_testimonials.text')),
+                    Checkbox::make('insurance_certification')->label(__('trans.insurance_certification.text')),
+                    Checkbox::make('internal_certification_fee')->label(__('trans.internal_certification_fee.text')),
                 ]),
                 TextInput::make('other')
                 ->label(__('trans.other.text'))
