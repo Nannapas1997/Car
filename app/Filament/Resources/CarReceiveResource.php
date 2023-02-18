@@ -554,10 +554,10 @@ class CarReceiveResource extends Resource
                     ->searchable()->toggleable()->sortable(),
                 TextColumn::make('receive_date')
                     ->label(__('trans.receive_date.text'))
-                    ->formatStateUsing(fn (string $state): string => convertYmdToThaiShort($state)),
+                    ->formatStateUsing(fn (?string $state): string => convertYmdToThaiShort($state)),
                 TextColumn::make('timex')
                     ->label(__('trans.timex.text'))
-                    ->formatStateUsing(fn (string $state): string => convertHisToHi($state)),
+                    ->formatStateUsing(fn (?string $state): string => convertHisToHi($state)),
                 TextColumn::make('customer')
                     ->label(__('trans.customer.text')),
                 TextColumn::make('repairman')
@@ -566,7 +566,7 @@ class CarReceiveResource extends Resource
                     ->label(__('trans.tel_number.text')),
                 TextColumn::make('pickup_date')
                     ->label(__('trans.pickup_date.text'))
-                    ->formatStateUsing(fn (string $state): string => convertYmdToThaiShort($state)),
+                    ->formatStateUsing(fn (?string $state): string => convertYmdToThaiShort($state)),
                 TextColumn::make('vehicle_registration')
                     ->label(__('trans.vehicle_registration.text'))
                     ->searchable()
