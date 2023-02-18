@@ -12,6 +12,7 @@ use Filament\Tables;
 use App\Models\CarReceive;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
@@ -159,6 +160,8 @@ class CarReceiveResource extends Resource
 
     public static function form(Form $form): Form
     {
+//        $thaiAddress = collect(json_decode(Storage::get('thaiAddress.json')));
+//        dd($thaiAddress->where('zipcode', '81120'));
         return $form
             ->schema([
                 TextInput::make('choose_garage')
