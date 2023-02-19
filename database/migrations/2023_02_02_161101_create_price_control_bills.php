@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('price_control_bills', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('job_number_control')->nullable();
             $table->string('number_price_control')->required();
             $table->string('notification_number')->required();

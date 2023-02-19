@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('requisitions', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('job_number')->nullable();
             $table->string('vehicle_registration')->nullable()->required();
             $table->string('input')->nullable();
@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('unit')->nullable();
             $table->string('forerunner')->nullable();
             $table->string('approver')->nullable();
+            $table->string('parts_list')->nullable();
         });
     }
 

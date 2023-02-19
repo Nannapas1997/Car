@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('invoice_items', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('job_number')->nullable();
             $table->foreignId('invoice_id');
             $table->string('code_c0_c7')->nullable();

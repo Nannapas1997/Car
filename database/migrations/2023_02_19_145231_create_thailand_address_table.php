@@ -13,8 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('follow_works', function (Blueprint $table) {
-            $table->id();
+        Schema::create('thailand_addresses', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('province')->nullable();
+            $table->string('amphoe')->nullable();
+            $table->string('district')->nullable();
+            $table->string('zipcode')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -25,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('follow_works');
+        Schema::dropIfExists('thailand_addresses');
     }
 };

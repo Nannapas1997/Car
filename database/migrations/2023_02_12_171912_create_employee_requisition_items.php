@@ -13,8 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('employee_requisitions', function (Blueprint $table) {
-            $table->id();
+        Schema::create('employee_requisition_items', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('employee_requisition_id');
             $table->string('order')->nullable();
             $table->string('employee_lists')->nullable()->required();
             $table->string('disbursement_amount')->nullable()->required();
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee_requisitions');
+        Schema::dropIfExists('employee_requisition_items');
     }
 };

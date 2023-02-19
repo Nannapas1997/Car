@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('purchase_order_items', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('purchase_order_id');
             $table->string('job_number')->nullable();
             $table->string('parts_list')->nullable()->required();
             $table->string('spare_code')->nullable()->required();

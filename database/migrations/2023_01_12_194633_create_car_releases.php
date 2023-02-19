@@ -14,9 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create('car_releases', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->string('job_number');
             $table->string('vehicle_registration');
-            $table->foreignId('save_repair_cost_id');
+            $table->string('staff_name')->nullable();
+            $table->string('staff_position')->nullable();
+            $table->string('brand')->nullable();
+            $table->string('choose_garage')->nullable();
+            $table->string('insu_company_name')->nullable();
+            $table->string('policy_number')->nullable();
+            $table->string('claim_number')->nullable();
+            $table->softDeletes();
         });
     }
 

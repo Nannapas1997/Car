@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('cash_receipts', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('disbursement_amount')->nullable();
             $table->string('buy_consumables')->nullable()->required();
             $table->string('buy_spare')->nullable();

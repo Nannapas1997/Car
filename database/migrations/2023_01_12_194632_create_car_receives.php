@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('car_receives', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('choose_garage')->required();
             $table->string('job_number');
             $table->date('receive_date')->nullable();
@@ -88,6 +88,12 @@ return new class extends Migration
             $table->string('car_accident')->nullable();
             $table->string('car_accident_choose')->nullable();
             $table->string('options-car')->nullable();
+            $table->string('content_other')->nullable();
+            $table->string('address')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('district')->nullable();
+            $table->string('province')->nullable();
+            $table->string('amphoe')->nullable();
         });
     }
 

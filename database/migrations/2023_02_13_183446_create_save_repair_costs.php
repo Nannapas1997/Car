@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('save_repair_costs', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('job_number_control')->nullable();
             $table->string('customer')->required();
             $table->string('vehicle_registration')->required();

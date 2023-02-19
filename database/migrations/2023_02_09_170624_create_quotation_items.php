@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('save_repair_cost_items', function (Blueprint $table) {
-            $table->id();
-            $table->string('vehicle_registration')->nullable();
-            $table->foreignId('save_repair_cost_id');
-            $table->string('code_c0_c7')->nullable();
-            $table->string('price')->nullable();
+        Schema::create('quotation_items', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('quotation_id');
+            $table->string('number')->nullable();
             $table->string('spare_code')->nullable();
+            $table->string('list_damaged_parts')->nullable();
+            $table->string('quantity')->nullable();
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('save_repair_cost_items');
+        Schema::dropIfExists('quotation_items');
     }
 };

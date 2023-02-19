@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('requisition_items', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('requisition_id');
             $table->string('job_number')->nullable();
             $table->string('picking_list')->nullable()->required();
             $table->string('spare_code')->nullable();

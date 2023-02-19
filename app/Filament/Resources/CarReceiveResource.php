@@ -58,7 +58,8 @@ class CarReceiveResource extends Resource
     protected static ?string $navigationGroup = 'My Work';
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
-    public static function getViewData(): array{
+    public static function getViewData(): array
+    {
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = CarReceive::query()
             ->where('choose_garage', $currentGarage)

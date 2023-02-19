@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('employee_histories', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('employee_code')->nullable();
             $table->string('employee_lists')->nullable()->required();
             $table->string('prefix')->nullable()->required();

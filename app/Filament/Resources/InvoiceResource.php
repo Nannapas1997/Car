@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Invoice;
@@ -22,12 +23,16 @@ use Filament\Forms\Components\Placeholder;
 use App\Filament\Resources\InvoiceResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\InvoiceResource\RelationManagers;
+use PhpParser\Node\Stmt\Label;
 
 class InvoiceResource extends Resource
 {
     protected static ?string $model = Invoice::class;
     protected static ?string $navigationGroup = 'Account';
     protected static ?string $navigationIcon = 'heroicon-o-document-add';
+
+    public int $totalAmount = 0;
+
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = CarReceive::query()
@@ -82,6 +87,7 @@ class InvoiceResource extends Resource
                 }),
         ];
     }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -95,44 +101,90 @@ class InvoiceResource extends Resource
                     ->schema([
                         Placeholder::make('รายการค่าใช้จ่าย'),
                         Repeater::make('invoiceItems')
-                        ->relationship()
-                        ->schema(
-                            [
-                                Select::make('code_c0_c7')->label(__('trans.code_c0_c7.text'))
-                                ->options([
-                                    'C0' => 'C0',
-                                    'C1' => 'C1',
-                                    'C2' => 'C2',
-                                    'C3' => 'C3',
-                                    'C4' => 'C4',
-                                    'C5' => 'C5',
-                                    'C6' => 'C6',
-                                    'C7' => 'C7',
+                            ->reactive()
+                            ->relationship()
+                            ->schema(
+                                [
+                                    Select::make('code_c0_c7')->label(__('trans.code_c0_c7.text'))
+                                    ->options([
+                                        'C0' => 'C0',
+                                        'C1' => 'C1',
+                                        'C2' => 'C2',
+                                        'C3' => 'C3',
+                                        'C4' => 'C4',
+                                        'C5' => 'C5',
+                                        'C6' => 'C6',
+                                        'C7' => 'C7',
+                                    ])
+                                    ->required()
+                                    ->reactive()
+                                    ->columnSpan([
+                                        'md' => 2,
+                                    ]),
+                                    TextInput::make('price')
+                                        ->label(__('trans.price.text'))
+                                        ->columnSpan([
+                                            'md' => 3,
+                                        ])
+                                        ->required(),
+                                    TextInput::make('spare_code')->label(__('trans.spare_code.text'))
+                                    ->columnSpan([
+                                        'md' => 3,
+                                    ])->required(),
                                 ])
-                                ->required()
-                                ->reactive()
-                                ->columnSpan([
-                                    'md' => 2,
-                                ]),
-                                TextInput::make('price')->label(__('trans.price.text'))
-                                ->columnSpan([
-                                    'md' => 3,
-                                ])
-                                ->required(),
-                                TextInput::make('spare_code')->label(__('trans.spare_code.text'))
-                                ->columnSpan([
-                                    'md' => 3,
-                                ])->required(),
-                            ])
-                        ->defaultItems(count: 1)
-                        ->columns([
-                            'md' => 8,
-                        ]) ->createItemButtonLabel('เพิ่มรายการค่าใช้จ่าย'),
+                            ->defaultItems(count: 1)
+                            ->columns(['md' => 8,])
+                            ->createItemButtonLabel('เพิ่มรายการค่าใช้จ่าย'),
+                        ])->columnSpan('full'),
+                    TextInput::make('amount_display')
+                        ->label(__('trans.amount.text'))
+                        ->disabled()
+                        ->placeholder(function (Closure $get) {
+                            $invoiceItems = $get('invoiceItems');
+                            $total = 0;
 
-                    ])->columnSpan('full'),
-                    TextInput::make('amount')->label(__('trans.amount.text'))->required(),
-                    TextInput::make('vat')->label(__('trans.vat.text'))->required(),
-                    TextInput::make('aggregate')->label(__('trans.aggregate.text'))->required(),
+                            foreach ($invoiceItems as $item) {
+                                if(Arr::get($item, 'price')) {
+                                    $total += Arr::get($item, 'price');
+                                }
+                            }
+
+                            return $total ? number_format($total, 2) : '0.00';
+                        }),
+                    TextInput::make('vat_display')
+                        ->label(__('trans.vat.text'))
+                        ->disabled()
+                        ->placeholder(function (Closure $get) {
+                            $invoiceItems = $get('invoiceItems');
+                            $total = 0;
+
+                            foreach ($invoiceItems as $item) {
+                                if(Arr::get($item, 'price')) {
+                                    $total += Arr::get($item, 'price');
+                                }
+                            }
+
+                            $vatTotal = $total * (7/100);
+
+                            return $vatTotal ? number_format($vatTotal, 2) : '0.00';
+                        }),
+                    TextInput::make('aggregate_display')
+                        ->label(__('trans.aggregate.text'))
+                        ->disabled()
+                        ->placeholder(function (Closure $get) {
+                            $invoiceItems = $get('invoiceItems');
+                            $total = 0;
+
+                            foreach ($invoiceItems as $item) {
+                                if(Arr::get($item, 'price')) {
+                                    $total += Arr::get($item, 'price');
+                                }
+                            }
+
+                            $vatTotal = $total * (7/100);
+
+                            return $total + $vatTotal;
+                        }),
                     TextInput::make('courier_document')->label(__('trans.courier_document.text'))->required(),
                     TextInput::make('recipient_document')->label(__('trans.recipient_document.text'))->required(),
             ]);
