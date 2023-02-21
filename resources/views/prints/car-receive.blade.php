@@ -19,7 +19,12 @@
                     <div class="p-9">
                         <div class="space-y-6 text-slate-700">
                             <div class="flex justify-between">
-                                <img class="object-cover h-12 self-left" src="{{ asset('/assets/images/spphat-logo-1.png') }}" />
+                                @if(\Filament\Facades\Filament::auth()->user()->garage == 'SP')
+                                    <img class="object-cover h-12 self-left" src="{{ asset('/assets/images/logo_SP.png') }}" />
+                                @endif
+                                    @if(\Filament\Facades\Filament::auth()->user()->garage == 'SBO')
+                                        <img class="object-cover h-12 self-left" src="{{ asset('/assets/images/logo_SBO.png') }}" />
+                                    @endif
                                 <div class="text-end">
                                     <h1 class="text-2xl font-extrabold tracking-tight uppercase font-body">
                                         เอกสารรับรถ

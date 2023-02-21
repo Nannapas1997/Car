@@ -166,8 +166,6 @@ class CarReceiveResource extends Resource
 
     public static function form(Form $form): Form
     {
-//        $thaiAddress = collect(json_decode(Storage::get('thaiAddress.json')));
-
         return $form
             ->schema([
                 TextInput::make('choose_garage')
@@ -265,7 +263,26 @@ class CarReceiveResource extends Resource
                 ->preload()
                 ->searchable()
                 ->reactive()
-                ->options(ThailandAddress::all()->pluck('zipcode', 'id')->toArray())
+                ->options(function (Closure $get) {
+                    $displayAddress = [];
+                    $address = ThailandAddress::where('zipcode', 'like', '%' . $get('postal_code') . '%')
+                        ->get()
+                        ->toArray();
+
+                    if ($address) {
+                        foreach ($address as $val) {
+                            $displayAddress[Arr::get($val, 'id')] = Arr::get($val, 'zipcode')
+                                . ' '
+                                . Arr::get($val, 'district')
+                                . ' '
+                                . Arr::get($val, 'amphoe')
+                                . ' '
+                                . Arr::get($val, 'province');
+                        }
+                    }
+
+                    return $displayAddress;
+                })
                 ->afterStateUpdated(function ($set, $state) {
                     if ($state) {
                         $name = ThailandAddress::find($state)->toArray();
@@ -424,6 +441,7 @@ class CarReceiveResource extends Resource
                 ->schema([
                     Radio::make('options')->label(__('trans.options.text'))
                     ->required()
+                    ->reactive()
                     ->options([
                         'เคลมประกันบริษัท'=>'เคลมประกันบริษัท',
                         'เงินสด'=>'เงินสด'
@@ -432,7 +450,7 @@ class CarReceiveResource extends Resource
             Select::make('insu_company_name')
                 ->label(__('trans.insu_company_name.text'))
                 ->preload()
-                ->required()
+                ->hidden(fn (Closure $get) => $get('options') == 'เงินสด')
                 ->options([
                     'กรุงเทพประกันภัย' => 'กรุงเทพประกันภัย',
                     'กรุงไทยพานิชประกันภัย' => 'กรุงไทยพานิชประกันภัย',
@@ -459,9 +477,15 @@ class CarReceiveResource extends Resource
                     'แอกซ่าประกันภัย' => 'แอกซ่าประกันภัย',
                     'แอลเอ็มจี ประกันภัย' => 'แอลเอ็มจี ประกันภัย',
                 ]),
-            TextInput::make('policy_number')->label(__('trans.policy_number.text'))->required(),
-            TextInput::make('noti_number')->label(__('trans.noti_number.text'))->required(),
-            TextInput::make('claim_number')->label(__('trans.claim_number.text'))->required(),
+            TextInput::make('policy_number')
+                ->label(__('trans.policy_number.text'))
+                ->hidden(fn (Closure $get) => $get('options') == 'เงินสด'),
+            TextInput::make('noti_number')
+                ->label(__('trans.noti_number.text'))
+                ->hidden(fn (Closure $get) => $get('options') == 'เงินสด'),
+            TextInput::make('claim_number')
+                ->label(__('trans.claim_number.text'))
+                ->hidden(fn (Closure $get) => $get('options') == 'เงินสด'),
             Fieldset::make('ประเภทการจอด')
                 ->schema([
                     Radio::make('park_type')->label(__('trans.options.text'))
