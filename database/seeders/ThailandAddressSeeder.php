@@ -12,9 +12,7 @@ class ThailandAddressSeeder extends Seeder
     public function run()
     {
         $thaiAddress = json_decode(Storage::get('thaiAddress.json'), true);
-
         $this->command->getOutput()->progressStart(count($thaiAddress));
-
         foreach ($thaiAddress as $val) {
             ThailandAddress::create([
                 'province' => Arr::get($val, 'province'),

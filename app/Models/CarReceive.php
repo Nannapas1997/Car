@@ -92,6 +92,14 @@ class CarReceive extends Model implements HasMedia
         'car_year',
         'car_accident',
         'car_accident_choose',
+        'driver_name',
+        'address',
+        'postal_code',
+        'district',
+        'amphoe',
+        'province',
+        'content_other',
+        'content_document',
     ];
     // turn off both
     public $timestamps = false;

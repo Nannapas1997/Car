@@ -51,6 +51,7 @@ use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Resources\CarReceiveResource\RelationManagers;
 use App\Filament\Resources\CarReceiveResource\Widgets\carReceives;
+use App\Models\ThailandAddress;
 
 class CarReceiveResource extends Resource
 {
@@ -258,7 +259,28 @@ class CarReceiveResource extends Resource
             TextInput::make('address')->label(__('trans.address.text'))->required()->columnSpanFull(),
             Fieldset::make('ที่อยู่')
             ->schema([
-                ViewField::make('addresss-1')->view('filament.resources.forms.components.address')]),
+                Select::make('postal_code')
+                ->label(__('trans.postal_code.text'))
+                ->required()
+                ->preload()
+                ->searchable()
+                ->reactive()
+                ->options(ThailandAddress::all()->pluck('zipcode', 'id')->toArray())
+                ->afterStateUpdated(function ($set, $state) {
+                    if ($state) {
+                        $name = ThailandAddress::find($state)->toArray();
+                        if ($name) {
+                            $set('district', $name['district']);
+                            $set('amphoe', $name['amphoe']);
+                            $set('province', $name['province']);
+                        }
+                    }
+                }),
+                 TextInput::make('district')->label(__('trans.district.text'))->required(),
+                 TextInput::make('amphoe')->label(__('trans.amphoe.text'))->required(),
+                 TextInput::make('province')->label(__('trans.province.text'))->required(),
+                ]),
+
             DatePicker::make('pickup_date')->label(__('trans.pickup_date.text')),
             TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
             Select::make('brand')->label(__('trans.brand.text'))->required()
