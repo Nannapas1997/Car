@@ -14,6 +14,7 @@ class QuotationItem extends Model
         'spare_code',
         'list_damaged_parts',
         'quantity',
+        'price',
     ];
     public $timestamps = false;
 

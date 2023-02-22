@@ -290,7 +290,7 @@ class QuotationResource extends Resource
                             [
                                 Forms\Components\Hidden::make('order_hidden')
                                     ->disabled(true),
-                                Select::make('code_c0_c7')
+                                Select::make('spare_code')
                                     ->label(__('trans.code_c0_c7.text'))
                                     ->options([
                                         'C0' => 'C0',
@@ -316,7 +316,7 @@ class QuotationResource extends Resource
                                     ->columnSpan([
                                         'md' => 3,
                                     ])
-                                    ->hidden(fn (Closure $get) => $get('code_c0_c7') == 'C6'),
+                                    ->hidden(fn (Closure $get) => $get('spare_code') == 'C6'),
                                 TextInput::make('quantity')
                                     ->label(__('trans.quantity.text'))
                                     ->numeric()
@@ -324,10 +324,10 @@ class QuotationResource extends Resource
                                     ->columnSpan([
                                         'md' => 2,
                                     ])
-                                    ->hidden(fn (Closure $get) => $get('code_c0_c7') == 'C6'),
-                                TextInput::make('spare_value')
+                                    ->hidden(fn (Closure $get) => $get('spare_code') == 'C6'),
+                                TextInput::make('price')
                                     ->label(function (Closure $get) {
-                                        if ($get('code_c0_c7') == 'C6') {
+                                        if ($get('spare_code') == 'C6') {
                                             return 'ค่าแรง';
                                         }
                                         return __('trans.spare_value.text');
@@ -372,8 +372,8 @@ class QuotationResource extends Resource
                         $total = 0;
 
                         foreach ($items as $item) {
-                            if(Arr::get($item, 'spare_value') && Arr::get($item, 'code_c0_c7') == 'C6') {
-                                $total += Arr::get($item, 'spare_value');
+                            if(Arr::get($item, 'price') && Arr::get($item, 'spare_code') == 'C6') {
+                                $total += Arr::get($item, 'price');
                             }
                         }
 
@@ -390,10 +390,10 @@ class QuotationResource extends Resource
                                 $quantity = Arr::get($item, 'quantity', 1);
 
                                 if(
-                                    Arr::get($item, 'spare_value') &&
-                                    Arr::get($item, 'code_c0_c7') != 'C6'
+                                    Arr::get($item, 'price') &&
+                                    Arr::get($item, 'spare_code') != 'C6'
                                 ) {
-                                    $total += Arr::get($item, 'spare_value') * $quantity;
+                                    $total += Arr::get($item, 'price') * $quantity;
                                 }
                             }
 
@@ -408,15 +408,15 @@ class QuotationResource extends Resource
 
                             foreach ($items as $item) {
                                 $quantity = Arr::get($item, 'quantity', 1);
-                               
-                                if (Arr::get($item, 'code_c0_c7') == 'C6') {
+
+                                if (Arr::get($item, 'spare_code') == 'C6') {
                                     $quantity = 1;
                                 }
 
                                 if(
-                                    Arr::get($item, 'spare_value')
+                                    Arr::get($item, 'spare_code')
                                 ) {
-                                    $total += Arr::get($item, 'spare_value') * $quantity;
+                                    $total += Arr::get($item, 'price') * $quantity;
                                 }
                             }
 
@@ -434,14 +434,14 @@ class QuotationResource extends Resource
                             foreach ($items as $item) {
                                 $quantity = Arr::get($item, 'quantity', 1);
 
-                                if (Arr::get($item, 'code_c0_c7') == 'C6') {
+                                if (Arr::get($item, 'spare_code') == 'C6') {
                                     $quantity = 1;
                                 }
 
                                 if(
-                                    Arr::get($item, 'spare_value')
+                                    Arr::get($item, 'price')
                                 ) {
-                                    $total += Arr::get($item, 'spare_value') * $quantity;
+                                    $total += Arr::get($item, 'price') * $quantity;
                                 }
                             }
 
@@ -486,7 +486,7 @@ class QuotationResource extends Resource
                 TextColumn::make('repair_date')->label(__('trans.repair_date.text')),
                 TextColumn::make('sks')->label(__('trans.sks.text')),
                 TextColumn::make('wchp')->label(__('trans.wchp.text')),
-                TextColumn::make('list_damaged_parts')->label(__('trans.quotation_date.text')),
+                TextColumn::make('quotation_date')->label(__('trans.quotation_date.text')),
                 TextColumn::make('store')->label(__('trans.store.text')),
                 TextColumn::make('wage')->label(__('trans.wage.text')),
                 TextColumn::make('total')->label(__('trans.total.text')),
