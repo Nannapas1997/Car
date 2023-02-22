@@ -15,6 +15,13 @@ class QuotationItem extends Model
         'list_damaged_parts',
         'quantity',
         'price',
+        'sum_insured',
+        'creation_date',
+        'total',
+        'vat',
+        'overall',
+        'status',
+        'total_wage'
     ];
     public $timestamps = false;
 

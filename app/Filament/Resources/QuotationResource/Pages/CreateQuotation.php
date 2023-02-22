@@ -25,7 +25,7 @@ class CreateQuotation extends CreateRecord
 
             if(
                 Arr::get($item, 'price') &&
-                Arr::get($item, 'code_c0_c7') != 'C6'
+                Arr::get($item, 'spare_code') != 'C6'
             ) {
                 $includingSpareParts += Arr::get($item, 'price') * $quantity;
             }
@@ -51,9 +51,6 @@ class CreateQuotation extends CreateRecord
         Arr::set($data, 'overall_price', number_format($overAllPrice, 0));
         Arr::set($data, 'wage', number_format($wage, 2));
         Arr::set($data, 'including_spare_parts', number_format($includingSpareParts, 2));
-        Arr::set($data, 'vat', number_format($vatTotal, 2));
-        Arr::set($data, 'overall', number_format($sumTotal, 2));
-        Arr::set($data, 'spare_value', number_format($total, 2));
         return $data;
     }
 }
