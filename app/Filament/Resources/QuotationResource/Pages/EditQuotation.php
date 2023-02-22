@@ -18,6 +18,7 @@ class EditQuotation extends EditRecord
         $total = 0;
         $includingSpareParts = 0;
         $wage = 0;
+        $wageTotal = 0;
         $overAllPrice = count($items); // น่าจะเป็นจำนวนรายการนะ
 
         foreach ($items as $item) {
@@ -31,10 +32,10 @@ class EditQuotation extends EditRecord
             }
 
             if(Arr::get($item, 'price') && Arr::get($item, 'spare_code') == 'C6') {
-                $wage += Arr::get($item, 'price');
+                $wageTotal += Arr::get($item, 'price');
             }
 
-            if (Arr::get($item, 'spare_code') == 'C6') {
+            if (Arr::get($item, 'spare_code') == 'C6' && Arr::get($item, 'price')) {
                 $quantity = 1;
             }
 
@@ -44,16 +45,17 @@ class EditQuotation extends EditRecord
                 $total += Arr::get($item, 'price') * $quantity;
             }
         }
-
-        $vatTotal = $total * (7/100);
+        $vat = 7/100;
+        $vatTotal = $total * $vat;
         $sumTotal = $vatTotal + $total;
 
         Arr::set($data, 'overall_price', number_format($overAllPrice, 0));
-        Arr::set($data, 'total_wage', number_format($wage, 2));
+        Arr::set($data, 'total_wage', number_format($wageTotal, 2));
+        Arr::set($data, 'wage', number_format($wageTotal, 2));
         Arr::set($data, 'including_spare_parts', number_format($includingSpareParts, 2));
-        Arr::set($data, 'total_wage', number_format($sumTotal, 2));
-
-        Log::info('CAL_VAT', $data);
+        Arr::set($data, 'vat', number_format($vatTotal, 2));
+        Arr::set($data, 'overall', number_format($sumTotal, 2));
+        Arr::set($data, 'spare_value', number_format($total, 2));
 
         return $data;
     }
