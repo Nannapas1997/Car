@@ -3,10 +3,8 @@
 namespace App\Filament\Resources\InvoiceResource\Pages;
 
 use App\Filament\Resources\InvoiceResource;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
 
 class CreateInvoice extends CreateRecord
 {
@@ -28,8 +26,6 @@ class CreateInvoice extends CreateRecord
         Arr::set($data, 'amount', number_format($total, 2));
         Arr::set($data, 'vat', number_format($vatTotal, 2));
         Arr::set($data, 'aggregate', number_format($total + $vatTotal, 2));
-
-        Log::info('CAL_VAT', $data);
 
         return $data;
     }

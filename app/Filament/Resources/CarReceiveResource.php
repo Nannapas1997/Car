@@ -5,52 +5,30 @@ namespace App\Filament\Resources;
 use Closure;
 use Filament\Facades\Filament;
 use Filament\Forms;
-use App\Models\User;
-
 use Filament\Forms\Components\ViewField;
 use Filament\Tables;
 use App\Models\CarReceive;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Illuminate\Support\Carbon;
-use App\Forms\Components\Search;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
-use Illuminate\Support\Facades\Log;
-use Livewire\TemporaryUploadedFile;
-use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\Repeater;
-use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ViewColumn;
 use Filament\Forms\Components\TextInput;
-use Filament\Http\Livewire\GlobalSearch;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\TimePicker;
-use Filament\Tables\Columns\SelectColumn;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Forms\Components\MultiSelect;
-use Filament\Forms\Components\Placeholder;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Forms\Components\MarkdownEditor;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CarReceiveResource\Pages;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use App\Filament\Resources\CarReceiveResource\RelationManagers;
-use App\Filament\Resources\CarReceiveResource\Widgets\carReceives;
 use App\Models\ThailandAddress;
 
 class CarReceiveResource extends Resource
@@ -107,7 +85,6 @@ class CarReceiveResource extends Resource
                         $name = CarReceive::query()->where('job_number', $state)->first();
                         if ($name) {
                             $name = $name->toArray();
-
                             $set('choose_garage', $name['choose_garage']);
                             $set('receive_date', $name['receive_date']);
                             $set('timex', $name['timex']);
@@ -166,12 +143,11 @@ class CarReceiveResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
+        return $form->schema(
+            [
                 TextInput::make('choose_garage')
                     ->default(Filament::auth()->user()->garage)
                     ->disabled(),
-
                 Card::make()->schema(static::getViewData('job_number')),
                 Select::make('search_regis')
                     ->label(__('trans.search_regis.text'))
@@ -251,159 +227,160 @@ class CarReceiveResource extends Resource
                             $currentYear--;
                         }
                         return $options;
-                    }
-                    ),
-            TextInput::make('tel_number')->label(__('trans.tel_number.text'))->required(),
-            TextInput::make('address')->label(__('trans.address.text'))->required()->columnSpanFull(),
-            Fieldset::make('ที่อยู่')
-            ->schema([
-                Select::make('postal_code')
-                ->label(__('trans.postal_code.text'))
-                ->required()
-                ->preload()
-                ->searchable()
-                ->reactive()
-                ->options(function (Closure $get) {
-                    $displayAddress = [];
-                    $address = ThailandAddress::where('zipcode', 'like', '%' . $get('postal_code') . '%')
-                        ->get()
-                        ->toArray();
+                    }),
+                TextInput::make('tel_number')->label(__('trans.tel_number.text'))->required(),
+                TextInput::make('address')->label(__('trans.address.text'))->required()->columnSpanFull(),
+                Fieldset::make('ที่อยู่')
+                    ->schema([
+                        Select::make('postal_code')
+                            ->label(__('trans.postal_code.text'))
+                            ->required()
+                            ->preload()
+                            ->searchable()
+                            ->reactive()
+                            ->options(function (Closure $get) {
+                                $displayAddress = [];
+                                $address = ThailandAddress::where('zipcode', 'like', '%' . $get('postal_code') . '%')
+                                    ->get()
+                                    ->toArray();
 
-                    if ($address) {
-                        foreach ($address as $val) {
-                            $displayAddress[Arr::get($val, 'id')] = Arr::get($val, 'zipcode')
-                                . ' '
-                                . Arr::get($val, 'district')
-                                . ' '
-                                . Arr::get($val, 'amphoe')
-                                . ' '
-                                . Arr::get($val, 'province');
-                        }
-                    }
+                                if ($address) {
+                                    foreach ($address as $val) {
+                                        $displayAddress[Arr::get($val, 'id')] = Arr::get($val, 'zipcode')
+                                            . ' '
+                                            . Arr::get($val, 'district')
+                                            . ' '
+                                            . Arr::get($val, 'amphoe')
+                                            . ' '
+                                            . Arr::get($val, 'province');
+                                    }
+                                }
 
-                    return $displayAddress;
-                })
-                ->afterStateUpdated(function ($set, $state) {
-                    if ($state) {
-                        $name = ThailandAddress::find($state)->toArray();
-                        if ($name) {
-                            $set('district', $name['district']);
-                            $set('amphoe', $name['amphoe']);
-                            $set('province', $name['province']);
-                        }
-                    }
-                }),
-                 TextInput::make('district')->label(__('trans.district.text'))->required(),
-                 TextInput::make('amphoe')->label(__('trans.amphoe.text'))->required(),
-                 TextInput::make('province')->label(__('trans.province.text'))->required(),
-                ]),
-
-            DatePicker::make('pickup_date')->label(__('trans.pickup_date.text')),
-            TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
-            Select::make('brand')->label(__('trans.brand.text'))->required()
-                ->options([
-                    'Toyota' => 'Toyota',
-                    'Honda' => 'Honda',
-                    'Nissan' => 'Nissan',
-                    'Mitsubishi'=>'Mitsubishi',
-                    'Isuzu'=>'Isuzu',
-                    'Mazda'=>'Mazda',
-                    'Ford'=>'Ford',
-                    'Suzuki'=>'Suzuki',
-                    'Chevrolet'=>'Chevrolet',
-                    'Alfa Romeo'=>'Alfo Romeo',
-                    'Aston Martin'=>'Aston Martin',
-                    'Audi'=>'Audi',
-                    'Bentley'=>'Bentley',
-                    'BMW'=>'BMW',
-                    'Chery'=>'Chery',
-                    'Chrysler'=>'Chrysler',
-                    'Citroen'=>'Citroen',
-                    'Daewoo'=>'Daewoo',
-                    'Daihatsu'=>'Daihatsu',
-                    'DFM'=>'DFM',
-                    'DFSK'=>'DFSK',
-                    'Ferrari'=>'Ferrari',
-                    'Fiat'=>'Fiat',
-                    'FOMM'=>'FOMM',
-                    'Foton'=>'Foton',
-                    'Great Wall Motor'=>'Great Wall Motor',
-                    'Haval'=>'Haval',
-                    'HINO' =>'HINO',
-                    'Holden'=>'Holden',
-                    'Hummer'=>'Hummer',
-                    'Hyundai'=>'Hyundai',
-                    'Jaguar'=>'Jaguar',
-                    'Jeep'=>'Jeep',
-                    'Kia'=>'Kia',
-                    'Lamborghini'=>'Lamborghini',
-                    'Land Rover'=>'Land Rover',
-                    'Lexus'=>'Lexus',
-                    'Lotus'=>'Lotus',
-                    'Maserati'=>'Maserati',
-                    'Maxus'=>'Maxus',
-                    'McLaren'=>'McLaren',
-                    'Mercedes-Benz'=>'Mercedes-Benz',
-                    'MG'=>'MG',
-                    'Mini'=>'Mini',
-                    'Mitsuoka'=>'Mitsuoka',
-                    'Naza'=>'Naza',
-                    'Opel'=>'Opel',
-                    'ORA'=>'ORA',
-                    'Peugeot'=>'Peugeot',
-                    'Polarsun'=>'Polarsun',
-                    'Porsche'=>'Porsche',
-                    'Proton'=>'Proton',
-                    'Rolls-Royce'=>'Rolls-Royce',
-                    'Rover'=>'Rover',
-                    'Saab'=>'Saab',
-                    'Seat'=>'Seat',
-                    'Skoda'=>'Skoda',
-                    'Spyker'=>'Spyker',
-                    'Ssangyong'=>'Ssangyong',
-                    'Subaru'=>'Subaru',
-                    'Tata'=>'Tata',
-                    'Thairung'=>'Thairung',
-                    'Volkswagen'=>'Volkswagen',
-                    'Volvo'=>'Volvo',
-                    ])->columns(65),
-            TextInput::make('model')->label(__('trans.model.text'))->required(),
-            Select::make('car_type')->label(__('trans.car_type.text'))->required()
-                ->options([
-                    'รถหัวลาก 10 ล้อ' => 'รถหัวลาก 10 ล้อ',
-                    'รถหัวลาก 6 ล้อ' => 'รถหัวลาก 6 ล้อ',
-                    'รถตู้แห้ง 10 ล้อ' => 'รถตู้แห้ง 10 ล้อ',
-                    'รถตู้แห้ง 6 ล้อ'=>'รถตู้แห้ง 6 ล้อ',
-                    'รถตู้แห้ง 4 ล้อใหญ่'=>'รถตู้แห้ง 4 ล้อใหญ่',
-                    'รถกระบะตู้แห้ง'=>'รถกระบะตู้แห้ง',
-                    'รถตู้เย็น 10 ล้อ'=>'รถตู้เย็น 10 ล้อ',
-                    'รถตู้เย็น 6 ล้อ'=>'รถตู้เย็น 6 ล้อ',
-                    'รถตู้เย็น 4 ล้อใหญ่'=>'รถตู้เย็น 4 ล้อใหญ่',
-                    'รถบรรทุกกระบะคอกสูง 10 ล้อ'=>'รถบรรทุกกระบะคอกสูง 10 ล้อ',
-                    'รถบรรทุกกระบะคอกสูง 6 ล้อ'=>'รถบรรทุกกระบะคอกสูง 6 ล้อ',
-                    'รถบรรทุกกระบะคอกเตี้ย 10 ล้อ'=>'รถบรรทุกกระบะคอกเตี้ย 10 ล้อ',
-                    'รถบรรทุกกระบะคอกเตี้ย 6 ล้อ'=>'รถบรรทุกกระบะคอกเตี้ย 6 ล้อ',
-                    'รถหางพ่วง'=>'รถหางพ่วง',
-                    'รถหางพ่วง ตู้แห้ง'=>'รถหางพ่วง ตู้แห้ง',
-                    'รถหางพ่วง พื้นเรียบ'=>'รถหางพ่วง พื้นเรียบ',
-                    'รถหางเทรนเลอร์ '=>'รถหางเทรนเลอร์',
-                    'รถหางเทรนเลอร์ ผ้าใบ'=>'รถหางเทรนเลอร์ ผ้าใบ',
-                    'รถกระบะ 4 ประตู'=>'รถกระบะ 4 ประตู',
-                    'รถกระบะแคป'=>'รถกระบะแคป',
-                    'รถกระบะตอนเดียว'=>'รถกระบะตอนเดียว',
-                    'รถเก๋ง 4 ประตู'=>'รถเก๋ง 4 ประตู',
-                    'รถตู้'=>'รถตู้',
-                    'รถสามล้อ'=>'รถสามล้อ',
-                    ])->columns(25),
-            TextInput::make('mile_number')->label(__('trans.mile_number.text'))->required(),
-            Select::make('repair_code')->label(__('trans.repair_code.text'))
-                ->required()
-                ->options([
-                    'A' => 'A',
-                    'B' => 'B',
-                    'C' => 'C',
-                    'D' => 'D'
-                ])->columns(5),
+                                return $displayAddress;
+                            })
+                            ->afterStateUpdated(function ($set, $state) {
+                                if ($state) {
+                                    $name = ThailandAddress::find($state)->toArray();
+                                    if ($name) {
+                                        $set('district', $name['district']);
+                                        $set('amphoe', $name['amphoe']);
+                                        $set('province', $name['province']);
+                                    }
+                                }
+                            }),
+                         TextInput::make('district')->label(__('trans.district.text'))->required(),
+                         TextInput::make('amphoe')->label(__('trans.amphoe.text'))->required(),
+                         TextInput::make('province')->label(__('trans.province.text'))->required(),
+                    ]),
+                DatePicker::make('pickup_date')->label(__('trans.pickup_date.text')),
+                TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
+                Select::make('brand')->label(__('trans.brand.text'))->required()
+                    ->options([
+                        'Toyota' => 'Toyota',
+                        'Honda' => 'Honda',
+                        'Nissan' => 'Nissan',
+                        'Mitsubishi'=>'Mitsubishi',
+                        'Isuzu'=>'Isuzu',
+                        'Mazda'=>'Mazda',
+                        'Ford'=>'Ford',
+                        'Suzuki'=>'Suzuki',
+                        'Chevrolet'=>'Chevrolet',
+                        'Alfa Romeo'=>'Alfo Romeo',
+                        'Aston Martin'=>'Aston Martin',
+                        'Audi'=>'Audi',
+                        'Bentley'=>'Bentley',
+                        'BMW'=>'BMW',
+                        'Chery'=>'Chery',
+                        'Chrysler'=>'Chrysler',
+                        'Citroen'=>'Citroen',
+                        'Daewoo'=>'Daewoo',
+                        'Daihatsu'=>'Daihatsu',
+                        'DFM'=>'DFM',
+                        'DFSK'=>'DFSK',
+                        'Ferrari'=>'Ferrari',
+                        'Fiat'=>'Fiat',
+                        'FOMM'=>'FOMM',
+                        'Foton'=>'Foton',
+                        'Great Wall Motor'=>'Great Wall Motor',
+                        'Haval'=>'Haval',
+                        'HINO' =>'HINO',
+                        'Holden'=>'Holden',
+                        'Hummer'=>'Hummer',
+                        'Hyundai'=>'Hyundai',
+                        'Jaguar'=>'Jaguar',
+                        'Jeep'=>'Jeep',
+                        'Kia'=>'Kia',
+                        'Lamborghini'=>'Lamborghini',
+                        'Land Rover'=>'Land Rover',
+                        'Lexus'=>'Lexus',
+                        'Lotus'=>'Lotus',
+                        'Maserati'=>'Maserati',
+                        'Maxus'=>'Maxus',
+                        'McLaren'=>'McLaren',
+                        'Mercedes-Benz'=>'Mercedes-Benz',
+                        'MG'=>'MG',
+                        'Mini'=>'Mini',
+                        'Mitsuoka'=>'Mitsuoka',
+                        'Naza'=>'Naza',
+                        'Opel'=>'Opel',
+                        'ORA'=>'ORA',
+                        'Peugeot'=>'Peugeot',
+                        'Polarsun'=>'Polarsun',
+                        'Porsche'=>'Porsche',
+                        'Proton'=>'Proton',
+                        'Rolls-Royce'=>'Rolls-Royce',
+                        'Rover'=>'Rover',
+                        'Saab'=>'Saab',
+                        'Seat'=>'Seat',
+                        'Skoda'=>'Skoda',
+                        'Spyker'=>'Spyker',
+                        'Ssangyong'=>'Ssangyong',
+                        'Subaru'=>'Subaru',
+                        'Tata'=>'Tata',
+                        'Thairung'=>'Thairung',
+                        'Volkswagen'=>'Volkswagen',
+                        'Volvo'=>'Volvo',
+                        ])->columns(65),
+                TextInput::make('model')->label(__('trans.model.text'))->required(),
+                Select::make('car_type')->label(__('trans.car_type.text'))
+                    ->required()
+                    ->options([
+                        'รถหัวลาก 10 ล้อ' => 'รถหัวลาก 10 ล้อ',
+                        'รถหัวลาก 6 ล้อ' => 'รถหัวลาก 6 ล้อ',
+                        'รถตู้แห้ง 10 ล้อ' => 'รถตู้แห้ง 10 ล้อ',
+                        'รถตู้แห้ง 6 ล้อ'=>'รถตู้แห้ง 6 ล้อ',
+                        'รถตู้แห้ง 4 ล้อใหญ่'=>'รถตู้แห้ง 4 ล้อใหญ่',
+                        'รถกระบะตู้แห้ง'=>'รถกระบะตู้แห้ง',
+                        'รถตู้เย็น 10 ล้อ'=>'รถตู้เย็น 10 ล้อ',
+                        'รถตู้เย็น 6 ล้อ'=>'รถตู้เย็น 6 ล้อ',
+                        'รถตู้เย็น 4 ล้อใหญ่'=>'รถตู้เย็น 4 ล้อใหญ่',
+                        'รถบรรทุกกระบะคอกสูง 10 ล้อ'=>'รถบรรทุกกระบะคอกสูง 10 ล้อ',
+                        'รถบรรทุกกระบะคอกสูง 6 ล้อ'=>'รถบรรทุกกระบะคอกสูง 6 ล้อ',
+                        'รถบรรทุกกระบะคอกเตี้ย 10 ล้อ'=>'รถบรรทุกกระบะคอกเตี้ย 10 ล้อ',
+                        'รถบรรทุกกระบะคอกเตี้ย 6 ล้อ'=>'รถบรรทุกกระบะคอกเตี้ย 6 ล้อ',
+                        'รถหางพ่วง'=>'รถหางพ่วง',
+                        'รถหางพ่วง ตู้แห้ง'=>'รถหางพ่วง ตู้แห้ง',
+                        'รถหางพ่วง พื้นเรียบ'=>'รถหางพ่วง พื้นเรียบ',
+                        'รถหางเทรนเลอร์ '=>'รถหางเทรนเลอร์',
+                        'รถหางเทรนเลอร์ ผ้าใบ'=>'รถหางเทรนเลอร์ ผ้าใบ',
+                        'รถกระบะ 4 ประตู'=>'รถกระบะ 4 ประตู',
+                        'รถกระบะแคป'=>'รถกระบะแคป',
+                        'รถกระบะตอนเดียว'=>'รถกระบะตอนเดียว',
+                        'รถเก๋ง 4 ประตู'=>'รถเก๋ง 4 ประตู',
+                        'รถตู้'=>'รถตู้',
+                        'รถสามล้อ'=>'รถสามล้อ',
+                        ])
+                    ->columns(25),
+                TextInput::make('mile_number')->label(__('trans.mile_number.text'))->required(),
+                Select::make('repair_code')->label(__('trans.repair_code.text'))
+                    ->required()
+                    ->options([
+                        'A' => 'A',
+                        'B' => 'B',
+                        'C' => 'C',
+                        'D' => 'D'
+                    ])
+                    ->columns(5),
                 MarkdownEditor::make('content')
                     ->label(__('trans.content.text'))
                     ->required()
@@ -416,171 +393,170 @@ class CarReceiveResource extends Resource
                         'preview',
                         'strike',
                     ]),
-            Fieldset::make('ประเภทของรถที่เกิดอุบัติเหตุ')
-                ->schema([
-                    Radio::make('car_accident')
-                    ->label('ระบุตัวเลือกที่ต้องการ')
-                    ->required()
-                    ->options([
-                        'รถประกัน' => 'รถประกัน',
-                        'รถคู่กรณี' => 'รถคู่กรณี'
-                    ])
-                ]),
-            Fieldset::make('เลือกฝ่ายหรือคดีที่เกิดอุบัติเหตุ')
-                ->schema([
-                    Radio::make('car_accident_choose')
-                    ->label('ระบุตัวเลือกที่ต้องการ')
-                    ->required()
-                    ->options([
-                        'ฝ่ายถูก'=>'ฝ่ายถูก',
-                        'ฝ่ายผิด'=>'ฝ่ายผิด',
-                        'คดี'=>'คดี',
-                    ])
-                ]),
-            Fieldset::make('เลือกตัวเลือกในการจ่ายค่าเสียหาย')
-                ->schema([
-                    Radio::make('options')->label(__('trans.options.text'))
-                    ->required()
-                    ->reactive()
-                    ->options([
-                        'เคลมประกันบริษัท'=>'เคลมประกันบริษัท',
-                        'เงินสด'=>'เงินสด'
-                    ])
-                ]),
-            Select::make('insu_company_name')
-                ->label(__('trans.insu_company_name.text'))
-                ->preload()
-                ->hidden(fn (Closure $get) => $get('options') == 'เงินสด')
-                ->options([
-                    'กรุงเทพประกันภัย' => 'กรุงเทพประกันภัย',
-                    'กรุงไทยพานิชประกันภัย' => 'กรุงไทยพานิชประกันภัย',
-                    'คุ้มภัยโตเกียวมารีน' => 'คุ้มภัยโตเกียวมารีน',
-                    'เคเอสเค ประกันภัย' => 'เคเอสเค ประกันภัย',
-                    'เจมาร์ท ประกันภัย' => 'เจมาร์ท ประกันภัย',
-                    'ชับบ์สามัคคีประกันภัย' => 'ชับบ์สามัคคีประกันภัย',
-                    'ทิพยประกันภัย' => 'ทิพยประกันภัย',
-                    'เทเวศประกันภัย' => 'เทเวศประกันภัย',
-                    'ไทยไพบูลย์' => 'ไทยไพบูลย์',
-                    'ไทยวิวัฒน์' => 'ไทยวิวัฒน์',
-                    'ไทยศรี' => 'ไทยศรี',
-                    'ไทยเศรษฐฯ' => 'ไทยเศรษฐฯ',
-                    'นวกิจประกันภัย' => 'นวกิจประกันภัย',
-                    'บริษัทกลางฯ' => 'บริษัทกลางฯ',
-                    'แปซิฟิค ครอส' => 'แปซิฟิค ครอส',
-                    'เมืองไทยประกันภัย' => 'เมืองไทยประกันภัย',
-                    'วิริยะประกันภัย' => 'วิริยะประกันภัย',
-                    'สินมั่นคง' => 'สินมั่นคง',
-                    'อลิอันซ์ อยุธยา' => 'อลิอันซ์ อยุธยา',
-                    'อินทรประกันภัย' => 'อินทรประกันภัย',
-                    'เอ็ทน่า' => 'เอ็ทน่า',
-                    'เอ็มเอสไอจี' => 'เอ็มเอสไอจี',
-                    'แอกซ่าประกันภัย' => 'แอกซ่าประกันภัย',
-                    'แอลเอ็มจี ประกันภัย' => 'แอลเอ็มจี ประกันภัย',
-                ]),
-            TextInput::make('policy_number')
-                ->label(__('trans.policy_number.text'))
-                ->hidden(fn (Closure $get) => $get('options') == 'เงินสด'),
-            TextInput::make('noti_number')
-                ->label(__('trans.noti_number.text'))
-                ->hidden(fn (Closure $get) => $get('options') == 'เงินสด'),
-            TextInput::make('claim_number')
-                ->label(__('trans.claim_number.text'))
-                ->hidden(fn (Closure $get) => $get('options') == 'เงินสด'),
-            Fieldset::make('ประเภทการจอด')
-                ->schema([
-                    Radio::make('park_type')->label(__('trans.options.text'))
-                    ->required()
-                    ->options([
-                        'จอดซ่อม' => 'จอดซ่อม',
-                        'ไม่จอดซ่อม' => 'ไม่จอดซ่อม'
+                Fieldset::make('ประเภทของรถที่เกิดอุบัติเหตุ')
+                    ->schema([
+                        Radio::make('car_accident')
+                        ->label('ระบุตัวเลือกที่ต้องการ')
+                        ->required()
+                        ->options([
+                            'รถประกัน' => 'รถประกัน',
+                            'รถคู่กรณี' => 'รถคู่กรณี'
+                        ])
                     ]),
-                    DatePicker::make('car_park')->label(__('trans.car_park.text')),
-                ]),
-
-            Fieldset::make('สภาพรถและอุปกรณ์ที่มีติดรถในวันที่รถเข้าซ่อม')
-                ->schema([
-                    Checkbox::make('spare_tire')->label(__('trans.spare_tire.text')),
-                    Checkbox::make('jack_handle')->label(__('trans.jack_handle.text')),
-                    Checkbox::make('boxset')->label(__('trans.boxset.text')),
-                    Checkbox::make('batteries')->label(__('trans.batteries.text')),
-                    Checkbox::make('cigarette_lighter')->label(__('trans.cigarette_lighter.text')),
-                    Checkbox::make('radio')->label(__('trans.radio.text')),
-                    Checkbox::make('floor_mat')->label(__('trans.floor_mat.text')),
-                    Checkbox::make('spare_removal')->label(__('trans.spare_removal.text')),
-                    Checkbox::make('fire_extinguisher')->label(__('trans.fire_extinguisher.text')),
-                    Checkbox::make('spining_wheel')->label(__('trans.spining_wheel.text')),
-                    Checkbox::make('other')->label(__('trans.other.text'))->columnSpanFull(),
-                    MarkdownEditor::make('content_other')
-                    ->label(__('trans.content_other.text'))
-                    ->required()
-                    ->toolbarButtons([
-                        'bold',
-                        'bulletList',
-                        'edit',
-                        'italic',
-                        'orderedList',
-                        'preview',
-                        'strike',
+                Fieldset::make('เลือกฝ่ายหรือคดีที่เกิดอุบัติเหตุ')
+                    ->schema([
+                        Radio::make('car_accident_choose')
+                        ->label('ระบุตัวเลือกที่ต้องการ')
+                        ->required()
+                        ->options([
+                            'ฝ่ายถูก'=>'ฝ่ายถูก',
+                            'ฝ่ายผิด'=>'ฝ่ายผิด',
+                            'คดี'=>'คดี',
+                        ])
                     ]),
-                ]),
-            Fieldset::make('เอกสารที่ได้รับในวันที่รถเข้าซ่อม')
-                ->schema([
-                    FileUpload::make('real_claim')->label(__('trans.real_claim.text')),
-                    FileUpload::make('copy_claim')->label(__('trans.copy_claim.text')),
-                    FileUpload::make('copy_driver_license')->label(__('trans.copy_driver_license.text')),
-                    FileUpload::make('copy_vehicle_regis')->label(__('trans.copy_vehicle_regis.text')),
-                    FileUpload::make('copy_policy')->label(__('trans.copy_policy.text')),
-                    FileUpload::make('power_of_attorney')->label(__('trans.power_of_attorney.text')),
-                    FileUpload::make('copy_of_director_id_card')->label(__('trans.copy_of_director_id_card.text')),
-                    FileUpload::make('copy_of_person')->label(__('trans.copy_of_person.text')),
-                    FileUpload::make('account_book')->label(__('trans.account_book.text')),
-                    FileUpload::make('atm_card')->label(__('trans.atm_card.text')),
-                ]),
-            Fieldset::make('เอกสารที่ลูกค้านำมาวันรับรถ')
-                ->schema([
-                    Checkbox::make('real_claim_document')->label(__('trans.real_claim.text')),
-                    Checkbox::make('copy_policy_document')->label(__('trans.copy_policy.text')),
-                    Checkbox::make('copy_claim_document')->label(__('trans.copy_claim.text')),
-                    Checkbox::make('power_of_attorney_document')->label(__('trans.power_of_attorney.text')),
-                    Checkbox::make('copy_driver_license_document')->label(__('trans.copy_driver_license.text')),
-                    Checkbox::make('copy_of_director_id_card_document')->label(__('trans.copy_of_director_id_card.text')),
-                    Checkbox::make('copy_vehicle_regis_document')->label(__('trans.copy_vehicle_regis.text')),
-                    Checkbox::make('copy_of_person_document')->label(__('trans.copy_of_person.text')),
-                    Checkbox::make('account_book_document')->label(__('trans.account_book.text')),
-                    Checkbox::make('atm_card_document')->label(__('trans.atm_card.text')),
-                    Checkbox::make('other_document')->label(__('trans.other.text'))->columnSpanFull(),
-                    MarkdownEditor::make('content_document')
-                    ->label(__('trans.content_document.text'))
-                    ->required()
-                    ->toolbarButtons([
-                        'bold',
-                        'bulletList',
-                        'edit',
-                        'italic',
-                        'orderedList',
-                        'preview',
-                        'strike',
+                Fieldset::make('เลือกตัวเลือกในการจ่ายค่าเสียหาย')
+                    ->schema([
+                        Radio::make('options')->label(__('trans.options.text'))
+                        ->required()
+                        ->reactive()
+                        ->options([
+                            'เคลมประกันบริษัท'=>'เคลมประกันบริษัท',
+                            'เงินสด'=>'เงินสด'
+                        ])
                     ]),
-                ]),
-
-            Fieldset::make('ภาพรถวันเข้าซ่อม')
-                ->schema([
-                    FileUpload::make('front')->label(__('trans.front.text')),
-                    FileUpload::make('left')->label(__('trans.left.text')),
-                    FileUpload::make('right')->label(__('trans.right.text')),
-                    FileUpload::make('back')->label(__('trans.back.text')),
-                    FileUpload::make('inside_left')->label(__('trans.inside_left.text')),
-                    FileUpload::make('inside_right')->label(__('trans.inside_right.text')),
-                    FileUpload::make('inside_truck')->label(__('trans.truck.text')),
-                    FileUpload::make('etc')->label(__('trans.etc.text')),
-                    SpatieMediaLibraryFileUpload::make('other_file')
-                        ->multiple()
-                        ->label(__('trans.etc.text')),
-                ]),
-            TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
-            FileUpload::make('id_card_attachment')->label(__('trans.id_card_attachment.text'))->required(),
-            ViewField::make('user_admin')->view('filament.resources.forms.components.user-admin'),
-        ]);
+                Select::make('insu_company_name')
+                    ->label(__('trans.insu_company_name.text'))
+                    ->preload()
+                    ->hidden(fn (Closure $get) => $get('options') == 'เงินสด')
+                    ->options([
+                        'กรุงเทพประกันภัย' => 'กรุงเทพประกันภัย',
+                        'กรุงไทยพานิชประกันภัย' => 'กรุงไทยพานิชประกันภัย',
+                        'คุ้มภัยโตเกียวมารีน' => 'คุ้มภัยโตเกียวมารีน',
+                        'เคเอสเค ประกันภัย' => 'เคเอสเค ประกันภัย',
+                        'เจมาร์ท ประกันภัย' => 'เจมาร์ท ประกันภัย',
+                        'ชับบ์สามัคคีประกันภัย' => 'ชับบ์สามัคคีประกันภัย',
+                        'ทิพยประกันภัย' => 'ทิพยประกันภัย',
+                        'เทเวศประกันภัย' => 'เทเวศประกันภัย',
+                        'ไทยไพบูลย์' => 'ไทยไพบูลย์',
+                        'ไทยวิวัฒน์' => 'ไทยวิวัฒน์',
+                        'ไทยศรี' => 'ไทยศรี',
+                        'ไทยเศรษฐฯ' => 'ไทยเศรษฐฯ',
+                        'นวกิจประกันภัย' => 'นวกิจประกันภัย',
+                        'บริษัทกลางฯ' => 'บริษัทกลางฯ',
+                        'แปซิฟิค ครอส' => 'แปซิฟิค ครอส',
+                        'เมืองไทยประกันภัย' => 'เมืองไทยประกันภัย',
+                        'วิริยะประกันภัย' => 'วิริยะประกันภัย',
+                        'สินมั่นคง' => 'สินมั่นคง',
+                        'อลิอันซ์ อยุธยา' => 'อลิอันซ์ อยุธยา',
+                        'อินทรประกันภัย' => 'อินทรประกันภัย',
+                        'เอ็ทน่า' => 'เอ็ทน่า',
+                        'เอ็มเอสไอจี' => 'เอ็มเอสไอจี',
+                        'แอกซ่าประกันภัย' => 'แอกซ่าประกันภัย',
+                        'แอลเอ็มจี ประกันภัย' => 'แอลเอ็มจี ประกันภัย',
+                    ]),
+                TextInput::make('policy_number')
+                    ->label(__('trans.policy_number.text'))
+                    ->hidden(fn (Closure $get) => $get('options') == 'เงินสด'),
+                TextInput::make('noti_number')
+                    ->label(__('trans.noti_number.text'))
+                    ->hidden(fn (Closure $get) => $get('options') == 'เงินสด'),
+                TextInput::make('claim_number')
+                    ->label(__('trans.claim_number.text'))
+                    ->hidden(fn (Closure $get) => $get('options') == 'เงินสด'),
+                Fieldset::make('ประเภทการจอด')
+                    ->schema([
+                        Radio::make('park_type')->label(__('trans.options.text'))
+                        ->required()
+                        ->options([
+                            'จอดซ่อม' => 'จอดซ่อม',
+                            'ไม่จอดซ่อม' => 'ไม่จอดซ่อม'
+                        ]),
+                        DatePicker::make('car_park')->label(__('trans.car_park.text')),
+                    ]),
+                Fieldset::make('สภาพรถและอุปกรณ์ที่มีติดรถในวันที่รถเข้าซ่อม')
+                    ->schema([
+                        Checkbox::make('spare_tire')->label(__('trans.spare_tire.text')),
+                        Checkbox::make('jack_handle')->label(__('trans.jack_handle.text')),
+                        Checkbox::make('boxset')->label(__('trans.boxset.text')),
+                        Checkbox::make('batteries')->label(__('trans.batteries.text')),
+                        Checkbox::make('cigarette_lighter')->label(__('trans.cigarette_lighter.text')),
+                        Checkbox::make('radio')->label(__('trans.radio.text')),
+                        Checkbox::make('floor_mat')->label(__('trans.floor_mat.text')),
+                        Checkbox::make('spare_removal')->label(__('trans.spare_removal.text')),
+                        Checkbox::make('fire_extinguisher')->label(__('trans.fire_extinguisher.text')),
+                        Checkbox::make('spining_wheel')->label(__('trans.spining_wheel.text')),
+                        Checkbox::make('other')->label(__('trans.other.text'))->columnSpanFull(),
+                        MarkdownEditor::make('content_other')
+                        ->label(__('trans.content_other.text'))
+                        ->required()
+                        ->toolbarButtons([
+                            'bold',
+                            'bulletList',
+                            'edit',
+                            'italic',
+                            'orderedList',
+                            'preview',
+                            'strike',
+                        ]),
+                    ]),
+                Fieldset::make('เอกสารที่ได้รับในวันที่รถเข้าซ่อม')
+                    ->schema([
+                        FileUpload::make('real_claim')->label(__('trans.real_claim.text')),
+                        FileUpload::make('copy_claim')->label(__('trans.copy_claim.text')),
+                        FileUpload::make('copy_driver_license')->label(__('trans.copy_driver_license.text')),
+                        FileUpload::make('copy_vehicle_regis')->label(__('trans.copy_vehicle_regis.text')),
+                        FileUpload::make('copy_policy')->label(__('trans.copy_policy.text')),
+                        FileUpload::make('power_of_attorney')->label(__('trans.power_of_attorney.text')),
+                        FileUpload::make('copy_of_director_id_card')->label(__('trans.copy_of_director_id_card.text')),
+                        FileUpload::make('copy_of_person')->label(__('trans.copy_of_person.text')),
+                        FileUpload::make('account_book')->label(__('trans.account_book.text')),
+                        FileUpload::make('atm_card')->label(__('trans.atm_card.text')),
+                    ]),
+                Fieldset::make('เอกสารที่ลูกค้านำมาวันรับรถ')
+                    ->schema([
+                        Checkbox::make('real_claim_document')->label(__('trans.real_claim.text')),
+                        Checkbox::make('copy_policy_document')->label(__('trans.copy_policy.text')),
+                        Checkbox::make('copy_claim_document')->label(__('trans.copy_claim.text')),
+                        Checkbox::make('power_of_attorney_document')->label(__('trans.power_of_attorney.text')),
+                        Checkbox::make('copy_driver_license_document')->label(__('trans.copy_driver_license.text')),
+                        Checkbox::make('copy_of_director_id_card_document')->label(__('trans.copy_of_director_id_card.text')),
+                        Checkbox::make('copy_vehicle_regis_document')->label(__('trans.copy_vehicle_regis.text')),
+                        Checkbox::make('copy_of_person_document')->label(__('trans.copy_of_person.text')),
+                        Checkbox::make('account_book_document')->label(__('trans.account_book.text')),
+                        Checkbox::make('atm_card_document')->label(__('trans.atm_card.text')),
+                        Checkbox::make('other_document')->label(__('trans.other.text'))->columnSpanFull(),
+                        MarkdownEditor::make('content_document')
+                        ->label(__('trans.content_document.text'))
+                        ->required()
+                        ->toolbarButtons([
+                            'bold',
+                            'bulletList',
+                            'edit',
+                            'italic',
+                            'orderedList',
+                            'preview',
+                            'strike',
+                        ]),
+                    ]),
+                Fieldset::make('ภาพรถวันเข้าซ่อม')
+                    ->schema([
+                        FileUpload::make('front')->label(__('trans.front.text')),
+                        FileUpload::make('left')->label(__('trans.left.text')),
+                        FileUpload::make('right')->label(__('trans.right.text')),
+                        FileUpload::make('back')->label(__('trans.back.text')),
+                        FileUpload::make('inside_left')->label(__('trans.inside_left.text')),
+                        FileUpload::make('inside_right')->label(__('trans.inside_right.text')),
+                        FileUpload::make('inside_truck')->label(__('trans.truck.text')),
+                        FileUpload::make('etc')->label(__('trans.etc.text')),
+                        SpatieMediaLibraryFileUpload::make('other_file')
+                            ->multiple()
+                            ->label(__('trans.etc.text')),
+                    ]),
+                TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
+                FileUpload::make('id_card_attachment')->label(__('trans.id_card_attachment.text'))->required(),
+                ViewField::make('user_admin')->view('filament.resources.forms.components.user-admin'),
+            ]
+        );
     }
 
     public static function table(Table $table): Table
@@ -660,7 +636,6 @@ class CarReceiveResource extends Resource
                 SpatieMediaLibraryImageColumn::make('other_file')->conversion('thumb'),
             ])
             ->filters([
-
                 Tables\Filters\Filter::make('created_at')
                     ->form([
                         Forms\Components\DatePicker::make('created_from')
@@ -696,16 +671,7 @@ class CarReceiveResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()->disabled(Filament::auth()->user()->email !== 'super@admin.com'),
             ])
-            ->bulkActions([
-
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+            ->bulkActions([]);
     }
 
     public static function getPages(): array
