@@ -148,6 +148,9 @@ class CarReceiveResource extends Resource
                 TextInput::make('choose_garage')
                     ->default(Filament::auth()->user()->garage)
                     ->disabled(),
+                DatePicker::make('receive_date')->label(__('trans.receive_date.text'))
+                ->required()
+                ->default(now()->format('Y-m-d')),
                 Card::make()->schema(static::getViewData('job_number')),
                 Select::make('search_regis')
                     ->label(__('trans.search_regis.text'))
@@ -209,11 +212,7 @@ class CarReceiveResource extends Resource
                             }
                         }
                     }),
-                DatePicker::make('receive_date')->label(__('trans.receive_date.text'))->required(),
-                TextInput::make('timex')->label(__('trans.timex.text'))->default(now()->format('H:i:s')),
-                TextInput::make('customer')->label(__('trans.customer.text'))->required(),
-                TextInput::make('driver_name')->label(__('trans.driver_name.text'))->required(),
-                Select::make('car_year')
+                    Select::make('car_year')
                     ->label(__('trans.car_year.text'))
                     ->preload()
                     ->required()
@@ -228,10 +227,10 @@ class CarReceiveResource extends Resource
                         }
                         return $options;
                     }),
-                TextInput::make('tel_number')->label(__('trans.tel_number.text'))->required(),
-                TextInput::make('address')->label(__('trans.address.text'))->required()->columnSpanFull(),
-                Fieldset::make('ที่อยู่')
+                TextInput::make('customer')->label(__('trans.customer.text'))->required(),
+                Fieldset::make('ที่อยู่เจ้าของรถ')
                     ->schema([
+                        TextInput::make('address')->label(__('trans.address.text'))->required()->columnSpanFull(),
                         Select::make('postal_code')
                             ->label(__('trans.postal_code.text'))
                             ->required()
@@ -272,8 +271,11 @@ class CarReceiveResource extends Resource
                          TextInput::make('amphoe')->label(__('trans.amphoe.text'))->required(),
                          TextInput::make('province')->label(__('trans.province.text'))->required(),
                     ]),
+                TextInput::make('driver_name')->label(__('trans.driver_name.text'))->required(),
+                TextInput::make('tel_number')->label(__('trans.tel_number.text'))->required(),
                 DatePicker::make('pickup_date')->label(__('trans.pickup_date.text')),
                 TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
+                TextInput::make('model')->label(__('trans.model.text'))->required(),
                 Select::make('brand')->label(__('trans.brand.text'))->required()
                     ->options([
                         'Toyota' => 'Toyota',
@@ -341,7 +343,6 @@ class CarReceiveResource extends Resource
                         'Volkswagen'=>'Volkswagen',
                         'Volvo'=>'Volvo',
                         ])->columns(65),
-                TextInput::make('model')->label(__('trans.model.text'))->required(),
                 Select::make('car_type')->label(__('trans.car_type.text'))
                     ->required()
                     ->options([
@@ -488,7 +489,6 @@ class CarReceiveResource extends Resource
                         Checkbox::make('other')->label(__('trans.other.text'))->columnSpanFull(),
                         MarkdownEditor::make('content_other')
                         ->label(__('trans.content_other.text'))
-                        ->required()
                         ->toolbarButtons([
                             'bold',
                             'bulletList',
@@ -527,7 +527,6 @@ class CarReceiveResource extends Resource
                         Checkbox::make('other_document')->label(__('trans.other.text'))->columnSpanFull(),
                         MarkdownEditor::make('content_document')
                         ->label(__('trans.content_document.text'))
-                        ->required()
                         ->toolbarButtons([
                             'bold',
                             'bulletList',
@@ -555,6 +554,7 @@ class CarReceiveResource extends Resource
                 TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
                 FileUpload::make('id_card_attachment')->label(__('trans.id_card_attachment.text'))->required(),
                 ViewField::make('user_admin')->view('filament.resources.forms.components.user-admin'),
+                TextInput::make('timex')->label(__('trans.timex.text'))->default(now()->format('H:i:s')),
             ]
         );
     }
@@ -563,8 +563,6 @@ class CarReceiveResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('choose_garage')
-                    ->label(__('trans.choose_garage.text')),
                 TextColumn::make('job_number')
                     ->label(__('trans.job_number.text'))
                     ->searchable()->toggleable()->sortable(),
@@ -614,26 +612,7 @@ class CarReceiveResource extends Resource
                     ->label(__('trans.park_type.text')),
                 TextColumn::make('car_park')
                     ->label(__('trans.car_park.text')),
-                ImageColumn::make('real_claim')
-                    ->label(__('trans.real_claim.text')),
-                ImageColumn::make('copy_claim')->label(__('trans.copy_claim.text')),
-                ImageColumn::make('copy_driver_license')->label(__('trans.copy_driver_license.text')),
-                ImageColumn::make('copy_vehicle_regis')->label(__('trans.copy_vehicle_regis.text')),
-                ImageColumn::make('copy_policy')->label(__('trans.copy_policy.text')),
-                ImageColumn::make('power_of_attorney')->label(__('trans.power_of_attorney.text')),
-                ImageColumn::make('copy_of_director_id_card')->label(__('trans.copy_of_director_id_card.text')),
-                ImageColumn::make('copy_of_person')->label(__('trans.copy_of_person.text')),
-                ImageColumn::make('account_book')->label(__('trans.account_book.text')),
-                ImageColumn::make('atm_card')->label(__('trans.atm_card.text')),
-                ImageColumn::make('front')->label(__('trans.front.text')),
-                ImageColumn::make('left')->label(__('trans.left.text')),
-                ImageColumn::make('right')->label(__('trans.right.text')),
-                ImageColumn::make('back')->label(__('trans.back.text')),
-                ImageColumn::make('inside_left')->label(__('trans.inside_left.text')),
-                ImageColumn::make('inside_right')->label(__('trans.inside_right.text')),
-                ImageColumn::make('inside_truck')->label(__('trans.truck.text')),
-                ImageColumn::make('etc')->label(__('trans.etc.text')),
-                SpatieMediaLibraryImageColumn::make('other_file')->conversion('thumb'),
+
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')

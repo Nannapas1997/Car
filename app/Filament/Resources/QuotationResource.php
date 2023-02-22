@@ -194,12 +194,6 @@ class QuotationResource extends Resource
                 TextInput::make('vehicle_registration')
                 ->required()
                 ->label(__('trans.vehicle_registration.text')),
-                TextInput::make('number_items')
-                ->required()
-                ->label(__('trans.number_items.text')),
-                TextInput::make('price')
-                ->required()
-                ->label(__('trans.price.text')),
                 Select::make('repair_code')->label(__('trans.repair_code.text'))
                 ->required()
                 ->options([
@@ -336,7 +330,6 @@ class QuotationResource extends Resource
                                         if ($get('code_c0_c7') == 'C6') {
                                             return 'ค่าแรง';
                                         }
-
                                         return __('trans.spare_value.text');
                                     })
                                     ->columnSpan([
@@ -415,7 +408,7 @@ class QuotationResource extends Resource
 
                             foreach ($items as $item) {
                                 $quantity = Arr::get($item, 'quantity', 1);
-
+                               
                                 if (Arr::get($item, 'code_c0_c7') == 'C6') {
                                     $quantity = 1;
                                 }
@@ -482,8 +475,6 @@ class QuotationResource extends Resource
                 TextColumn::make('model')->label(__('trans.model.text')),
                 TextColumn::make('car_year')->label(__('trans.car_year.text')),
                 TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->searchable(),
-                TextColumn::make('number_items')->label(__('trans.number_items.text')),
-                TextColumn::make('price')->label(__('trans.price.text')),
                 TextColumn::make('repair_code')->label(__('trans.repair_code.text')),
                 TextColumn::make('car_type')->label(__('trans.car_type.text')),
                 TextColumn::make('sum_insured')->label(__('trans.sum_insured.text')),

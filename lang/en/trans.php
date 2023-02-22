@@ -160,5 +160,7 @@ return [
     'district.text' => 'ตำบล',
     'amphoe.text' => 'อำเภอ',
     'province.text' => 'จังหวัด',
-    'date.text' => 'วันที่'
+    'date.text' => 'วันที่',
+    'customer_tel_number.text' => 'เบอร์โทรเจ้าของรถ',
+    'driver_tel_number.text' => 'เบอร์โทรผู้ขับขี่'
 ];

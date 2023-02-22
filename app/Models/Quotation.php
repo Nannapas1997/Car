@@ -38,6 +38,15 @@ class Quotation extends Model
         'spare_value',
         'including_spare_parts',
         'total_wage',
+        'quotation_date',
+        'wage',
+        'repair_code',
+        'sum_insured',
+        'creation_date',
+        'total',
+        'vat',
+        'overall',
+        'status'
     ];
     public $timestamps = false;
     // turn off only updated_at
