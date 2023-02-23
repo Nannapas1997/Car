@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\SaveRepairCost;
+use Filament\Facades\Filament;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -118,7 +119,12 @@ class CarReceive extends Model implements HasMedia
     }
     public function carreceiveItems():HasMany
     {
-        return $this->hasMany(CarReceiveItem::class);
+//        return $this->hasMany(CarReceiveItem::class);
+    }
+
+    public function scopeChooseGarage($query)
+    {
+        $query->where('choose_garage', Filament::auth()->user()->garage);
     }
 }
 

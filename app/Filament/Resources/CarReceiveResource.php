@@ -80,12 +80,12 @@ class CarReceiveResource extends Resource
                 ->searchable()
                 ->options($optionValue)
                 ->reactive()
-                ->afterStateUpdated(function ($set, $state) {
+                ->afterStateUpdated(function ($set, $state) use ($currentGarage) {
                     if ($state) {
                         $name = CarReceive::query()->where('job_number', $state)->first();
                         if ($name) {
                             $name = $name->toArray();
-                            $set('choose_garage', $name['choose_garage']);
+                            $set('choose_garage', $currentGarage);
                             $set('receive_date', $name['receive_date']);
                             $set('timex', $name['timex']);
                             $set('customer', $name['customer']);
@@ -160,9 +160,10 @@ class CarReceiveResource extends Resource
                     ->afterStateUpdated(function ($set, $state) {
                         if ($state) {
                             $name = CarReceive::find($state)->toArray();
+                            $currentGarage =  Filament::auth()->user()->garage;
 
                             if ($name) {
-                                $set('choose_garage', $name['choose_garage']);
+                                $set('choose_garage', $currentGarage);
                                 $set('receive_date', $name['receive_date']);
                                 $set('timex', $name['timex']);
                                 $set('customer', $name['customer']);

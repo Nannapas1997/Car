@@ -26,7 +26,9 @@ class CarReleaseResource extends Resource
     protected static ?string $model = CarRelease::class;
     protected static ?string $navigationGroup = 'Account';
     protected static ?string $navigationIcon = 'heroicon-o-arrows-expand';
-    public static function getViewData(): array{
+
+    public static function getViewData(): array
+    {
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = CarReceive::query()
             ->where('choose_garage', $currentGarage)
@@ -34,30 +36,6 @@ class CarReleaseResource extends Resource
             ->get('job_number')
             ->pluck('job_number', 'job_number')
             ->toArray();
-        $optionValue = [];
-
-        if (!$optionData) {
-            $jobNumberFirst = $currentGarage . now()->format('-y-m-d-') . '00001';
-            $optionValue[$jobNumberFirst] = $jobNumberFirst;
-        } else {
-            $lastValue = Arr::first($optionData);
-            if ($lastValue) {
-                $lastValueExplode = explode('-', $lastValue);
-                $lastValue = intval($lastValueExplode[count($lastValueExplode) - 1]);
-                $lastValue += 1;
-                $lastValue = $lastValue < 10 ? "0000{$lastValue}" :
-                    ($lastValue < 100 ? "000{$lastValue}" :
-                        ($lastValue < 1000 ? "00{$lastValue}" :
-                            ($lastValue < 10000 ? "0{$lastValue}" : $lastValue)));
-
-                $lastValue = $currentGarage . now()->format('-y-m-d-') . $lastValue;
-                $optionValue[$lastValue] = $lastValue;
-            }
-
-            foreach ($optionData as $val) {
-                $optionValue[$val] = $val;
-            }
-        }
 
         return [
             Select::make('job_number')
@@ -84,11 +62,18 @@ class CarReleaseResource extends Resource
         ];
     }
     public static function OCData(): array{
+        $currentGarage =  Filament::auth()->user()->garage;
+        $optionData = CarRelease::query()
+            ->where('choose_garage', $currentGarage)
+            ->orderBy('oc_number', 'desc')
+            ->get('oc_number')
+            ->pluck('oc_number', 'oc_number')
+            ->toArray();
         $optionValue = [];
-        $optionData = array('OC' . now()->format('-y-m-d-') . '00001');
+
         if (!$optionData) {
-            $jobNumberFirst = 'OC' . now()->format('-y-m-d-') . '00001';
-            $optionData[$jobNumberFirst] = $jobNumberFirst;
+            $ocNumberFirst = 'OC' . now()->format('-y-m-d-') . '00001';
+            $optionData[$ocNumberFirst] = $ocNumberFirst;
         } else {
             $lastValue = Arr::first($optionData);
 
@@ -104,10 +89,10 @@ class CarReleaseResource extends Resource
                 $lastValue = 'OC' . now()->format('-y-m-d-') . $lastValue;
                 $optionValue[$lastValue] = $lastValue;
             }
+        }
 
-            foreach ($optionData as $val) {
-                $optionValue[$val] = $val;
-            }
+        foreach ($optionData as $val) {
+            $optionValue[$val] = $val;
         }
 
         return [

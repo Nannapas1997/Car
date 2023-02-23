@@ -26,8 +26,7 @@ class CarRelease extends Model
         'policy_number',
         'claim_number',
         'choose_garage',
-        'oc_number'
-
+        'oc_number',
     ];
 
     const UPDATED_AT = null;
