@@ -54,11 +54,11 @@ class Order03LastestCarReceive extends BaseWidget
             TextColumn::make('receive_date')
                 ->label(__('trans.receive_date.text'))
                 ->sortable()
-                ->formatStateUsing(fn (string $state): string => convertYmdToThaiShort($state)),
+                ->formatStateUsing(fn ($state): string => convertYmdToThaiShort($state)),
             TextColumn::make('pickup_date')
                 ->label(__('trans.pickup_date.text'))
                 ->sortable()
-                ->formatStateUsing(fn (string $state): string => convertYmdToThaiShort($state)),
+                ->formatStateUsing(fn ($state): string => convertYmdToThaiShort($state)),
             TextColumn::make('date_diff')
                 ->label(__('trans.date_diff.text'))
                 ->getStateUsing(static function ($record): string {
