@@ -16,6 +16,8 @@ class EmployeeRequisition extends Model
         'disbursement_amount',
         'input',
         'financial',
+        'courier_document',
+        'recipient_document'
 
     ];
     const UPDATED_AT = false;

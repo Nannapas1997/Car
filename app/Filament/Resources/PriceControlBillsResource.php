@@ -62,7 +62,7 @@ class PriceControlBillsResource extends Resource
         }
 
         return [
-            Select::make('job_number')
+            Select::make('job_number_control')
                 ->label(' ' . __('trans.job_number.text') . ' ' . __('trans.current_garage.text') . $currentGarage)
                 ->preload()
                 ->required()

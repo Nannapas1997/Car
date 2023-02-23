@@ -84,11 +84,9 @@ class EmployeeHistoryResource extends Resource
                 DatePicker::make('employee_termination_date')
                 ->label(__('trans.employee_termination_date.text')),
                 TextInput::make('cause')
-                ->label(__('trans.cause.text'))
-                ->required(),
+                ->label(__('trans.cause.text')),
                 FileUpload::make('resignation_document')
-                ->label(__('trans.resignation_document.text'))
-                ->required(),
+                ->label(__('trans.resignation_document.text')),
             ]);
     }
 
