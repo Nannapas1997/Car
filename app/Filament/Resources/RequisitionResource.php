@@ -110,11 +110,6 @@ class RequisitionResource extends Resource
                         ->relationship()
                         ->schema(
                             [
-                                TextInput::make('order')->label(__('trans.order.text'))
-                                ->columnSpan([
-                                    'md' => 1,
-                                ])
-                                ->required(),
                                 TextInput::make('picking_list')->label(__('trans.picking_list.text'))
                                 ->columnSpan([
                                     'md' => 6,
@@ -132,7 +127,7 @@ class RequisitionResource extends Resource
                             ])
                         ->defaultItems(count: 1)
                         ->columns([
-                            'md' => 12,
+                            'md' => 11,
                         ])->createItemButtonLabel('เพิ่มรายการเบิกของ'),
 
                     ])->columnSpan('full'),

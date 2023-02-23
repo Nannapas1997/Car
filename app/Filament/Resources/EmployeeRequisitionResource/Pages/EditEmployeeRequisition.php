@@ -10,10 +10,5 @@ class EditEmployeeRequisition extends EditRecord
 {
     protected static string $resource = EmployeeRequisitionResource::class;
 
-    protected function getActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
+    
 }

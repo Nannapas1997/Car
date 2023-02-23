@@ -12,8 +12,9 @@ class CashReceipt extends Model
         'disbursement_amount',
         'buy_consumables',
         'group_checkbox',
-        'forerunner',
-        'financial',
+        'date',
+        'courier_document',
+        'recipient_document'
 
     ];
     const UPDATED_AT = false;

@@ -117,10 +117,7 @@ class CarReceive extends Model implements HasMedia
     {
         return $this->belongsTo(User::class);
     }
-    public function carreceiveItems():HasMany
-    {
-//        return $this->hasMany(CarReceiveItem::class);
-    }
+   
 
     public function scopeChooseGarage($query)
     {

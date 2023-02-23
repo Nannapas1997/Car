@@ -23,7 +23,9 @@ class PurchaseOrder extends Model
         'aggregate_price',
         'note',
         'courier_document',
-        'recipient_document'
+        'recipient_document',
+        'parts_list_total',
+        'code_c0_c7',
     ];
     public $timestamps = false;
 // turn off only updated_at

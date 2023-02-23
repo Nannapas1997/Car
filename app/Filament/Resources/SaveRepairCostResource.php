@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\CarReceive;
@@ -214,8 +215,7 @@ class SaveRepairCostResource extends Resource
                                 TextInput::make('price')->label(__('trans.price.text'))
                                 ->columnSpan([
                                     'md' => 3,
-                                ])
-                                ->required(),
+                                ]),
                                 TextInput::make('spare_code')->label(__('trans.spare_code.text'))
                                 ->columnSpan([
                                     'md' => 3,
@@ -228,7 +228,8 @@ class SaveRepairCostResource extends Resource
 
                     ])->columnSpan('full'),
 
-                TextInput::make('spare_cost')->label(__('trans.spare_cost.text'))->required(),
+                TextInput::make('spare_cost')->label(__('trans.spare_cost.text'))->required()
+                ->reactive(),
                 TextInput::make('wage')->label(__('trans.wage.text'))->required(),
                 TextInput::make('expense_not_receipt')->label(__('trans.expense_not_receipt.text'))->required(),
                 TextInput::make('total')->label(__('trans.total.text'))->required(),

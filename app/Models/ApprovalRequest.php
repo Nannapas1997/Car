@@ -11,7 +11,7 @@ class ApprovalRequest extends Model
     protected $fillable = [
         'job_number',
         'approval_number',
-        'notification_number',
+        'noti_number',
         'number_ab',
         'vehicle_registration',
         'amount',

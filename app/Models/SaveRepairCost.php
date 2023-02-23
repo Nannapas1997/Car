@@ -14,7 +14,7 @@ class SaveRepairCost extends Model
     use HasFactory;
     protected $fillable = [
         'id',
-        'job_number_control',
+        'job_number',
         'customer',
         'vehicle_registration',
         'brand',
@@ -27,7 +27,7 @@ class SaveRepairCost extends Model
         'price',
         'spare_code',
         'spare_cost',
-
+        'store',
     ];
     public $timestamps = false;
     public function user():BelongsTo

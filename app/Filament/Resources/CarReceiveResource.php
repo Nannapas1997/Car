@@ -279,8 +279,8 @@ class CarReceiveResource extends Resource
                         'Volkswagen'=>'Volkswagen',
                         'Volvo'=>'Volvo',
                         ])->columns(65),
-                        TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
                         TextInput::make('model')->label(__('trans.model.text'))->required(),
+                        TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
                         Select::make('car_year')
                         ->label(__('trans.car_year.text'))
                         ->preload()
@@ -578,8 +578,6 @@ class CarReceiveResource extends Resource
                     ->label(__('trans.customer.text')),
                 TextColumn::make('repairman')
                     ->label(__('trans.repairman.text')),
-                TextColumn::make('tel_number')
-                    ->label(__('trans.tel_number.text')),
                 TextColumn::make('pickup_date')
                     ->label(__('trans.pickup_date.text'))
                     ->formatStateUsing(fn (?string $state): string => convertYmdToThaiShort($state)),

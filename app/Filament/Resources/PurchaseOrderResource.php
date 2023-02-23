@@ -79,6 +79,7 @@ class PurchaseOrderResource extends Resource
                             $set('car_year', $name['car_year']);
                             $set('customer', $name['customer']);
                             $set('insu_company_name', $name['insu_company_name']);
+                            $set('vehicle_registration', $name['vehicle_registration']);
                         }
                     }
                 }),
@@ -178,7 +179,6 @@ class PurchaseOrderResource extends Resource
             ->columns([
                 TextColumn::make('job_number')->label(__('trans.job_number.text'))->searchable(),
                 TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->searchable(),
-                TextColumn::make('customer')->label(__('trans.customer.text')),
                 TextColumn::make('model')->label(__('trans.model.text')),
                 TextColumn::make('car_year')->label(__('trans.car_year.text')),
                 TextColumn::make('store')->label(__('trans.store.text')),

@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -90,8 +91,8 @@ class ApprovalRequestResource extends Resource
                 TextInput::make('approval_number')
                 ->label(__('trans.approval_number.text'))
                 ->required(),
-                TextInput::make('notification_number')
-                ->label(__('trans.notification_number.text'))
+                TextInput::make('noti_number')
+                ->label(__('trans.noti_number.text'))
                 ->required(),
                 TextInput::make('vehicle_registration')
                 ->label(__('trans.vehicle_registration.text'))
@@ -112,7 +113,6 @@ class ApprovalRequestResource extends Resource
                 Select::make('insu_company_name')
                 ->label(__('trans.insu_company_name.text'))
                 ->preload()
-                ->required()
                 ->options([
                     'กรุงเทพประกันภัย' => 'กรุงเทพประกันภัย',
                     'กรุงไทยพานิชประกันภัย' => 'กรุงไทยพานิชประกันภัย',
@@ -158,7 +158,7 @@ class ApprovalRequestResource extends Resource
             ->columns([
                 TextColumn::make('job_number')->label(__('trans.job_number.text'))->searchable()->sortable(),
                 TextColumn::make('approval_number')->label(__('trans.approval_number.text')),
-                TextColumn::make('notification_number')->label(__('trans.notification_number.text')),
+                TextColumn::make('noti_number')->label(__('trans.noti_number.text')),
                 TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->searchable()->sortable(),
                 TextColumn::make('amount')->label(__('trans.amount.text')),
                 TextColumn::make('vat')->label(__('trans.vat.text')),
@@ -202,9 +202,9 @@ class ApprovalRequestResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+               
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
@@ -222,5 +222,9 @@ class ApprovalRequestResource extends Resource
             'create' => Pages\CreateApprovalRequest::route('/create'),
             'edit' => Pages\EditApprovalRequest::route('/{record}/edit'),
         ];
+    }
+    public static function canDelete(Model $record): bool
+    {
+        return Filament::auth()->user()->email === 'super@admin.com';
     }
 }

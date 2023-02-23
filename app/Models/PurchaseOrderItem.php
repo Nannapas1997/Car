@@ -15,6 +15,7 @@ class PurchaseOrderItem extends Model
         'price',
         'quantity',
         'aggregate_price',
+        'code_c0_c7',
 
     ];
     public $timestamps = false;

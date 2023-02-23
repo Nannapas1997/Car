@@ -22,6 +22,7 @@ class Requisition extends Model
         'forerunner',
         'approver',
         'unit',
+        'date'
     ];
     public $timestamps = false;
     // turn off only updated_at

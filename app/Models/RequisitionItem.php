@@ -15,6 +15,7 @@ class RequisitionItem extends Model
         'spare_code',
         'quantity',
         'unit',
+        'order',
     ];
     public $timestamps = false;
     // turn off only updated_at

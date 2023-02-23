@@ -82,8 +82,7 @@ class EmployeeHistoryResource extends Resource
                 ->label(__('trans.other_money.text'))
                 ->required(),
                 DatePicker::make('employee_termination_date')
-                ->label(__('trans.employee_termination_date.text'))
-                ->required(),
+                ->label(__('trans.employee_termination_date.text')),
                 TextInput::make('cause')
                 ->label(__('trans.cause.text'))
                 ->required(),

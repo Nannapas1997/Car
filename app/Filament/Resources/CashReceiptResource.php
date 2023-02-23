@@ -33,8 +33,8 @@ class CashReceiptResource extends Resource
                 TextInput::make('disbursement_amount')
                 ->label(__('trans.disbursement_amount.text'))
                 ->required(),
-                DatePicker::make('input')
-                ->label(__('trans.input.text')),
+                DatePicker::make('date')
+                ->label(__('trans.date.text')),
                 Fieldset::make('ประเภทของการค่าใช้จ่ายต่างๆ')
                 ->schema([
                     Checkbox::make('buy_consumables')->label(__('trans.buy_consumables.text')),
@@ -46,14 +46,11 @@ class CashReceiptResource extends Resource
                     Checkbox::make('insurance_certification')->label(__('trans.insurance_certification.text')),
                     Checkbox::make('internal_certification_fee')->label(__('trans.internal_certification_fee.text')),
                 ]),
-                TextInput::make('other')
-                ->label(__('trans.other.text'))
+                TextInput::make('courier_document')
+                ->label(__('trans.courier_document.text'))
                 ->required(),
-                TextInput::make('forerunner')
-                ->label(__('trans.forerunner.text'))
-                ->required(),
-                TextInput::make('financial')
-                ->label(__('trans.financial.text'))
+                TextInput::make('recipient_document')
+                ->label(__('trans.recipient_document.text'))
                 ->required(),
             ]);
     }
@@ -62,11 +59,9 @@ class CashReceiptResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('disbursement_amount')->label(__('trans.disbursement_amount.text')),
-                TextColumn::make('input')->label(__('trans.input.text')),
-                TextColumn::make('other')->label(__('trans.other.text')),
-                TextColumn::make('forerunner')->label(__('trans.forerunner.text')),
-                TextColumn::make('financial')->label(__('trans.financial.text')),
+                TextColumn::make('date')->label(__('trans.date.text')),
+                TextColumn::make('courier_document')->label(__('trans.courier_document.text')),
+                TextColumn::make('recipient_document')->label(__('trans.recipient_document.text')),
             ])
             ->filters([
                 //

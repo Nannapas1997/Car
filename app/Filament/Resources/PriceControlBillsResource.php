@@ -15,6 +15,7 @@ use App\Models\PriceControlBills;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -88,7 +89,7 @@ class PriceControlBillsResource extends Resource
             ->schema([
                 Card::make()->schema(static::getViewData('job_number')),
                 TextInput::make('number_price_control')->label(__('trans.number_price_control.text'))->required(),
-                TextInput::make('notification_number')->label(__('trans.notification_number.text'))->required(),
+                TextInput::make('noti_number')->label(__('trans.noti_number.text'))->required(),
                 TextInput::make('number_ab')->label(__('trans.number_ab.text'))->required(),
                 TextInput::make('customer')->label(__('trans.customer.text'))->required(),
                 TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
@@ -106,7 +107,7 @@ class PriceControlBillsResource extends Resource
             ->columns([
                 TextColumn::make('job_number_control')->label(__('trans.job_number.text')),
                 TextColumn::make('number_price_control')->label(__('trans.number_price_control.text')),
-                TextColumn::make('notification_number')->label(__('trans.notification_number.text')),
+                TextColumn::make('noti_number')->label(__('trans.noti_number.text')),
                 TextColumn::make('number_ab')->label(__('trans.number_ab.text')),
                 TextColumn::make('customer')->label(__('trans.customer.text')),
                 TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text')),
@@ -169,5 +170,9 @@ class PriceControlBillsResource extends Resource
             'create' => Pages\CreatePriceControlBills::route('/create'),
             'edit' => Pages\EditPriceControlBills::route('/{record}/edit'),
         ];
+    }
+    public static function canDelete(Model $record): bool
+    {
+        return Filament::auth()->user()->email === 'super@admin.com';
     }
 }

@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\BillResource\Pages;
@@ -107,8 +108,6 @@ class BillResource extends Resource
                 TextColumn::make('invoice_number')->label(__('trans.invoice_number.text')),
                 TextColumn::make('bill_number')->label(__('trans.bill_number.text')),
                 TextColumn::make('amount')->label(__('trans.amount.text')),
-                TextColumn::make('price')->label(__('trans.price.text')),
-                TextColumn::make('spare_code')->label(__('trans.spare_code.text')),
                 TextColumn::make('amount')->label(__('trans.amount.text')),
                 TextColumn::make('vat')->label(__('trans.vat.text')),
                 TextColumn::make('aggregate')->label(__('trans.aggregate.text')),
@@ -150,15 +149,8 @@ class BillResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]);
-    }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+            ]);
     }
 
     public static function getPages(): array
@@ -168,5 +160,9 @@ class BillResource extends Resource
             'create' => Pages\CreateBill::route('/create'),
             'edit' => Pages\EditBill::route('/{record}/edit'),
         ];
+    }
+    public static function canDelete(Model $record): bool
+    {
+        return Filament::auth()->user()->email === 'super@admin.com';
     }
 }
