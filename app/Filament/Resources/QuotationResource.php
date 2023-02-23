@@ -489,7 +489,6 @@ class QuotationResource extends Resource
                 TextColumn::make('quotation_date')->label(__('trans.quotation_date.text')),
                 TextColumn::make('store')->label(__('trans.store.text')),
                 TextColumn::make('wage')->label(__('trans.wage.text')),
-                TextColumn::make('total')->label(__('trans.total.text')),
                 TextColumn::make('including_spare_parts')->label(__('trans.including_spare_parts.text')),
                 TextColumn::make('total_wage')->label(__('trans.total_wage.text')),
                 TextColumn::make('vat')->label(__('trans.vat.text')),

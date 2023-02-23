@@ -140,7 +140,6 @@ class CarReceiveResource extends Resource
                 }),
         ];
     }
-
     public static function form(Form $form): Form
     {
         return $form->schema(
@@ -212,71 +211,7 @@ class CarReceiveResource extends Resource
                             }
                         }
                     }),
-                    Select::make('car_year')
-                    ->label(__('trans.car_year.text'))
-                    ->preload()
-                    ->required()
-                    ->searchable()
-                    ->options(function () {
-                        $currentYear = intval(now()->format('Y'));
-                        $options = [];
-
-                        while ($currentYear > 1999) {
-                            $options[$currentYear] = $currentYear;
-                            $currentYear--;
-                        }
-                        return $options;
-                    }),
-                TextInput::make('customer')->label(__('trans.customer.text'))->required(),
-                Fieldset::make('ที่อยู่เจ้าของรถ')
-                    ->schema([
-                        TextInput::make('address')->label(__('trans.address.text'))->required()->columnSpanFull(),
-                        Select::make('postal_code')
-                            ->label(__('trans.postal_code.text'))
-                            ->required()
-                            ->preload()
-                            ->searchable()
-                            ->reactive()
-                            ->options(function (Closure $get) {
-                                $displayAddress = [];
-                                $address = ThailandAddress::where('zipcode', 'like', '%' . $get('postal_code') . '%')
-                                    ->get()
-                                    ->toArray();
-
-                                if ($address) {
-                                    foreach ($address as $val) {
-                                        $displayAddress[Arr::get($val, 'id')] = Arr::get($val, 'zipcode')
-                                            . ' '
-                                            . Arr::get($val, 'district')
-                                            . ' '
-                                            . Arr::get($val, 'amphoe')
-                                            . ' '
-                                            . Arr::get($val, 'province');
-                                    }
-                                }
-
-                                return $displayAddress;
-                            })
-                            ->afterStateUpdated(function ($set, $state) {
-                                if ($state) {
-                                    $name = ThailandAddress::find($state)->toArray();
-                                    if ($name) {
-                                        $set('district', $name['district']);
-                                        $set('amphoe', $name['amphoe']);
-                                        $set('province', $name['province']);
-                                    }
-                                }
-                            }),
-                         TextInput::make('district')->label(__('trans.district.text'))->required(),
-                         TextInput::make('amphoe')->label(__('trans.amphoe.text'))->required(),
-                         TextInput::make('province')->label(__('trans.province.text'))->required(),
-                    ]),
-                TextInput::make('driver_name')->label(__('trans.driver_name.text'))->required(),
-                TextInput::make('tel_number')->label(__('trans.tel_number.text'))->required(),
-                DatePicker::make('pickup_date')->label(__('trans.pickup_date.text')),
-                TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
-                TextInput::make('model')->label(__('trans.model.text'))->required(),
-                Select::make('brand')->label(__('trans.brand.text'))->required()
+                    Select::make('brand')->label(__('trans.brand.text'))->required()
                     ->options([
                         'Toyota' => 'Toyota',
                         'Honda' => 'Honda',
@@ -343,7 +278,24 @@ class CarReceiveResource extends Resource
                         'Volkswagen'=>'Volkswagen',
                         'Volvo'=>'Volvo',
                         ])->columns(65),
-                Select::make('car_type')->label(__('trans.car_type.text'))
+                        TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
+                        TextInput::make('model')->label(__('trans.model.text'))->required(),
+                        Select::make('car_year')
+                        ->label(__('trans.car_year.text'))
+                        ->preload()
+                        ->required()
+                        ->searchable()
+                        ->options(function () {
+                            $currentYear = intval(now()->format('Y'));
+                            $options = [];
+
+                            while ($currentYear > 1999) {
+                                $options[$currentYear] = $currentYear;
+                                $currentYear--;
+                            }
+                            return $options;
+                        }),
+                        Select::make('car_type')->label(__('trans.car_type.text'))
                     ->required()
                     ->options([
                         'รถหัวลาก 10 ล้อ' => 'รถหัวลาก 10 ล้อ',
@@ -372,6 +324,54 @@ class CarReceiveResource extends Resource
                         'รถสามล้อ'=>'รถสามล้อ',
                         ])
                     ->columns(25),
+               TextInput::make('customer')->label(__('trans.customer.text'))->required(),
+               TextInput::make('customer_tel_number')->label(__('trans.customer_tel_number.text'))->required(),
+               Fieldset::make('ที่อยู่เจ้าของรถ')
+                    ->schema([
+                        TextInput::make('address')->label(__('trans.address.text'))->required()->columnSpanFull(),
+                        Select::make('postal_code')
+                            ->label(__('trans.postal_code.text'))
+                            ->required()
+                            ->preload()
+                            ->searchable()
+                            ->reactive()
+                            ->options(function (Closure $get) {
+                                $displayAddress = [];
+                                $address = ThailandAddress::where('zipcode', 'like', '%' . $get('postal_code') . '%')
+                                    ->get()
+                                    ->toArray();
+
+                                if ($address) {
+                                    foreach ($address as $val) {
+                                        $displayAddress[Arr::get($val, 'id')] = Arr::get($val, 'zipcode')
+                                            . ' '
+                                            . Arr::get($val, 'district')
+                                            . ' '
+                                            . Arr::get($val, 'amphoe')
+                                            . ' '
+                                            . Arr::get($val, 'province');
+                                    }
+                                }
+
+                                return $displayAddress;
+                            })
+                            ->afterStateUpdated(function ($set, $state) {
+                                if ($state) {
+                                    $name = ThailandAddress::find($state)->toArray();
+                                    if ($name) {
+                                        $set('district', $name['district']);
+                                        $set('amphoe', $name['amphoe']);
+                                        $set('province', $name['province']);
+                                    }
+                                }
+                            }),
+                         TextInput::make('district')->label(__('trans.district.text'))->required(),
+                         TextInput::make('amphoe')->label(__('trans.amphoe.text'))->required(),
+                         TextInput::make('province')->label(__('trans.province.text'))->required(),
+                    ]),
+                TextInput::make('driver_name')->label(__('trans.driver_name.text'))->required(),
+                TextInput::make('driver_tel_number')->label(__('trans.driver_tel_number.text'))->required(),
+                DatePicker::make('pickup_date')->label(__('trans.pickup_date.text')),
                 TextInput::make('mile_number')->label(__('trans.mile_number.text'))->required(),
                 Select::make('repair_code')->label(__('trans.repair_code.text'))
                     ->required()
@@ -393,7 +393,7 @@ class CarReceiveResource extends Resource
                         'orderedList',
                         'preview',
                         'strike',
-                    ]),
+                    ])->columnSpanFull(),
                 Fieldset::make('ประเภทของรถที่เกิดอุบัติเหตุ')
                     ->schema([
                         Radio::make('car_accident')
@@ -552,6 +552,7 @@ class CarReceiveResource extends Resource
                             ->label(__('trans.etc.text')),
                     ]),
                 TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
+                TextInput::make('repairman_tel_number')->label(__('trans.repairman_tel_number.text'))->required(),
                 FileUpload::make('id_card_attachment')->label(__('trans.id_card_attachment.text'))->required(),
                 ViewField::make('user_admin')->view('filament.resources.forms.components.user-admin'),
                 TextInput::make('timex')->label(__('trans.timex.text'))->default(now()->format('H:i:s')),

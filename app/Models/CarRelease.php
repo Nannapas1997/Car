@@ -20,11 +20,14 @@ class CarRelease extends Model
         'spare_code',
         'staff_name',
         'staff_position',
-        'car_brand',
+        'brand',
         'garage',
-        'insurance_name',
+        'insu_company_name',
         'policy_number',
         'claim_number',
+        'choose_garage',
+        'oc_number'
+
     ];
 
     const UPDATED_AT = null;

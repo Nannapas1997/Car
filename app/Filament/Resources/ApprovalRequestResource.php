@@ -98,6 +98,7 @@ class ApprovalRequestResource extends Resource
                 ->required(),
                 TextInput::make('amount')
                 ->label(__('trans.amount.text'))
+                ->reactive()
                 ->required(),
                 TextInput::make('vat')
                 ->label(__('trans.vat.text'))

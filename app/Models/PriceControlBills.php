@@ -13,7 +13,7 @@ class PriceControlBills extends Model
     protected $fillable = [
         'job_number_control',
         'number_price_control',
-        'notification_number',
+        'noti_number',
         'number_ab',
         'customer',
         'vehicle_registration',

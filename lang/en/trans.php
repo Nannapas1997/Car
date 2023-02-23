@@ -162,5 +162,7 @@ return [
     'province.text' => 'จังหวัด',
     'date.text' => 'วันที่',
     'customer_tel_number.text' => 'เบอร์โทรเจ้าของรถ',
-    'driver_tel_number.text' => 'เบอร์โทรผู้ขับขี่'
+    'driver_tel_number.text' => 'เบอร์โทรผู้ขับขี่',
+    'oc_number.text' => 'เลขที่ใบปล่อยรถ',
+    'repairman_tel_number.text' => 'เบอร์โทรผู้สั่งซ่อม'
 ];
