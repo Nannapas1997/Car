@@ -101,6 +101,10 @@ class CarReceive extends Model implements HasMedia
         'province',
         'content_other',
         'content_document',
+        'id_card_attachment',
+        'customer_tel_number',
+        'driver_tel_number',
+        'repairman_tel_number'
     ];
     // turn off both
     public $timestamps = false;
@@ -117,7 +121,7 @@ class CarReceive extends Model implements HasMedia
     {
         return $this->belongsTo(User::class);
     }
-   
+
 
     public function scopeChooseGarage($query)
     {

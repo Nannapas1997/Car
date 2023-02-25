@@ -1,0 +1,156 @@
+
+
+
+body {
+    font-family: 'Kanit' !important;
+    padding:0 !important;
+    margin-left: 0 !important;
+    margin-right:0 !important;
+}
+.size-of-title-sp {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10rem;
+}
+.size-of-address-sp {
+    font-size: 20px;
+    font-weight: 600;
+    position: relative;
+    bottom: 15px;
+    margin-left: 10rem;
+}
+.size-of-tel-sp {
+    font-size: 20px;
+    font-weight: 600;
+    position: relative;
+    bottom: 23px;
+    margin-left: 10rem;
+}
+.size-of-email-sp {
+    font-size: 20px;
+    font-weight: 600;
+    position: relative;
+    bottom: 36px;
+    margin-left: 10rem;
+}
+.size-of-line-id-sp {
+    font-size: 20px;
+    font-weight: 600;
+    position: relative;
+    bottom: 48px;
+    margin-left: 10rem;
+}
+.job-number {
+    font-size: 28px;
+
+}
+.receive-date-and-time {
+    font-size: 28px;
+    margin-left: 6.5rem;
+}
+.title-car-receive {
+    text-decoration: underline;
+    margin: auto;
+    text-align: center;
+    font-size: 1.2rem;
+}
+.customer {
+    font-size: 24px;
+}
+input[type="radio"] {
+    width: 18px;
+    height: 18px;
+}
+input#park {
+    top: 1.3rem;
+    left: 1.2rem;
+}
+input#park-type {
+    top: 1.3rem;
+    left: 2.4rem;
+}
+label.relative.left-11.car-park {
+    top: 1rem;
+}
+.mile {
+    position: relative;
+    top: 1rem;
+    left: 10rem;
+}
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+td.px-3.py-4.text-slate-700.sm\:table-cell {
+    position: relative;
+    left: 2rem;
+}
+.boxset {
+    left: 4rem;
+}
+input#boxset {
+    right:9.1rem;
+}
+.cigarette_lighter {
+    left: 4rem;
+}
+input#cigarette_lighter {
+    left: 3.7rem;
+}
+input#radio {
+    left: 2.5rem;
+}
+label.relative.bottom-1.radio {
+    left: 2.8rem;
+}
+label.relative.bottom-1.floor_mat {
+    left: 4.5rem;
+}
+input#floor_mat
+ {
+    left: 4.1rem;
+ }
+ label.relative.bottom-1.spare_removal
+{
+    left: 2.8rem;
+}
+input#spare_removal
+ {
+    left: 2.5rem;
+ }
+ label.relative.bottom-1.fire_extinguisher
+ {
+    left: 2.8rem;
+ }
+ input#fire_extinguisher
+ {
+    left: 2.5rem;
+ }
+ label.relative.bottom-1.spining_wheel
+{
+    left: 3.3rem;
+}
+input#spining_wheel
+{
+    left: 2.9rem;
+}
+label.relative.bottom-1.other
+{
+    left:2.8rem;
+}
+input#other
+{
+    left: 2.5rem;
+}
+.p-9.content {
+    position: relative;
+    bottom: 3rem;
+}
+td.content-1 {
+    position: relative;
+    bottom: 5rem;
+}
+tr.document {
+    
+}
