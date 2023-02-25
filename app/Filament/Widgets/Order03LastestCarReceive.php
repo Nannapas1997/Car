@@ -10,6 +10,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use stdClass;
 
 class Order03LastestCarReceive extends BaseWidget
@@ -54,18 +55,22 @@ class Order03LastestCarReceive extends BaseWidget
             TextColumn::make('receive_date')
                 ->label(__('trans.receive_date.text'))
                 ->sortable()
-                ->formatStateUsing(fn (string $state): string => convertYmdToThaiShort($state)),
+                ->formatStateUsing(fn ($state): string => convertYmdToThaiShort($state)),
             TextColumn::make('pickup_date')
                 ->label(__('trans.pickup_date.text'))
                 ->sortable()
-                ->formatStateUsing(fn (string $state): string => convertYmdToThaiShort($state)),
+                ->formatStateUsing(fn ($state): string => convertYmdToThaiShort($state)),
             TextColumn::make('date_diff')
                 ->label(__('trans.date_diff.text'))
                 ->getStateUsing(static function ($record): string {
-                    $a = Carbon::createFromFormat('Y-m-d', $record->receive_date);
-                    $b = Carbon::createFromFormat('Y-m-d', $record->pickup_date);
+                    if (Arr::get($record, 'receive_date') && Arr::get($record, 'pickup_date')) {
+                        $a = Carbon::createFromFormat('Y-m-d', $record->receive_date);
+                        $b = Carbon::createFromFormat('Y-m-d', $record->pickup_date);
 
-                    return (string) $a->diffInDays($b);
+                        return (string) $a->diffInDays($b);
+                    }
+
+                    return '0';
                 }),
             BadgeColumn::make('status')
                 ->label(__('trans.status.text'))
