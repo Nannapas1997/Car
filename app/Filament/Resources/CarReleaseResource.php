@@ -24,7 +24,8 @@ use App\Filament\Resources\CarReleaseResource\RelationManagers;
 class CarReleaseResource extends Resource
 {
     protected static ?string $model = CarRelease::class;
-    protected static ?string $navigationGroup = 'Account';
+    protected static ?string $navigationGroup = 'บัญชี';
+    protected static ?string $navigationLabel = 'ใบปล่อยรถ';
     protected static ?string $navigationIcon = 'heroicon-o-arrows-expand';
 
     public static function getViewData(): array

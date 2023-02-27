@@ -27,7 +27,7 @@ class ApprovalRequestResource extends Resource
     protected static ?string $model = ApprovalRequest::class;
     protected static ?string $navigationGroup = 'Account';
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
-
+    protected static bool $shouldRegisterNavigation = false;
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = CarReceive::query()
@@ -202,7 +202,7 @@ class ApprovalRequestResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-               
+
             ])
             ->bulkActions([
             ]);

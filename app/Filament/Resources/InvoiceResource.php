@@ -12,8 +12,10 @@ use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Facades\Filament;
 use Illuminate\Support\Carbon;
+use PhpParser\Node\Stmt\Label;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Repeater;
 use Filament\Tables\Columns\TextColumn;
@@ -23,12 +25,12 @@ use Filament\Forms\Components\Placeholder;
 use App\Filament\Resources\InvoiceResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\InvoiceResource\RelationManagers;
-use PhpParser\Node\Stmt\Label;
 
 class InvoiceResource extends Resource
 {
     protected static ?string $model = Invoice::class;
-    protected static ?string $navigationGroup = 'Account';
+    protected static ?string $navigationGroup = 'บัญชี';
+    protected static ?string $navigationLabel = 'ใบแจ้งหนี้';
     protected static ?string $navigationIcon = 'heroicon-o-document-add';
 
     public int $totalAmount = 0;
@@ -151,6 +153,14 @@ class InvoiceResource extends Resource
 
                             return $total ? number_format($total, 2) : '0.00';
                         }),
+                        Radio::make('choose_vat_or_not')
+                        ->columnSpanFull()
+                        ->label('ระบุตัวเลือกที่ต้องการ')
+                        ->required()
+                        ->options([
+                            'รวมvat'=>'รวมvat 7%',
+                            'ไม่รวมvat'=>'ไม่รวมvat 7%',
+                        ]),
                     TextInput::make('vat_display')
                         ->label(__('trans.vat.text'))
                         ->disabled()

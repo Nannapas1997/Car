@@ -77,7 +77,7 @@ return [
     'spare_code.text' => 'รหัสอะไหล่',
     'spare_cost.text' => 'ราคาค่าอะไหล่',
     'add_to_cost.text' => 'เพิ่มรายการค่าใช้จ่าย',
-    'store.text' => 'ร้านค้า',
+    'store.text' => 'คนคุมราคา',
     'approval_number.text' => 'เลขที่ใบขออนุมัติ',
     'amount.text' => 'จำนวนเงิน',
     'vat.text' => 'VAT 7%',
@@ -103,7 +103,7 @@ return [
     'sks.text' => 'สคส',
     'wchp.text' => 'วชพ',
     'spare_value.text' => 'ค่าอะไหล่',
-    'including_spare_parts.text' => 'รวมค่าอะไหล่(อู่จัด)',
+    'including_spare_parts.text' => 'รวมค่าอะไหล่',
     'total_wage.text' => 'รวมค่าแรง',
     'pending_approval.text' => 'รออนุม้ติ',
     'processing.text' => 'กำลังดำเนินการ',
@@ -164,5 +164,7 @@ return [
     'customer_tel_number.text' => 'เบอร์โทรเจ้าของรถ',
     'driver_tel_number.text' => 'เบอร์โทรผู้ขับขี่',
     'oc_number.text' => 'เลขที่ใบปล่อยรถ',
-    'repairman_tel_number.text' => 'เบอร์โทรผู้สั่งซ่อม'
+    'repairman_tel_number.text' => 'เบอร์โทรผู้สั่งซ่อม',
+    'editor_name.text' => 'ผู้แก้ไขข้อมูล',
+    'updated_at' => 'อัพเดทข้อมูล ณ วันและเวลา'
 ];

@@ -34,7 +34,8 @@ use App\Models\ThailandAddress;
 class CarReceiveResource extends Resource
 {
     protected static ?string $model = CarReceive::class;
-    protected static ?string $navigationGroup = 'My Work';
+    protected static ?string $navigationGroup = 'งานของฉัน';
+    protected static ?string $navigationLabel = 'ใบรับรถ';
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
     public static function getViewData(): array
@@ -149,7 +150,8 @@ class CarReceiveResource extends Resource
                     ->disabled(),
                 DatePicker::make('receive_date')->label(__('trans.receive_date.text'))
                 ->required()
-                ->default(now()->format('Y-m-d')),
+                ->default(now()->format('Y-m-d'))
+                ->disabled(),
                 Card::make()->schema(static::getViewData('job_number')),
                 Select::make('search_regis')
                     ->label(__('trans.search_regis.text'))
@@ -502,56 +504,36 @@ class CarReceiveResource extends Resource
                     ]),
                 Fieldset::make('เอกสารที่ได้รับในวันที่รถเข้าซ่อม')
                     ->schema([
-                        FileUpload::make('real_claim')->label(__('trans.real_claim.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        FileUpload::make('copy_claim')->label(__('trans.copy_claim.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        FileUpload::make('copy_driver_license')->label(__('trans.copy_driver_license.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        FileUpload::make('copy_vehicle_regis')->label(__('trans.copy_vehicle_regis.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        FileUpload::make('copy_policy')->label(__('trans.copy_policy.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        FileUpload::make('power_of_attorney')->label(__('trans.power_of_attorney.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        FileUpload::make('copy_of_director_id_card')->label(__('trans.copy_of_director_id_card.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        FileUpload::make('copy_of_person')->label(__('trans.copy_of_person.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        FileUpload::make('account_book')->label(__('trans.account_book.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        FileUpload::make('atm_card')->label(__('trans.atm_card.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
+                        FileUpload::make('real_claim')->label(__('trans.real_claim.text'))
+                        ->image()
+                        ->enableDownload(),
+                        FileUpload::make('copy_claim')->label(__('trans.copy_claim.text'))
+                        ->image()
+                        ->enableDownload(),
+                        FileUpload::make('copy_driver_license')->label(__('trans.copy_driver_license.text'))
+                        ->image()
+                        ->enableDownload(),
+                        FileUpload::make('copy_vehicle_regis')->label(__('trans.copy_vehicle_regis.text'))
+                        ->image()
+                        ->enableDownload(),
+                        FileUpload::make('copy_policy')->label(__('trans.copy_policy.text'))
+                        ->image()
+                        ->enableDownload(),
+                        FileUpload::make('power_of_attorney')->label(__('trans.power_of_attorney.text'))
+                        ->image()
+                        ->enableDownload(),
+                        FileUpload::make('copy_of_director_id_card')->label(__('trans.copy_of_director_id_card.text'))
+                        ->image()
+                        ->enableDownload(),
+                        FileUpload::make('copy_of_person')->label(__('trans.copy_of_person.text'))
+                        ->image()
+                        ->enableDownload(),
+                        FileUpload::make('account_book')->label(__('trans.account_book.text'))
+                        ->image()
+                        ->enableDownload(),
+                        FileUpload::make('atm_card')->label(__('trans.atm_card.text'))
+                        ->image()
+                        ->enableDownload(),
                     ]),
                 Fieldset::make('เอกสารที่ลูกค้านำมาวันรับรถ')
                     ->schema([
@@ -580,63 +562,46 @@ class CarReceiveResource extends Resource
                     ]),
                 Fieldset::make('ภาพรถวันเข้าซ่อม')
                     ->schema([
-                        FileUpload::make('front')->label(__('trans.front.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        FileUpload::make('left')->label(__('trans.left.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        FileUpload::make('right')->label(__('trans.right.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        FileUpload::make('back')->label(__('trans.back.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        FileUpload::make('inside_left')->label(__('trans.inside_left.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        FileUpload::make('inside_right')->label(__('trans.inside_right.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        FileUpload::make('inside_truck')->label(__('trans.truck.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        FileUpload::make('etc')->label(__('trans.etc.text'))->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080'),
-                        SpatieMediaLibraryFileUpload::make('other_file')->image()
+                        FileUpload::make('front')->label(__('trans.front.text'))
+                        ->image()
+                        ->enableDownload(),
+                        FileUpload::make('left')->label(__('trans.left.text'))
+                        ->image()
+                        ->enableDownload(),
+                        FileUpload::make('right')->label(__('trans.right.text'))
+                        ->image()
+                        ->enableDownload(),
+                        FileUpload::make('back')->label(__('trans.back.text'))
+                        ->image()
+                        ->enableDownload(),
+                        FileUpload::make('inside_left')->label(__('trans.inside_left.text'))
+                        ->image()
+                        ->enableDownload(),
+                        FileUpload::make('inside_right')->label(__('trans.inside_right.text'))
+                        ->image()
+                        ->enableDownload(),
+                        FileUpload::make('inside_truck')->label(__('trans.truck.text'))
+                        ->image()
+                        ->enableDownload(),
+                        FileUpload::make('etc')->label(__('trans.etc.text'))
+                        ->image()
+                        ->enableDownload(),
+                        SpatieMediaLibraryFileUpload::make('other_file')
                             ->multiple()
                             ->label(__('trans.etc.text'))
-                            ->imageResizeMode('cover')
-                            ->imageCropAspectRatio('16:9')
-                            ->imageResizeTargetWidth('1920')
-                            ->imageResizeTargetHeight('1080'),
+                            ->image()
+                            ->enableDownload(),
                     ]),
                 TextInput::make('repairman')->label(__('trans.repairman.text'))->required(),
                 TextInput::make('repairman_tel_number')->label(__('trans.repairman_tel_number.text'))->required(),
-                FileUpload::make('id_card_attachment')->label(__('trans.id_card_attachment.text'))->required()->image()
-                ->imageResizeMode('cover')
-                ->imageCropAspectRatio('16:9')
-                ->imageResizeTargetWidth('1920')
-                ->imageResizeTargetHeight('1080'),
+                FileUpload::make('id_card_attachment')->label(__('trans.id_card_attachment.text'))->required()
+                ->image()
+                ->enableDownload(),
                 ViewField::make('user_admin')->view('filament.resources.forms.components.user-admin'),
-                TextInput::make('timex')->label(__('trans.timex.text'))->default(now()->format('H:i:s')),
+                TextInput::make('timex')->label(__('trans.timex.text'))->default(now()->format('H:i:s'))->disabled(),
+                TextInput::make('updated_at')->label(__('trans.updated_at'))->default(now()->format('Y-m-d H:i:s'))->disabled(),
+                ViewField::make('editor_name')->view('filament.resources.forms.components.editor-name'),
+
             ]
         );
     }

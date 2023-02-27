@@ -25,7 +25,8 @@ use App\Filament\Resources\PriceControlBillsResource\RelationManagers;
 class PriceControlBillsResource extends Resource
 {
     protected static ?string $model = PriceControlBills::class;
-    protected static ?string $navigationGroup = 'Account';
+    protected static ?string $navigationGroup = 'บัญชี';
+    protected static ?string $navigationLabel = 'ใบคุมราคา';
     protected static ?string $navigationIcon = 'heroicon-o-receipt-tax';
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;

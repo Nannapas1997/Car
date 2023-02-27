@@ -22,7 +22,8 @@ use Filament\Tables\Columns\TextColumn;
 class EmployeeHistoryResource extends Resource
 {
     protected static ?string $model = EmployeeHistory::class;
-    protected static ?string $navigationGroup = 'History';
+    protected static ?string $navigationGroup = 'ประวัติ';
+    protected static ?string $navigationLabel = 'ประวัติพนักงาน';
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
     public static function form(Form $form): Form

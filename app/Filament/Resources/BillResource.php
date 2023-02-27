@@ -25,7 +25,8 @@ use App\Filament\Resources\BillResource\RelationManagers;
 class BillResource extends Resource
 {
     protected static ?string $model = Bill::class;
-    protected static ?string $navigationGroup = 'Account';
+    protected static ?string $navigationGroup = 'บัญชี';
+    protected static ?string $navigationLabel = 'ใบวางบิล';
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;

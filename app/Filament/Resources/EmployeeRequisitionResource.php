@@ -24,7 +24,8 @@ use Filament\Tables\Columns\TextColumn;
 class EmployeeRequisitionResource extends Resource
 {
     protected static ?string $model = EmployeeRequisition::class;
-    protected static ?string $navigationGroup = 'Financial';
+    protected static ?string $navigationGroup = 'การเงิน';
+    protected static ?string $navigationLabel = 'ใบเบิกเงินพนักงาน';
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function form(Form $form): Form

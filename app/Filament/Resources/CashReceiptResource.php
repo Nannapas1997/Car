@@ -23,7 +23,8 @@ use Filament\Tables\Columns\TextColumn;
 class CashReceiptResource extends Resource
 {
     protected static ?string $model = CashReceipt::class;
-    protected static ?string $navigationGroup = 'Financial';
+    protected static ?string $navigationGroup = 'การเงิน';
+    protected static ?string $navigationLabel = 'ใบเบิกเงินสด';
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
 
     public static function form(Form $form): Form

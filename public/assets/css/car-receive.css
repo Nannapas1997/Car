@@ -151,6 +151,17 @@ td.content-1 {
     position: relative;
     bottom: 5rem;
 }
-tr.document {
-    
+label.relative.bottom-1.copy_policy_document{
+    left: 1rem;
+}
+input#copy_policy_document
+ {
+    left: 1rem;
+ }
+ label.relative.bottom-1.power_of_attorney_document
+{
+    left: 2.1rem;
+}
+input#power_of_attorney_document {
+    left: 2rem;
 }

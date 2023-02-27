@@ -60,10 +60,5 @@ class EditQuotation extends EditRecord
         return $data;
     }
 
-    protected function getActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
+    
 }

@@ -28,7 +28,8 @@ use App\Filament\Resources\SaveRepairCostResource\RelationManagers;
 class SaveRepairCostResource extends Resource
 {
     protected static ?string $model = SaveRepairCost::class;
-    protected static ?string $navigationGroup = 'Account';
+    protected static ?string $navigationGroup = 'บัญชี';
+    protected static ?string $navigationLabel = 'ต้นทุนค่าแรง';
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;

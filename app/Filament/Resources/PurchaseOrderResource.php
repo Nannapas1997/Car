@@ -26,7 +26,8 @@ use App\Filament\Resources\PurchaseOrderResource\RelationManagers;
 class PurchaseOrderResource extends Resource
 {
     protected static ?string $model = PurchaseOrder::class;
-    protected static ?string $navigationGroup = 'Account';
+    protected static ?string $navigationGroup = 'บัญชี';
+    protected static ?string $navigationLabel = 'ใบคำสั่งซื้อ';
     protected static ?string $navigationIcon = 'heroicon-o-save-as';
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;

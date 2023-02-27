@@ -3,7 +3,7 @@
         <label class="filament-forms-field-wrapper-label inline-flex items-center space-x-3 rtl:space-x-reverse" for="data.admin_name">
 
 
-    <span class="text-sm font-medium leading-4 text-gray-700 dark:text-gray-300">
+            <span class="text-sm font-medium leading-4 text-gray-700 dark:text-gray-300">
         {{ __('trans.addressee.text') }}
 
             </span>

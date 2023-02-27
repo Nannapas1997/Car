@@ -104,13 +104,15 @@ class CarReceive extends Model implements HasMedia
         'id_card_attachment',
         'customer_tel_number',
         'driver_tel_number',
-        'repairman_tel_number'
+        'repairman_tel_number',
+        'choose_vat_or_not',
+        'update_at',
+        'editor_name',
     ];
     // turn off both
     public $timestamps = false;
 
     // turn off only updated_at
-    const UPDATED_AT = null;
     protected $primaryKey = 'id';
 
     public function registerMediaCollections(): void

@@ -26,6 +26,7 @@ class Invoice extends Model
         'price',
         'spare_code',
         'spare_cost',
+        'choose_vat_or_not',
 
     ];
     public $timestamps = false;

@@ -30,7 +30,8 @@ use Illuminate\Support\Facades\Log;
 class QuotationResource extends Resource
 {
     protected static ?string $model = Quotation::class;
-    protected static ?string $navigationGroup = 'My Work';
+    protected static ?string $navigationGroup = 'งานของฉัน';
+    protected static ?string $navigationLabel = 'ใบเสนอราคา';
     protected static ?string $navigationIcon = 'heroicon-o-document-search';
 
     public static function getViewData(): array{
@@ -349,15 +350,6 @@ class QuotationResource extends Resource
                     TextInput::make('wchp')
                     ->required()
                     ->label(__('trans.wchp.text')),
-                    Select::make('store')->label(__('trans.store.text'))
-                    ->required()
-                    ->preload()
-                    ->options([
-                        'ร้านA'=>'ร้านA',
-                        'ร้านB'=>'ร้านB',
-                        'ร้านC'=>'ร้านC',
-                        'ร้านD'=>'ร้านD',
-                    ]),
                     TextInput::make('overall_price')
                         ->label(__('trans.overall_price.text'))
                         ->disabled()
@@ -399,6 +391,14 @@ class QuotationResource extends Resource
 
                             return $total ? number_format($total, 2) : '0.00';
                         }),
+                    Radio::make('choose_vat_or_not')
+                    ->columnSpanFull()
+                    ->label('ระบุตัวเลือกที่ต้องการ')
+                    ->required()
+                    ->options([
+                        'รวมvat'=>'รวมvat 7%',
+                        'ไม่รวมvat'=>'ไม่รวมvat 7%',
+                    ]),
                     TextInput::make('vat')
                         ->label(__('trans.vat.text'))
                         ->disabled()
@@ -450,6 +450,15 @@ class QuotationResource extends Resource
 
                             return $sumTotal ? number_format($sumTotal, 2) : '0.00';
                         }),
+                        Select::make('store')->label(__('trans.store.text'))
+                        ->required()
+                        ->preload()
+                        ->options([
+                            'ติณณภพ สุขจิต'=>'ติณณภพ สุขจิต',
+                            'อัจฉรียสา เขษมบุษป์'=>'อัจฉรียสา เขษมบุษป์',
+                            'อัคคัญญ์ กิตติ์จีระภูมิ '=>'อัคคัญญ์ กิตติ์จีระภูมิ',
+                            'ธนพฤทธ์ เถกิงศักดิ์'=>'ธนพฤทธ์ เถกิงศักดิ์',
+                        ]),
                     Fieldset::make('สถานะการจัดการใบเสนอราคา')
                     ->schema([
                         Radio::make('status')

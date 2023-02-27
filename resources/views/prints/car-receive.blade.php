@@ -180,7 +180,7 @@
                                         </div>
                                         <div class="float-left">
                                             @if($batteries !== NULL && $batteries === 1)
-                                            <input type="checkbox" id="boxset" name="batteries" value="" class="relative left-10" disabled checked>
+                                            <input type="checkbox" id="batteries" name="batteries" value="" class="relative left-10" disabled checked>
                                             <label for="batteries" class="relative bottom-1 left-11">แบตเตอรี่</label><br>
                                             @else
                                             <input type="checkbox" id="batteries" name="batteries" value="" class="relative left-10" disabled>
@@ -265,21 +265,78 @@
                                 </thead>
 
                                 <tr class="border-b border-slate-700">
-                                    <td class="py-4 pl-4 pr-3  sm:pl-6 md:pl-0">
-                                        <div class="font-medium text-slate-700">
-
-                                        </div>
-                                        <div class="mt-0.5 text-slate-700">
-
+                                    <td class="py-4 pl-4 pr-3  sm:pl-6 md:pl-0" colspan="2">
+                                        <?php
+                                            $real_claim_document = data_get($data, 'real_claim_document', NULL);
+                                            $copy_policy_document = data_get($data, 'copy_policy_document', NULL);
+                                            $copy_claim_document = data_get($data, 'copy_claim_document', NULL);
+                                            $power_of_attorney_document = data_get($data, 'power_of_attorney_document', NULL);
+                                            $copy_driver_license_document = data_get($data, 'copy_driver_license_document', NULL);
+                                            $copy_of_director_id_card_document = data_get($data, 'copy_of_director_id_card_document', NULL);
+                                            $copy_vehicle_regis_document = data_get($data, 'copy_vehicle_regis_document', NULL);
+                                            $copy_of_person_document = data_get($data, 'copy_of_person_document', NULL);
+                                            $account_book_document = data_get($data, 'account_book_document', NULL);
+                                            $atm_card_document = data_get($data, 'atm_card_document', NULL);
+                                            $other_document = data_get($data, 'other_document', NULL);
+                                        ?>
+                                        <div class="font-normal text-slate-700">
+                                            <div class="float-left">
+                                                @if($real_claim_document !== NULL && $real_claim_document === 1)
+                                                <input type="checkbox" id="real_claim_document" name="real_claim_document" value="" class="relative" disabled checked>
+                                                <label for="real_claim_document" class="relative bottom-1 real_claim_document">ใบเคลมฉบับจริง</label><br>
+                                                @else
+                                                <input type="checkbox" id="real_claim_document" name="real_claim_document" value="" class="relative" disabled>
+                                                <label for="real_claim_document" class="relative bottom-1 real_claim_document">ใบเคลมฉบับจริง</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="float-none">
+                                                @if($copy_policy_document !== NULL && $copy_policy_document === 1)
+                                                <input type="checkbox" id="copy_policy_document" name="copy_policy_document" value="" class="relative" disabled checked>
+                                                <label for="copy_policy_document" class="relative bottom-1 copy_policy_document">สำเนากรมธรรม์</label><br>
+                                                @else
+                                                <input type="checkbox" id="copy_policy_document" name="copy_policy_document" value="" class="relative" disabled>
+                                                <label for="copy_policy_document" class="relative bottom-1 copy_policy_document">สำเนากรมธรรม์</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="float-left">
+                                                @if($copy_claim_document !== NULL && $copy_claim_document === 1)
+                                                <input type="checkbox" id="copy_claim_document" name="copy_claim_document" value="" class="relative" disabled checked>
+                                                <label for="copy_claim_document" class="relative bottom-1 copy_claim_document">สำเนาใบเคลม</label><br>
+                                                @else
+                                                <input type="checkbox" id="copy_policy_document" name="copy_policy_document" value="" class="relative" disabled>
+                                                <label for="copy_policy_document" class="relative bottom-1 copy_policy_document">สำเนาใบเคลม</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="float-none">
+                                                @if($power_of_attorney_document !== NULL && $power_of_attorney_document === 1)
+                                                <input type="checkbox" id="power_of_attorney_document" name="power_of_attorney_document" value="" class="relative" disabled checked>
+                                                <label for="power_of_attorney_document" class="relative bottom-1 power_of_attorney_document">หนังสือมอบอำนาจ</label><br>
+                                                @else
+                                                <input type="checkbox" id="power_of_attorney_document" name="power_of_attorney_document" value="" class="relative" disabled>
+                                                <label for="power_of_attorney_document" class="relative bottom-1 power_of_attorney_document">หนังสือมอบอำนาจ</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="float-left">
+                                                @if($copy_driver_license_document !== NULL && $copy_driver_license_document === 1)
+                                                <input type="checkbox" id="copy_driver_license_document" name="copy_driver_license_document" value="" class="relative" disabled checked>
+                                                <label for="copy_driver_license_document" class="relative bottom-1 copy_driver_license_document">สำเนาใบเคลม</label><br>
+                                                @else
+                                                <input type="checkbox" id="copy_driver_license_document" name="copy_driver_license_document" value="" class="relative" disabled>
+                                                <label for="copy_driver_license_document" class="relative bottom-1 copy_driver_license_document">สำเนาใบเคลม</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="float-none">
+                                                @if($copy_of_director_id_card_document !== NULL && $copy_of_director_id_card_document === 1)
+                                                <input type="checkbox" id="power_of_attorney_document" name="power_of_attorney_document" value="" class="relative" disabled checked>
+                                                <label for="power_of_attorney_document" class="relative bottom-1 power_of_attorney_document">หนังสือมอบอำนาจ</label><br>
+                                                @else
+                                                <input type="checkbox" id="power_of_attorney_document" name="power_of_attorney_document" value="" class="relative" disabled>
+                                                <label for="power_of_attorney_document" class="relative bottom-1 power_of_attorney_document">หนังสือมอบอำนาจ</label><br>
+                                                @endif
+                                            </div>
                                         </div>
                                     </td>
                                     <td class="px-3 py-4 text-right text-slate-700 sm:table-cell">
-
-                                    </td>
-                                    <td class="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
-
-                                    </td>
-                                    <td class="py-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
 
                                     </td>
                                 </tr>
