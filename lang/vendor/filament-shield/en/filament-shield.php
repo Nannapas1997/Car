@@ -31,8 +31,8 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'nav.group' => 'Filament Shield',
-    'nav.role.label' => 'Roles',
+    'nav.group' => 'การจัดการระบบ',
+    'nav.role.label' => 'บทบาท',
     'nav.role.icon' => 'heroicon-o-shield-check',
     'resource.label.role' => 'Role',
     'resource.label.roles' => 'Roles',

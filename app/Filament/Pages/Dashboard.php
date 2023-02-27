@@ -8,6 +8,11 @@ class Dashboard extends BaseDashboard
 {
     protected static ?string $pollingInterval = '60s';
 
+    protected static function getNavigationLabel(): string
+    {
+        return 'หน้าแรก';
+    }
+
     protected function getTitle(): string
     {
         return '';

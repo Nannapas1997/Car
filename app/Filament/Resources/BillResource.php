@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use Filament\Forms;
 use App\Models\Bill;
+use Filament\Forms\Components\Hidden;
 use Filament\Tables;
 use App\Models\CarReceive;
 use Illuminate\Support\Arr;
@@ -91,9 +93,30 @@ class BillResource extends Resource
                 TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
                 TextInput::make('invoice_number')->label(__('trans.invoice_number.text'))->required(),
                 TextInput::make('bill_number')->label(__('trans.bill_number.text'))->required(),
-                TextInput::make('amount')->label(__('trans.amount.text'))->required(),
-                TextInput::make('vat')->label(__('trans.vat.text'))->required(),
-                TextInput::make('aggregate')->label(__('trans.aggregate.text'))->required(),
+                TextInput::make('amount')
+                    ->label(__('trans.amount.text'))
+                    ->numeric()
+                    ->reactive()
+                    ->required(),
+                TextInput::make('vat_display')
+                    ->label(__('trans.vat.text'))
+                    ->disabled()
+                    ->placeholder(function (Closure $get) {
+                        $amount = $get('amount') ? $get('amount') : 0;
+                        $vat = $amount * (7/100);
+
+                        return $vat ? number_format($vat, 2) : '0.00';
+                    }),
+                TextInput::make('aggregate_display')
+                    ->label(__('trans.aggregate.text'))
+                    ->disabled()
+                    ->placeholder(function (Closure $get) {
+                        $amount = $get('amount') ? $get('amount') : 0;
+                        $vat = $amount * (7/100);
+                        $total = $amount + $vat;
+
+                        return $total ? number_format($total, 2) : '0.00';
+                    }),
                 TextInput::make('courier_document')->label(__('trans.courier_document.text'))->required(),
                 TextInput::make('recipient_document')->label(__('trans.recipient_document.text'))->required(),
             ]);

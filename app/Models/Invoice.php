@@ -27,7 +27,6 @@ class Invoice extends Model
         'spare_code',
         'spare_cost',
         'choose_vat_or_not',
-
     ];
     public $timestamps = false;
     public function user():BelongsTo

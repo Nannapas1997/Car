@@ -163,7 +163,6 @@ class CarReceiveResource extends Resource
                         if ($state) {
                             $name = CarReceive::find($state)->toArray();
                             $currentGarage =  Filament::auth()->user()->garage;
-                            dd($name);
                             if ($name) {
                                 $set('choose_garage', $currentGarage);
                                 $set('receive_date', $name['receive_date']);

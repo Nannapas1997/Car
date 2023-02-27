@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use Filament\Forms;
+use Filament\Forms\Components\Hidden;
 use Filament\Tables;
 use App\Models\CarReceive;
 use Illuminate\Support\Arr;
@@ -141,19 +143,38 @@ class PurchaseOrderResource extends Resource
                                 'md' => 3,
                             ])
                             ->required(),
-                            TextInput::make('price')->label(__('trans.price.text'))
-                            ->columnSpan([
-                                'md' => 2,
-                            ])->required(),
-                            TextInput::make('quantity')->label(__('trans.quantity.text'))
-                            ->numeric()
-                            ->columnSpan([
-                                'md' => 2,
-                            ])->required(),
-                            TextInput::make('aggregate_price')->label(__('trans.aggregate_price.text'))
-                            ->columnSpan([
-                                'md' => 2,
-                            ])->required(),
+                            TextInput::make('price')
+                                ->label(__('trans.price.text'))
+                                ->numeric()
+                                ->reactive()
+                                ->columnSpan([
+                                    'md' => 2,
+                                ])
+                                ->required(),
+                            TextInput::make('quantity')
+                                ->label(__('trans.quantity.text'))
+                                ->numeric()
+                                ->reactive()
+                                ->columnSpan([
+                                    'md' => 2,
+                                ])
+                                ->required(),
+                            TextInput::make('aggregate_price_tmp')
+                                ->label(__('trans.aggregate_price.text'))
+                                ->columnSpan([
+                                    'md' => 2,
+                                ])
+                                ->disabled()
+                                ->placeholder(function (Closure $get, Closure $set) {
+                                    $quantity = $get('quantity') ? $get('quantity') : 1;
+                                    $price = $get('price') ? $get('price') : 0;
+                                    $total = $price * $quantity;
+                                    $result = $total ? number_format($total, 2) : '0.00';
+                                    $set('aggregate_price', $result);
+
+                                    return $result;
+                                }),
+                            Hidden::make('aggregate_price'),
                         ])
                     ->defaultItems(count: 1)
                     ->columns([

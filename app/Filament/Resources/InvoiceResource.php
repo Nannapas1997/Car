@@ -154,27 +154,33 @@ class InvoiceResource extends Resource
                             return $total ? number_format($total, 2) : '0.00';
                         }),
                         Radio::make('choose_vat_or_not')
-                        ->columnSpanFull()
-                        ->label('ระบุตัวเลือกที่ต้องการ')
-                        ->required()
-                        ->options([
-                            'รวมvat'=>'รวมvat 7%',
-                            'ไม่รวมvat'=>'ไม่รวมvat 7%',
-                        ]),
+                            ->columnSpanFull()
+                            ->label('ระบุตัวเลือกที่ต้องการ')
+                            ->reactive()
+                            ->required()
+                            ->options([
+                                'vat_include_yes'=>'รวมvat 7%',
+                                'vat_include_no'=>'ไม่รวมvat 7%',
+                            ]),
                     TextInput::make('vat_display')
                         ->label(__('trans.vat.text'))
                         ->disabled()
                         ->placeholder(function (Closure $get) {
                             $invoiceItems = $get('invoiceItems');
                             $total = 0;
+                            $vatTotal = 0;
 
-                            foreach ($invoiceItems as $item) {
-                                if(Arr::get($item, 'price')) {
-                                    $total += Arr::get($item, 'price');
+                            if ($get('choose_vat_or_not') == 'vat_include_yes') {
+                                foreach ($invoiceItems as $item) {
+                                    if(Arr::get($item, 'price')) {
+                                        $total += Arr::get($item, 'price');
+                                    }
                                 }
+
+                                $vatTotal = $total * (7/100);
                             }
 
-                            $vatTotal = $total * (7/100);
+
 
                             return $vatTotal ? number_format($vatTotal, 2) : '0.00';
                         }),
@@ -184,6 +190,7 @@ class InvoiceResource extends Resource
                         ->placeholder(function (Closure $get) {
                             $invoiceItems = $get('invoiceItems');
                             $total = 0;
+                            $vatTotal = 0;
 
                             foreach ($invoiceItems as $item) {
                                 if(Arr::get($item, 'price')) {
@@ -191,7 +198,9 @@ class InvoiceResource extends Resource
                                 }
                             }
 
-                            $vatTotal = $total * (7/100);
+                            if ($get('choose_vat_or_not') == 'vat_include_yes') {
+                                $vatTotal = $total * (7/100);
+                            }
 
                             return $total + $vatTotal;
                         }),
