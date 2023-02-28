@@ -110,7 +110,7 @@ class CarReceive extends Model implements HasMedia
         'repairman_tel_number',
         'choose_vat_or_not',
         'update_at',
-        'editor_name',
+        
     ];
     // turn off both
     public $timestamps = false;

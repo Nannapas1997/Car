@@ -12,11 +12,15 @@
             </div>
         <div class="filament-forms-text-input-component flex items-center space-x-2 rtl:space-x-reverse group">
             <div class="flex-1">
+<<<<<<< Updated upstream
                 <input type="text" class="block w-full transition duration-75 rounded-lg shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-inset focus:ring-primary-500 disabled:opacity-70 border-gray-300" x-bind:class="{
+=======
+                <input x-data="{}" wire:model.defer="data.editor_name" type="text" class="block w-full transition duration-75 rounded-lg shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-inset focus:ring-primary-500 disabled:opacity-70 border-gray-300" x-bind:class="{
+>>>>>>> Stashed changes
                         'border-gray-300': ! ('data.editor_name' in $wire.__instance.serverMemo.errors),
-                        'dark:border-gray-600': ! ('data.editor_name' in $wire.__instance.serverMemo.errors) &amp;&amp; false,
+                        'dark:border-gray-600': ! ('data.editor_name' in $wire.__instance.serverMemo.errors) &amp;&amp; true,
                         'border-danger-600 ring-danger-600': ('data.editor_name' in $wire.__instance.serverMemo.errors),
-                        'dark:border-danger-400 dark:ring-danger-400': ('data.editor_name' in $wire.__instance.serverMemo.errors) &amp;&amp; false,
+                        'dark:border-danger-400 dark:ring-danger-400': ('data.editor_name' in $wire.__instance.serverMemo.errors) &amp;&amp; true,
                     }" value="{{ \Filament\Facades\Filament::auth()->user()->name }}" disabled >
             </div>
         </div>
