@@ -185,16 +185,6 @@ class SaveRepairCostResource extends Resource
                                 }
                                 ),
                             ]),
-                Select::make('store')->label(__('trans.store.text'))
-                    ->required()
-                    ->preload()
-                    ->options([
-                        'ร้านA'=>'ร้านA',
-                        'ร้านB'=>'ร้านB',
-                        'ร้านC'=>'ร้านC',
-                        'ร้านD'=>'ร้านD',
-                    ]),
-                    TextInput::make('receipt_number')->label(__('trans.receipt_number.text'))->required(),
                 Card::make()
                     ->schema([
                         Placeholder::make('รายการค่าใช้จ่าย'),

@@ -89,7 +89,7 @@ class PriceControlBillsResource extends Resource
         return $form
             ->schema([
                 Card::make()->schema(static::getViewData('job_number')),
-                TextInput::make('number_price_control')->label(__('trans.number_price_control.text'))->required(),
+                TextInput::make('number_price_control')->label(__('trans.number_price_control.text')),
                 TextInput::make('noti_number')->label(__('trans.noti_number.text'))->required(),
                 TextInput::make('number_ab')->label(__('trans.number_ab.text'))->required(),
                 TextInput::make('customer')->label(__('trans.customer.text'))->required(),

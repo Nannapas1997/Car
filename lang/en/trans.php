@@ -168,5 +168,6 @@ return [
     'editor_name.text' => 'ผู้แก้ไขข้อมูล',
     'updated_at.text' => 'อัพเดทข้อมูล ณ วันและเวลา',
     'price_control_officer.text' => 'เจ้าหน้าที่คุมราคา',
-    'policy_expiration_date.text' => 'วันหมดอายุกรมธรรม์'
+    'policy_expiration_date.text' => 'วันหมดอายุกรมธรรม์',
+    'INV_number.text' => 'เลขที่ใบแจ้งหนี้'
 ];

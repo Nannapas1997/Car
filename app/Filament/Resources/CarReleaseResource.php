@@ -113,7 +113,7 @@ class CarReleaseResource extends Resource
                 Card::make()->schema(static::OCData('oc_number')),
                 TextInput::make('staff_name')->label('ชื่อ (ข้าพเจ้า)'),
                 TextInput::make('staff_position')->label('ตำแหน่งที่เกี่ยวข้องกับ บจ./หจก.'),
-                Select::make('brand')->label(__('trans.brand.text'))->required()
+                Select::make('brand')->label(__('trans.brand.text'))->required()->disabled()
                     ->options([
                         'Toyota' => 'Toyota',
                         'Honda' => 'Honda',
@@ -180,13 +180,14 @@ class CarReleaseResource extends Resource
                         'Volkswagen'=>'Volkswagen',
                         'Volvo'=>'Volvo',
                         ])->columns(65),
-                TextInput::make('vehicle_registration')->label('เลขทะเบียนรถ'),
+                TextInput::make('vehicle_registration')->label('เลขทะเบียนรถ')->disabled(),
                 TextInput::make('choose_garage')->label('จากบริษัท (SP / SBO)')
                 ->default(Filament::auth()->user()->garage)
                 ->disabled(),
                 Select::make('insu_company_name')
                 ->label(__('trans.insu_company_name.text'))
                 ->preload()
+                ->disabled()
                 ->options([
                     'กรุงเทพประกันภัย' => 'กรุงเทพประกันภัย',
                     'กรุงไทยพานิชประกันภัย' => 'กรุงไทยพานิชประกันภัย',
@@ -213,9 +214,8 @@ class CarReleaseResource extends Resource
                     'แอกซ่าประกันภัย' => 'แอกซ่าประกันภัย',
                     'แอลเอ็มจี ประกันภัย' => 'แอลเอ็มจี ประกันภัย',
                 ]),
-                TextInput::make('policy_number')->label('เลขกรมธรรม์'),
-                TextInput::make('claim_number')->label('เลขเคลม / เลขรับแจ้งที่'),
-
+                TextInput::make('policy_number')->label('เลขกรมธรรม์')->disabled(),
+                TextInput::make('claim_number')->label('เลขเคลม / เลขรับแจ้งที่')->disabled(),
             ]);
     }
 
