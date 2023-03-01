@@ -387,7 +387,7 @@ class QuotationResource extends Resource
 
                             return $total ? number_format($total, 2) : '0.00';
                         }),
-                    Radio::make('choose_vat_or_not')
+                    Radio::make('choose_vat_or_not_1')
                     ->columnSpanFull()
                     ->label('ระบุตัวเลือกที่ต้องการ')
                     ->required()
@@ -502,7 +502,7 @@ class QuotationResource extends Resource
 
                             return $total ? number_format($total, 2) : '0.00';
                         }),
-                    Radio::make('choose_vat_or_not')
+                    Radio::make('choose_vat_or_not_2')
                     ->columnSpanFull()
                     ->label('ระบุตัวเลือกที่ต้องการ')
                     ->required()

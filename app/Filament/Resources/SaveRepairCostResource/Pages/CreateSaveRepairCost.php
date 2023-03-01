@@ -10,6 +10,7 @@ use App\Filament\Resources\SaveRepairCostResource;
 class CreateSaveRepairCost extends CreateRecord
 {
     protected static string $resource = SaveRepairCostResource::class;
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $save_repair_cost = $this->data['saveRepairCostItems'];
@@ -21,8 +22,10 @@ class CreateSaveRepairCost extends CreateRecord
             }
         }
 
-
-        Arr::set($data, 'spare_cost', number_format($total, 2));
+        Arr::set($data, 'total', number_format($total, 2));
+        Arr::set($data, 'spare_cost', '0.00');
+        Arr::set($data, 'wage', '0.00');
+        Arr::set($data, 'expense_not_receipt', '0.00');
 
         return $data;
     }

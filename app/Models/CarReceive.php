@@ -113,7 +113,6 @@ class CarReceive extends Model implements HasMedia
         'sum_insured',
         'policy_expiration_date',
         'cassie_number'
-
     ];
     // turn off both
     public $timestamps = false;

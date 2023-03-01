@@ -14,9 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::table('car_receives', function (Blueprint $table) {
-            $table->string('choose_garage', 10)->nullable()->change();
-            $table->string('sum_insured', 20)->nullable();
-            $table->string('policy_expiration_date', 10)->nullable();
+            $table->string('cassie_number', 20)->nullable();
+            $table->string('job_number', 50)->nullable()->change();
+            $table->string('status', 20)->nullable()->change();
+            $table->string('tel_number', 20)->nullable()->change();
+            $table->string('brand', 100)->nullable()->change();
+            $table->string('mile_number', 20)->nullable()->change();
         });
     }
 
@@ -28,8 +31,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('car_receives', function (Blueprint $table) {
-            $table->dropColumn('sum_insured');
-            $table->dropColumn('policy_expiration_date');
+            $table->dropColumn('cassie_number');
         });
     }
 };
