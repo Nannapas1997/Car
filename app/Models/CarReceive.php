@@ -109,8 +109,11 @@ class CarReceive extends Model implements HasMedia
         'driver_tel_number',
         'repairman_tel_number',
         'choose_vat_or_not',
-        'update_at',
-        
+        'updated_at',
+        'sum_insured',
+        'policy_expiration_date',
+        'cassie_number'
+
     ];
     // turn off both
     public $timestamps = false;

@@ -280,7 +280,9 @@ class QuotationResource extends Resource
                 ->label(__('trans.repair_date.text')),
                 DatePicker::make('quotation_date')
                 ->required()
-                ->label(__('trans.quotation_date.text')),
+                ->label(__('trans.quotation_date.text'))
+                ->default(now()->format('Y-m-d'))
+                ->disabled(),
                 Card::make()
                     ->schema([
                         Placeholder::make('รายการอะไหล่ที่เสียหาย'),
@@ -344,12 +346,6 @@ class QuotationResource extends Resource
                         ]) ->createItemButtonLabel('เพิ่มรายการอะไหล่ที่เสียหาย'),
 
                     ])->columnSpan('full'),
-                    TextInput::make('sks')
-                    ->required()
-                    ->label(__('trans.sks.text')),
-                    TextInput::make('wchp')
-                    ->required()
-                    ->label(__('trans.wchp.text')),
                     TextInput::make('overall_price')
                         ->label(__('trans.overall_price.text'))
                         ->disabled()
@@ -450,7 +446,13 @@ class QuotationResource extends Resource
 
                             return $sumTotal ? number_format($sumTotal, 2) : '0.00';
                         }),
-                        Select::make('store')->label(__('trans.store.text'))
+                        TextInput::make('sks')
+                        ->required()
+                        ->label(__('trans.sks.text')),
+                        TextInput::make('wchp')
+                        ->required()
+                        ->label(__('trans.wchp.text')),
+                        Select::make('price_control_officer')->label(__('trans.price_control_officer.text'))
                         ->required()
                         ->preload()
                         ->options([
@@ -459,6 +461,106 @@ class QuotationResource extends Resource
                             'อัคคัญญ์ กิตติ์จีระภูมิ '=>'อัคคัญญ์ กิตติ์จีระภูมิ',
                             'ธนพฤทธ์ เถกิงศักดิ์'=>'ธนพฤทธ์ เถกิงศักดิ์',
                         ]),
+                        TextInput::make('overall_price')
+                        ->label(__('trans.overall_price.text'))
+                        ->disabled()
+                        ->placeholder(function (Closure $get) {
+                            return count($get('quotationitems')) . ' รายการ';
+                        }),
+                TextInput::make('wage')
+                    ->label(__('trans.wage.text'))
+                    ->disabled()
+                    ->placeholder(function (Closure $get) {
+                        $items = $get('quotationitems');
+                        $total = 0;
+
+                        foreach ($items as $item) {
+                            if(Arr::get($item, 'price') && Arr::get($item, 'spare_code') == 'C6') {
+                                $total += Arr::get($item, 'price');
+                            }
+                        }
+
+                        return $total ? number_format($total, 2) : '0.00';
+                    }),
+                    TextInput::make('including_spare_parts')
+                        ->label(__('trans.including_spare_parts.text'))
+                        ->disabled()
+                        ->placeholder(function (Closure $get) {
+                            $items = $get('quotationitems');
+                            $total = 0;
+
+                            foreach ($items as $item) {
+                                $quantity = Arr::get($item, 'quantity', 1);
+
+                                if(
+                                    Arr::get($item, 'price') &&
+                                    Arr::get($item, 'spare_code') != 'C6'
+                                ) {
+                                    $total += Arr::get($item, 'price') * $quantity;
+                                }
+                            }
+
+                            return $total ? number_format($total, 2) : '0.00';
+                        }),
+                    Radio::make('choose_vat_or_not')
+                    ->columnSpanFull()
+                    ->label('ระบุตัวเลือกที่ต้องการ')
+                    ->required()
+                    ->options([
+                        'รวมvat'=>'รวมvat 7%',
+                        'ไม่รวมvat'=>'ไม่รวมvat 7%',
+                    ]),
+                    TextInput::make('vat')
+                        ->label(__('trans.vat.text'))
+                        ->disabled()
+                        ->placeholder(function (Closure $get) {
+                            $items = $get('quotationitems');
+                            $total = 0;
+
+                            foreach ($items as $item) {
+                                $quantity = Arr::get($item, 'quantity', 1);
+
+                                if (Arr::get($item, 'spare_code') == 'C6') {
+                                    $quantity = 1;
+                                }
+
+                                if(
+                                    Arr::get($item, 'spare_code')
+                                ) {
+                                    $total += Arr::get($item, 'price') * $quantity;
+                                }
+                            }
+
+                            $vatTotal = $total * (7/100);
+
+                            return $vatTotal ? number_format($vatTotal, 2) : '0.00';
+                        }),
+                    TextInput::make('overall')
+                        ->label(__('trans.overall.text'))
+                        ->disabled()
+                        ->placeholder(function (Closure $get) {
+                            $items = $get('quotationitems');
+                            $total = 0;
+
+                            foreach ($items as $item) {
+                                $quantity = Arr::get($item, 'quantity', 1);
+
+                                if (Arr::get($item, 'spare_code') == 'C6') {
+                                    $quantity = 1;
+                                }
+
+                                if(
+                                    Arr::get($item, 'price')
+                                ) {
+                                    $total += Arr::get($item, 'price') * $quantity;
+                                }
+                            }
+
+                            $vatTotal = $total * (7/100);
+                            $sumTotal = $vatTotal + $total;
+
+                            return $sumTotal ? number_format($sumTotal, 2) : '0.00';
+                        }),
                     Fieldset::make('สถานะการจัดการใบเสนอราคา')
                     ->schema([
                         Radio::make('status')
@@ -493,8 +595,6 @@ class QuotationResource extends Resource
                 TextColumn::make('insu_company_name')->label(__('trans.insu_company_name.text')),
                 TextColumn::make('accident_date')->label(__('trans.accident_date.text')),
                 TextColumn::make('repair_date')->label(__('trans.repair_date.text')),
-                TextColumn::make('sks')->label(__('trans.sks.text')),
-                TextColumn::make('wchp')->label(__('trans.wchp.text')),
                 TextColumn::make('quotation_date')->label(__('trans.quotation_date.text')),
                 TextColumn::make('store')->label(__('trans.store.text')),
                 TextColumn::make('wage')->label(__('trans.wage.text')),
@@ -509,6 +609,8 @@ class QuotationResource extends Resource
                     'warning' => 'กำลังดำเนินการ',
                     'success' => 'เสร็จสิ้น',
                 ]),
+                TextColumn::make('sks')->label(__('trans.sks.text')),
+                TextColumn::make('wchp')->label(__('trans.wchp.text')),
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')

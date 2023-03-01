@@ -326,6 +326,18 @@ class CarReceiveResource extends Resource
                         'รถสามล้อ'=>'รถสามล้อ',
                         ])
                     ->columns(25),
+               Select::make('prefix')
+               ->label(__('trans.prefix.text'))->nullable()
+               ->searchable()
+               ->preload()
+               ->reactive()
+               ->options([
+                'หจก.' => 'หจก.',
+                'บจก.' => 'บจก.',
+                'นาย' => 'นาย',
+                'นาง' => 'นาง',
+                'นางสาว' => 'นางสาว'
+               ]),
                TextInput::make('customer')->label(__('trans.customer.text'))->required(),
                TextInput::make('customer_tel_number')->label(__('trans.customer_tel_number.text'))->required(),
                Fieldset::make('ที่อยู่เจ้าของรถ')
@@ -430,6 +442,7 @@ class CarReceiveResource extends Resource
                 Select::make('insu_company_name')
                     ->label(__('trans.insu_company_name.text'))
                     ->preload()
+                    ->required()
                     ->hidden(fn (Closure $get) => $get('options') == 'เงินสด')
                     ->options([
                         'กรุงเทพประกันภัย' => 'กรุงเทพประกันภัย',
@@ -459,12 +472,23 @@ class CarReceiveResource extends Resource
                     ]),
                 TextInput::make('policy_number')
                     ->label(__('trans.policy_number.text'))
+                    ->required()
                     ->hidden(fn (Closure $get) => $get('options') == 'เงินสด'),
                 TextInput::make('noti_number')
                     ->label(__('trans.noti_number.text'))
+                    ->required()
                     ->hidden(fn (Closure $get) => $get('options') == 'เงินสด'),
                 TextInput::make('claim_number')
                     ->label(__('trans.claim_number.text'))
+                    ->required()
+                    ->hidden(fn (Closure $get) => $get('options') == 'เงินสด'),
+                TextInput::make('sum_insured')
+                    ->label(__('trans.sum_insured.text'))
+                    ->required()
+                    ->hidden(fn (Closure $get) => $get('options') == 'เงินสด'),
+                DatePicker::make('policy_expiration_date')
+                    ->label(__('trans.policy_expiration_date.text'))
+                    ->required()
                     ->hidden(fn (Closure $get) => $get('options') == 'เงินสด'),
                 Fieldset::make('ประเภทการจอด')
                     ->schema([
@@ -546,6 +570,7 @@ class CarReceiveResource extends Resource
                         Checkbox::make('copy_of_person_document')->label(__('trans.copy_of_person.text')),
                         Checkbox::make('account_book_document')->label(__('trans.account_book.text')),
                         Checkbox::make('atm_card_document')->label(__('trans.atm_card.text')),
+                        Checkbox::make('cassie_number')->label(__('เลขคัชชี')),
                         Checkbox::make('other_document')->label(__('trans.other.text'))->columnSpanFull(),
                         MarkdownEditor::make('content_document')
                         ->label(__('trans.content_document.text'))
@@ -598,7 +623,7 @@ class CarReceiveResource extends Resource
                 ->enableDownload(),
                 ViewField::make('user_admin')->view('filament.resources.forms.components.user-admin'),
                 TextInput::make('timex')->label(__('trans.timex.text'))->default(now()->format('H:i:s'))->disabled(),
-                TextInput::make('updated_at')->label(__('trans.updated_at'))->default(now()->format('Y-m-d H:i:s'))->disabled(),
+                TextInput::make('updated_at')->label(__('trans.updated_at.text'))->default(now()->format('Y-m-d H:i:s'))->disabled(),
                 ViewField::make('editor_name')->view('filament.resources.forms.components.editor-name'),
 
             ]
@@ -612,6 +637,8 @@ class CarReceiveResource extends Resource
                 TextColumn::make('job_number')
                     ->label(__('trans.job_number.text'))
                     ->searchable()->toggleable()->sortable(),
+                TextColumn::make('addressee')
+                    ->label(__('trans.addressee.text')),
                 TextColumn::make('receive_date')
                     ->label(__('trans.receive_date.text'))
                     ->formatStateUsing(fn (?string $state): string => convertYmdToThaiShort($state)),
@@ -694,6 +721,8 @@ class CarReceiveResource extends Resource
                     ->label(__('trans.truck.text'))->size(150),
                 ImageColumn::make('etc')
                     ->label(__('trans.etc.text'))->size(150),
+                TextColumn::make('updated_at')
+                    ->label(__('trans.updated_at'))
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')

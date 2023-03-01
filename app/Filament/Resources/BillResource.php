@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use Closure;
 use Filament\Forms;
 use App\Models\Bill;
-use Filament\Forms\Components\Hidden;
 use Filament\Tables;
 use App\Models\CarReceive;
 use Illuminate\Support\Arr;
@@ -15,6 +14,8 @@ use Filament\Facades\Filament;
 use Illuminate\Support\Carbon;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
@@ -89,8 +90,8 @@ class BillResource extends Resource
         return $form
             ->schema([
                 Card::make()->schema(static::getViewData('job_number')),
-                TextInput::make('customer')->label(__('trans.customer.text'))->required(),
-                TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
+                TextInput::make('customer')->label(__('trans.customer.text'))->required()->disabled(),
+                TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required()->disabled(),
                 TextInput::make('invoice_number')->label(__('trans.invoice_number.text'))->required(),
                 TextInput::make('bill_number')->label(__('trans.bill_number.text'))->required(),
                 TextInput::make('amount')
@@ -98,6 +99,15 @@ class BillResource extends Resource
                     ->numeric()
                     ->reactive()
                     ->required(),
+                Radio::make('choose_vat_or_not')
+                    ->columnSpanFull()
+                    ->label('ระบุตัวเลือกที่ต้องการ')
+                    ->reactive()
+                    ->required()
+                    ->options([
+                        'vat_include_yes'=>'รวมvat 7%',
+                        'vat_include_no'=>'ไม่รวมvat 7%',
+                ]),
                 TextInput::make('vat_display')
                     ->label(__('trans.vat.text'))
                     ->disabled()

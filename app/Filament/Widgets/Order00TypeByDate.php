@@ -49,15 +49,6 @@ class Order00TypeByDate extends BaseWidget
         $dayTotal = $day->count();
 
         return [
-            Card::make('ทั้งหมด', '')
-                ->view('custom.car-receive-type-sum', [
-                    'type' => 'ทั้งหมด',
-                    'total' => $dayTotal,
-                    'a' => $dayA,
-                    'b' => $dayB,
-                    'c' => $dayC,
-                    'd' => $dayD,
-                ]),
             Card::make('ปี', '')
                 ->view('custom.car-receive-type-sum', [
                     'type' => 'ปี',

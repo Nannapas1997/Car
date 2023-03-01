@@ -16,6 +16,7 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -92,94 +93,98 @@ class SaveRepairCostResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+
             ->schema([
                 Card::make()->schema(static::getViewData('job_number')),
-                TextInput::make('customer')->label(__('trans.customer.text'))->required(),
-                TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
-                Select::make('brand')->label(__('trans.brand.text'))->required()
-            ->options([
-                'Toyota' => 'Toyota',
-                'Honda' => 'Honda',
-                'Nissan' => 'Nissan',
-                'Mitsubishi'=>'Mitsubishi',
-                'Isuzu'=>'Isuzu',
-                'Mazda'=>'Mazda',
-                'Ford'=>'Ford',
-                'Suzuki'=>'Suzuki',
-                'Chevrolet'=>'Chevrolet',
-                'Alfa Romeo'=>'Alfo Romeo',
-                'Aston Martin'=>'Aston Martin',
-                'Audi'=>'Audi',
-                'Bentley'=>'Bentley',
-                'BMW'=>'BMW',
-                'Chery'=>'Chery',
-                'Chrysler'=>'Chrysler',
-                'Citroen'=>'Citroen',
-                'Daewoo'=>'Daewoo',
-                'Daihatsu'=>'Daihatsu',
-                'DFM'=>'DFM',
-                'DFSK'=>'DFSK',
-                'Ferrari'=>'Ferrari',
-                'Fiat'=>'Fiat',
-                'FOMM'=>'FOMM',
-                'Foton'=>'Foton',
-                'Great Wall Motor'=>'Great Wall Motor',
-                'Haval'=>'Haval',
-                'HINO' =>'HINO',
-                'Holden'=>'Holden',
-                'Hummer'=>'Hummer',
-                'Hyundai'=>'Hyundai',
-                'Jaguar'=>'Jaguar',
-                'Jeep'=>'Jeep',
-                'Kia'=>'Kia',
-                'Lamborghini'=>'Lamborghini',
-                'Land Rover'=>'Land Rover',
-                'Lexus'=>'Lexus',
-                'Lotus'=>'Lotus',
-                'Maserati'=>'Maserati',
-                'Maxus'=>'Maxus',
-                'McLaren'=>'McLaren',
-                'Mercedes-Benz'=>'Mercedes-Benz',
-                'MG'=>'MG',
-                'Mini'=>'Mini',
-                'Mitsuoka'=>'Mitsuoka',
-                'Naza'=>'Naza',
-                'Opel'=>'Opel',
-                'ORA'=>'ORA',
-                'Peugeot'=>'Peugeot',
-                'Polarsun'=>'Polarsun',
-                'Porsche'=>'Porsche',
-                'Proton'=>'Proton',
-                'Rolls-Royce'=>'Rolls-Royce',
-                'Rover'=>'Rover',
-                'Saab'=>'Saab',
-                'Seat'=>'Seat',
-                'Skoda'=>'Skoda',
-                'Spyker'=>'Spyker',
-                'Ssangyong'=>'Ssangyong',
-                'Subaru'=>'Subaru',
-                'Tata'=>'Tata',
-                'Thairung'=>'Thairung',
-                'Volkswagen'=>'Volkswagen',
-                'Volvo'=>'Volvo',
-                ])->columns(65),
-                TextInput::make('model')->label(__('trans.model.text'))->required(),
-                Select::make('car_year')
-                    ->label(__('trans.car_year.text'))
-                    ->preload()
-                    ->required()
-                    ->searchable()
-                    ->options(function () {
-                        $currentYear = intval(now()->format('Y'));
-                        $options = [];
+                Fieldset::make('ข้อมูลเจ้าของรถ')
+                ->schema([
+                    TextInput::make('customer')->label(__('trans.customer.text'))->required(),
+                    TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
+                    Select::make('brand')->label(__('trans.brand.text'))->required()
+                        ->options([
+                            'Toyota' => 'Toyota',
+                            'Honda' => 'Honda',
+                            'Nissan' => 'Nissan',
+                            'Mitsubishi'=>'Mitsubishi',
+                            'Isuzu'=>'Isuzu',
+                            'Mazda'=>'Mazda',
+                            'Ford'=>'Ford',
+                            'Suzuki'=>'Suzuki',
+                            'Chevrolet'=>'Chevrolet',
+                            'Alfa Romeo'=>'Alfo Romeo',
+                            'Aston Martin'=>'Aston Martin',
+                            'Audi'=>'Audi',
+                            'Bentley'=>'Bentley',
+                            'BMW'=>'BMW',
+                            'Chery'=>'Chery',
+                            'Chrysler'=>'Chrysler',
+                            'Citroen'=>'Citroen',
+                            'Daewoo'=>'Daewoo',
+                            'Daihatsu'=>'Daihatsu',
+                            'DFM'=>'DFM',
+                            'DFSK'=>'DFSK',
+                            'Ferrari'=>'Ferrari',
+                            'Fiat'=>'Fiat',
+                            'FOMM'=>'FOMM',
+                            'Foton'=>'Foton',
+                            'Great Wall Motor'=>'Great Wall Motor',
+                            'Haval'=>'Haval',
+                            'HINO' =>'HINO',
+                            'Holden'=>'Holden',
+                            'Hummer'=>'Hummer',
+                            'Hyundai'=>'Hyundai',
+                            'Jaguar'=>'Jaguar',
+                            'Jeep'=>'Jeep',
+                            'Kia'=>'Kia',
+                            'Lamborghini'=>'Lamborghini',
+                            'Land Rover'=>'Land Rover',
+                            'Lexus'=>'Lexus',
+                            'Lotus'=>'Lotus',
+                            'Maserati'=>'Maserati',
+                            'Maxus'=>'Maxus',
+                            'McLaren'=>'McLaren',
+                            'Mercedes-Benz'=>'Mercedes-Benz',
+                            'MG'=>'MG',
+                            'Mini'=>'Mini',
+                            'Mitsuoka'=>'Mitsuoka',
+                            'Naza'=>'Naza',
+                            'Opel'=>'Opel',
+                            'ORA'=>'ORA',
+                            'Peugeot'=>'Peugeot',
+                            'Polarsun'=>'Polarsun',
+                            'Porsche'=>'Porsche',
+                            'Proton'=>'Proton',
+                            'Rolls-Royce'=>'Rolls-Royce',
+                            'Rover'=>'Rover',
+                            'Saab'=>'Saab',
+                            'Seat'=>'Seat',
+                            'Skoda'=>'Skoda',
+                            'Spyker'=>'Spyker',
+                            'Ssangyong'=>'Ssangyong',
+                            'Subaru'=>'Subaru',
+                            'Tata'=>'Tata',
+                            'Thairung'=>'Thairung',
+                            'Volkswagen'=>'Volkswagen',
+                            'Volvo'=>'Volvo',
+                            ])->columns(65),
+                            TextInput::make('model')->label(__('trans.model.text'))->required(),
+                            Select::make('car_year')
+                                ->label(__('trans.car_year.text'))
+                                ->preload()
+                                ->required()
+                                ->searchable()
+                                ->options(function () {
+                                    $currentYear = intval(now()->format('Y'));
+                                    $options = [];
 
-                        while ($currentYear > 1999) {
-                            $options[$currentYear] = $currentYear;
-                            $currentYear--;
-                        }
-                        return $options;
-                    }
-                    ),
+                                    while ($currentYear > 1999) {
+                                        $options[$currentYear] = $currentYear;
+                                        $currentYear--;
+                                    }
+                                    return $options;
+                                }
+                                ),
+                            ]),
                 Select::make('store')->label(__('trans.store.text'))
                     ->required()
                     ->preload()

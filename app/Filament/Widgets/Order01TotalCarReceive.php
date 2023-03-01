@@ -28,7 +28,7 @@ class Order01TotalCarReceive extends BaseWidget
             ->count();
         $completed = CarReceive::query()
             ->where('status', 'completed')
-            ->where('receive_date', $dateSelect)
+            ->where('pickup_date', $dateSelect)
             ->count();
 
         return [

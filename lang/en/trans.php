@@ -8,8 +8,8 @@ return [
     'new_customer.text' => 'เลขที่งาน(กรณีลูกค้ารายใหม่)',
     'receive_date.text' => 'วันที่รับเรื่อง',
     'timex.text' => 'เวลา',
-    'customer.text' => 'เจ้าของรถ',
-    'repairman.text' => 'ผู้สั่งซ่อม',
+    'customer.text' => 'เจ้าของรถ(ไม่ต้องใส่คำนำหน้า)',
+    'repairman.text' => 'ผู้สั่งซ่อม(ไม่ต้องใส่คำนำหน้า)',
     'tel_number.text' => 'เบอร์ติดต่อ',
     'pickup_date.text' => 'วันนัดรับรถ',
     'vehicle_registration.text' => 'ทะเบียนรถ',
@@ -77,7 +77,7 @@ return [
     'spare_code.text' => 'รหัสอะไหล่',
     'spare_cost.text' => 'ราคาค่าอะไหล่',
     'add_to_cost.text' => 'เพิ่มรายการค่าใช้จ่าย',
-    'store.text' => 'คนคุมราคา',
+    'store.text' => 'ร้านค้า',
     'approval_number.text' => 'เลขที่ใบขออนุมัติ',
     'amount.text' => 'จำนวนเงิน',
     'vat.text' => 'VAT 7%',
@@ -152,7 +152,7 @@ return [
     'date_diff.text' => 'จำนวนวัน',
     'attach_file.text' => 'ไฟล์',
     'receipt_number.text' => 'เลขที่ใบเสร็จ',
-    'driver_name.text' => 'ชื่อผู้ขับขี่',
+    'driver_name.text' => 'ชื่อผู้ขับขี่(ไม่ต้องใส่คำนำหน้า)',
     'id_card_attachment.text' => 'แนบไฟล์บัตรประชาชน',
     'content_other.text' => 'อุปกรณ์อื่นๆ',
     'content_document.text' => 'เอกสารอื่นๆ',
@@ -166,5 +166,7 @@ return [
     'oc_number.text' => 'เลขที่ใบปล่อยรถ',
     'repairman_tel_number.text' => 'เบอร์โทรผู้สั่งซ่อม',
     'editor_name.text' => 'ผู้แก้ไขข้อมูล',
-    'updated_at' => 'อัพเดทข้อมูล ณ วันและเวลา'
+    'updated_at.text' => 'อัพเดทข้อมูล ณ วันและเวลา',
+    'price_control_officer.text' => 'เจ้าหน้าที่คุมราคา',
+    'policy_expiration_date.text' => 'วันหมดอายุกรมธรรม์'
 ];
