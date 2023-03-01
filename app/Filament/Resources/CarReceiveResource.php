@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use Closure;
 use Filament\Facades\Filament;
 use Filament\Forms;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\ViewField;
 use Filament\Tables;
 use App\Models\CarReceive;
@@ -136,6 +137,9 @@ class CarReceiveResource extends Resource
                             $set('district', $name['district']);
                             $set('amphoe', $name['amphoe']);
                             $set('province', $name['province']);
+                            $set('driver_tel_number', $name['driver_tel_number']);
+                            $set('customer_tel_number', $name['customer_tel_number']);
+                            $set('repairman_tel_number', $name['repairman_tel_number']);
                         }
                     }
                 }),
@@ -573,16 +577,16 @@ class CarReceiveResource extends Resource
                         Checkbox::make('cassie_number')->label(__('เลขคัชชี')),
                         Checkbox::make('other_document')->label(__('trans.other.text'))->columnSpanFull(),
                         MarkdownEditor::make('content_document')
-                        ->label(__('trans.content_document.text'))
-                        ->toolbarButtons([
-                            'bold',
-                            'bulletList',
-                            'edit',
-                            'italic',
-                            'orderedList',
-                            'preview',
-                            'strike',
-                        ]),
+                            ->label(__('trans.content_document.text'))
+                            ->toolbarButtons([
+                                'bold',
+                                'bulletList',
+                                'edit',
+                                'italic',
+                                'orderedList',
+                                'preview',
+                                'strike',
+                            ]),
                     ]),
                 Fieldset::make('ภาพรถวันเข้าซ่อม')
                     ->schema([
@@ -621,11 +625,27 @@ class CarReceiveResource extends Resource
                 FileUpload::make('id_card_attachment')->label(__('trans.id_card_attachment.text'))->required()
                 ->image()
                 ->enableDownload(),
-                ViewField::make('user_admin')->view('filament.resources.forms.components.user-admin'),
-                TextInput::make('timex')->label(__('trans.timex.text'))->default(now()->format('H:i:s'))->disabled(),
-                TextInput::make('updated_at')->label(__('trans.updated_at.text'))->default(now()->format('Y-m-d H:i:s'))->disabled(),
-                ViewField::make('editor_name')->view('filament.resources.forms.components.editor-name'),
+                ViewField::make('user_admin')
+                    ->view('filament.resources.forms.components.user-admin'),
+                TextInput::make('timex')
+                    ->label(__('trans.timex.text'))
+                    ->default(now()->format('H:i:s'))
+                    ->disabled(),
+                TextInput::make('updated_at')
+                    ->label(__('trans.updated_at.text'))
+                    ->disabled()
+                    ->afterStateHydrated(function ($set, $state) {
+                        if ($state) {
+                            $set('updated_at', $state);
+                        } else {
+                            $set('updated_at', now()->format('Y-m-d H:i:s'));
+                        }
 
+                        $set('addressee', Filament::auth()->user()->name);
+                    }),
+                ViewField::make('editor_name')
+                    ->view('filament.resources.forms.components.editor-name'),
+                Hidden::make('addressee')
             ]
         );
     }

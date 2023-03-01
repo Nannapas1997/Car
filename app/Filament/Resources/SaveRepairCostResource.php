@@ -6,6 +6,7 @@ use Closure;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\CarReceive;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
@@ -32,6 +33,7 @@ class SaveRepairCostResource extends Resource
     protected static ?string $navigationGroup = 'บัญชี';
     protected static ?string $navigationLabel = 'ต้นทุนค่าแรง';
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
+
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = CarReceive::query()
@@ -208,14 +210,20 @@ class SaveRepairCostResource extends Resource
                                 ->columnSpan([
                                     'md' => 2,
                                 ]),
-                                TextInput::make('price')->label(__('trans.price.text'))
-                                ->columnSpan([
-                                    'md' => 3,
-                                ]),
-                                TextInput::make('spare_code')->label(__('trans.spare_code.text'))
-                                ->columnSpan([
-                                    'md' => 3,
-                                ])->required(),
+                                TextInput::make('price')
+                                    ->label(__('trans.price.text'))
+                                    ->numeric()
+                                    ->reactive()
+                                    ->columnSpan([
+                                        'md' => 3,
+                                    ])
+                                    ->required(),
+                                TextInput::make('spare_code')
+                                    ->label(__('trans.spare_code.text'))
+                                    ->columnSpan([
+                                        'md' => 3,
+                                    ])
+                                    ->required(),
                             ])
                         ->defaultItems(count: 1)
                         ->columns([
@@ -223,12 +231,21 @@ class SaveRepairCostResource extends Resource
                         ]) ->createItemButtonLabel('เพิ่มรายการค่าใช้จ่าย'),
 
                     ])->columnSpan('full'),
+                    TextInput::make('total')
+                        ->label(__('trans.total.text'))
+                        ->disabled()
+                            ->placeholder(function (Closure $get) {
+                                $saveRepairCostItems = $get('saveRepairCostItems');
+                                $total = 0;
 
-                TextInput::make('spare_cost')->label(__('trans.spare_cost.text'))->required()
-                ->reactive(),
-                TextInput::make('wage')->label(__('trans.wage.text'))->required(),
-                TextInput::make('expense_not_receipt')->label(__('trans.expense_not_receipt.text'))->required(),
-                TextInput::make('total')->label(__('trans.total.text'))->required(),
+                                foreach ($saveRepairCostItems as $item) {
+                                    if(Arr::get($item, 'price')) {
+                                        $total += Arr::get($item, 'price');
+                                    }
+                                }
+
+                                return $total;
+                            }),
             ]);
 
     }
@@ -244,9 +261,6 @@ class SaveRepairCostResource extends Resource
                 TextColumn::make('brand')->label(__('trans.brand.text')),
                 TextColumn::make('model')->label(__('trans.model.text')),
                 TextColumn::make('car_year')->label(__('trans.car_year.text')),
-                TextColumn::make('wage')->label(__('trans.wage.text')),
-                TextColumn::make('spare_cost')->label(__('trans.spare_cost.text')),
-                TextColumn::make('expense_not_receipt')->label(__('trans.expense_not_receipt.text')),
                 TextColumn::make('total')->label(__('trans.total.text')),
             ])
             ->filters([

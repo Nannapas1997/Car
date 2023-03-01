@@ -112,8 +112,14 @@ class BillResource extends Resource
                     ->label(__('trans.vat.text'))
                     ->disabled()
                     ->placeholder(function (Closure $get) {
+                        $chooseVat = $get('choose_vat_or_not');
+                        $result = 0;
+                        $vat = 0;
                         $amount = $get('amount') ? $get('amount') : 0;
-                        $vat = $amount * (7/100);
+
+                        if ($chooseVat == 'vat_include_yes') {
+                            $vat = $amount * (7/100);
+                        }
 
                         return $vat ? number_format($vat, 2) : '0.00';
                     }),
@@ -122,7 +128,14 @@ class BillResource extends Resource
                     ->disabled()
                     ->placeholder(function (Closure $get) {
                         $amount = $get('amount') ? $get('amount') : 0;
-                        $vat = $amount * (7/100);
+                        $chooseVat = $get('choose_vat_or_not');
+                        $vat = 0;
+                        $total = 0;
+
+                        if ($chooseVat == 'vat_include_yes') {
+                            $vat = $amount * (7/100);
+                        }
+
                         $total = $amount + $vat;
 
                         return $total ? number_format($total, 2) : '0.00';
