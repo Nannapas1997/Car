@@ -181,9 +181,6 @@ class CarReleaseResource extends Resource
                         'Volvo'=>'Volvo',
                         ])->columns(65),
                 TextInput::make('vehicle_registration')->label('เลขทะเบียนรถ')->disabled(),
-                TextInput::make('choose_garage')->label('จากบริษัท (SP / SBO)')
-                ->default(Filament::auth()->user()->garage)
-                ->disabled(),
                 Select::make('insu_company_name')
                 ->label(__('trans.insu_company_name.text'))
                 ->preload()

@@ -100,9 +100,9 @@ class SaveRepairCostResource extends Resource
                 Card::make()->schema(static::getViewData('job_number')),
                 Fieldset::make('ข้อมูลเจ้าของรถ')
                 ->schema([
-                    TextInput::make('customer')->label(__('trans.customer.text'))->required(),
-                    TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
-                    Select::make('brand')->label(__('trans.brand.text'))->required()
+                    TextInput::make('customer')->label(__('trans.customer.text'))->required()->disabled(),
+                    TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required()->disabled(),
+                    Select::make('brand')->label(__('trans.brand.text'))->required()->disabled()
                         ->options([
                             'Toyota' => 'Toyota',
                             'Honda' => 'Honda',
@@ -169,12 +169,13 @@ class SaveRepairCostResource extends Resource
                             'Volkswagen'=>'Volkswagen',
                             'Volvo'=>'Volvo',
                             ])->columns(65),
-                            TextInput::make('model')->label(__('trans.model.text'))->required(),
+                            TextInput::make('model')->label(__('trans.model.text'))->required()->disabled(),
                             Select::make('car_year')
                                 ->label(__('trans.car_year.text'))
                                 ->preload()
                                 ->required()
                                 ->searchable()
+                                ->disabled()
                                 ->options(function () {
                                     $currentYear = intval(now()->format('Y'));
                                     $options = [];
@@ -187,6 +188,10 @@ class SaveRepairCostResource extends Resource
                                 }
                                 ),
                             ]),
+                    Fieldset::make('ข้อมูลร้านค้า')
+                        ->schema([
+                            
+                        ]),
                 Card::make()
                     ->schema([
                         Placeholder::make('รายการค่าใช้จ่าย'),
