@@ -25,24 +25,24 @@ class CreateQuotation extends CreateRecord
             $quantity = Arr::get($item, 'quantity', 1);
 
             if(
-                Arr::get($item, 'price') &&
+                Arr::get($item, 'spare_value') &&
                 Arr::get($item, 'spare_code') != 'C6'
             ) {
-                $includingSpareParts += Arr::get($item, 'price') * $quantity;
+                $includingSpareParts += Arr::get($item, 'spare_value') * $quantity;
             }
 
             if(Arr::get($item, 'price') && Arr::get($item, 'spare_code') == 'C6') {
-                $wageTotal += Arr::get($item, 'price');
+                $wageTotal += Arr::get($item, 'spare_value');
             }
 
-            if (Arr::get($item, 'spare_code') == 'C6' && Arr::get($item, 'price')) {
+            if (Arr::get($item, 'spare_code') == 'C6' && Arr::get($item, 'wage')) {
                 $quantity = 1;
             }
 
             if(
-                Arr::get($item, 'price')
+                Arr::get($item, 'spare_value')
             ) {
-                $total += Arr::get($item, 'price') * $quantity;
+                $total += Arr::get($item, 'spare_value') * $quantity;
             }
         }
         $vat = 7/100;

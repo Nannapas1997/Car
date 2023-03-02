@@ -28,6 +28,8 @@ class Invoice extends Model
         'spare_cost',
         'choose_vat_or_not',
         'INV_number',
+        'biller',
+        'bill_payer'
     ];
     public $timestamps = false;
     public function user():BelongsTo

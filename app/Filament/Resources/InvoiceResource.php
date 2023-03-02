@@ -20,13 +20,14 @@ use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Repeater;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ViewField;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Placeholder;
 use App\Filament\Resources\InvoiceResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\InvoiceResource\RelationManagers;
-use Filament\Forms\Components\ViewField;
 
 class InvoiceResource extends Resource
 {
@@ -96,11 +97,10 @@ class InvoiceResource extends Resource
     public static function getINVdata(): array{
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = Invoice::query()
-            ->where('choose_garage', $currentGarage)
-            ->orderBy('INV_number', 'desc')
-            ->get('INV_number')
-            ->pluck('INV_number', 'INV_number')
-            ->toArray();
+        ->orderBy('INV_number', 'desc')
+        ->get('INV_number')
+        ->pluck('INV_number', 'INV_number')
+        ->toArray();
         $optionValue = [];
 
         if (!$optionData) {
@@ -264,6 +264,7 @@ class InvoiceResource extends Resource
                                         ])
                                         ->required(),
                                     TextInput::make('amount')->label(__('trans.amount.text'))
+                                    ->numeric()
                                     ->columnSpan([
                                         'md' => 3,
                                     ])->required(),
@@ -295,28 +296,27 @@ class InvoiceResource extends Resource
                             ->options([
                                 'vat_include_yes'=>'รวมvat 7%',
                                 'vat_include_no'=>'ไม่รวมvat 7%',
-                            ]),
+                            ])
+                            ->default('vat_include_yes'),
+
                     TextInput::make('vat_display')
                         ->label(__('trans.vat.text'))
                         ->disabled()
                         ->placeholder(function (Closure $get) {
                             $invoiceItems = $get('invoiceItems');
+                            $chooseVat = $get('choose_vat_or_not');
+                            $vat = 0;
                             $total = 0;
-                            $vatTotal = 0;
-
-                            if ($get('choose_vat_or_not') == 'vat_include_yes') {
-                                foreach ($invoiceItems as $item) {
-                                    if(Arr::get($item, 'price')) {
-                                        $total += Arr::get($item, 'price');
-                                    }
+                            foreach ($invoiceItems as $item) {
+                                if(Arr::get($item, 'amount')) {
+                                    $total += Arr::get($item, 'amount');
                                 }
-
-                                $vatTotal = $total * (7/100);
                             }
 
-
-
-                            return $vatTotal ? number_format($vatTotal, 2) : '0.00';
+                            if ($chooseVat == 'vat_include_yes') {
+                                $vat = $total * (7/100);
+                            }
+                            return $vat ? number_format($vat, 2) : '0.00';
                         }),
                     TextInput::make('aggregate_display')
                         ->label(__('trans.aggregate.text'))
@@ -325,10 +325,10 @@ class InvoiceResource extends Resource
                             $invoiceItems = $get('invoiceItems');
                             $total = 0;
                             $vatTotal = 0;
-
+                            $aggregate = 0;
                             foreach ($invoiceItems as $item) {
-                                if(Arr::get($item, 'price')) {
-                                    $total += Arr::get($item, 'price');
+                                if(Arr::get($item, 'amount')) {
+                                    $total += Arr::get($item, 'amount');
                                 }
                             }
 
@@ -336,10 +336,11 @@ class InvoiceResource extends Resource
                                 $vatTotal = $total * (7/100);
                             }
 
-                            return $total + $vatTotal;
+                            return $vatTotal+ $total;
                         }),
                     ViewField::make('courier_document')->view('filament.resources.forms.components.sender-document'),
-                    TextInput::make('recipient_document')->label(__('trans.recipient_document.text'))->required(),
+                    TextInput::make('biller')->label('ผู้วางบิล')->required(),
+                    TextInput::make('bill_payer')->label('ผู้รับวางบิล(ลูกค้า)')->required(),
             ]);
     }
 
@@ -390,6 +391,7 @@ class InvoiceResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()->disabled(Filament::auth()->user()->email !== 'super@admin.com'),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -410,5 +412,9 @@ class InvoiceResource extends Resource
             'create' => Pages\CreateInvoice::route('/create'),
             'edit' => Pages\EditInvoice::route('/{record}/edit'),
         ];
+    }
+    public static function canDelete(Model $record): bool
+    {
+        return Filament::auth()->user()->email === 'super@admin.com';
     }
 }

@@ -89,6 +89,8 @@ class QuotationResource extends Resource
                             $set('brand', $name['brand']);
                             $set('repair_code', $name['repair_code']);
                             $set('car_type', $name['car_type']);
+                            $set('sum_insured', $name['sum_insured']);
+                            $set('claim_number', $name['claim_number']);
                         }
                     }
                 }),
@@ -99,6 +101,11 @@ class QuotationResource extends Resource
     {
         return $form
             ->schema([
+                DatePicker::make('creation_date')
+                ->required()
+                ->disabled()
+                ->default(now()->format('Y-m-d'))
+                ->label(__('trans.creation_date.text')),
                 Card::make()->schema(static::getViewData('job_number')),
                 TextInput::make('customer')
                 ->required()
@@ -233,9 +240,6 @@ class QuotationResource extends Resource
                 TextInput::make('sum_insured')
                 ->required()
                 ->label(__('trans.sum_insured.text')),
-                DatePicker::make('creation_date')
-                ->required()
-                ->label(__('trans.creation_date.text')),
                 TextInput::make('claim_number')
                 ->required()
                 ->label(__('trans.claim_number.text')),
@@ -311,13 +315,13 @@ class QuotationResource extends Resource
                                         $set('order_hidden', $state);
                                     })
                                     ->columnSpan([
-                                        'md' => 3,
+                                        'md' => 2,
                                     ]),
 
                                 TextInput::make('list_damaged_parts')
                                     ->label(__('trans.list_damaged_parts.text'))
                                     ->columnSpan([
-                                        'md' => 3,
+                                        'md' => 5,
                                     ])
                                     ->hidden(fn (Closure $get) => $get('spare_code') == 'C6'),
                                 TextInput::make('quantity')
@@ -360,8 +364,8 @@ class QuotationResource extends Resource
                         $total = 0;
 
                         foreach ($items as $item) {
-                            if(Arr::get($item, 'price') && Arr::get($item, 'spare_code') == 'C6') {
-                                $total += Arr::get($item, 'price');
+                            if(Arr::get($item, 'wage') && Arr::get($item, 'spare_code') == 'C6') {
+                                $total += Arr::get($item, 'wage');
                             }
                         }
 
@@ -378,10 +382,10 @@ class QuotationResource extends Resource
                                 $quantity = Arr::get($item, 'quantity', 1);
 
                                 if(
-                                    Arr::get($item, 'price') &&
+                                    Arr::get($item, 'spare_value') &&
                                     Arr::get($item, 'spare_code') != 'C6'
                                 ) {
-                                    $total += Arr::get($item, 'price') * $quantity;
+                                    $total += Arr::get($item, 'spare_value') * $quantity;
                                 }
                             }
 
@@ -392,16 +396,17 @@ class QuotationResource extends Resource
                     ->label('ระบุตัวเลือกที่ต้องการ')
                     ->required()
                     ->options([
-                        'รวมvat'=>'รวมvat 7%',
-                        'ไม่รวมvat'=>'ไม่รวมvat 7%',
-                    ]),
+                        'vat_include_yes'=>'รวมvat 7%',
+                        'vat_include_no'=>'ไม่รวมvat 7%',
+                    ])->default('vat_include_yes'),
                     TextInput::make('vat')
                         ->label(__('trans.vat.text'))
                         ->disabled()
                         ->placeholder(function (Closure $get) {
                             $items = $get('quotationitems');
+                            $chooseVat = $get('choose_vat_or_not_1');
                             $total = 0;
-
+                            $vatTotal = 0;
                             foreach ($items as $item) {
                                 $quantity = Arr::get($item, 'quantity', 1);
 
@@ -412,12 +417,13 @@ class QuotationResource extends Resource
                                 if(
                                     Arr::get($item, 'spare_code')
                                 ) {
-                                    $total += Arr::get($item, 'price') * $quantity;
+                                    $total += Arr::get($item, 'spare_value') * $quantity;
                                 }
+
                             }
-
-                            $vatTotal = $total * (7/100);
-
+                            if ($chooseVat == 'vat_include_yes') {
+                                $vatTotal = $total * (7/100);
+                            }
                             return $vatTotal ? number_format($vatTotal, 2) : '0.00';
                         }),
                     TextInput::make('overall')
@@ -425,6 +431,7 @@ class QuotationResource extends Resource
                         ->disabled()
                         ->placeholder(function (Closure $get) {
                             $items = $get('quotationitems');
+                            $chooseVat = $get('choose_vat_or_not_1');
                             $total = 0;
 
                             foreach ($items as $item) {
@@ -441,7 +448,9 @@ class QuotationResource extends Resource
                                 }
                             }
 
-                            $vatTotal = $total * (7/100);
+                            if ($chooseVat == 'vat_include_yes') {
+                                $vatTotal = $total * (7/100);
+                            }
                             $sumTotal = $vatTotal + $total;
 
                             return $sumTotal ? number_format($sumTotal, 2) : '0.00';
@@ -502,21 +511,22 @@ class QuotationResource extends Resource
 
                             return $total ? number_format($total, 2) : '0.00';
                         }),
-                    Radio::make('choose_vat_or_not_2')
+                    Radio::make('choose_vat_or_not')
                     ->columnSpanFull()
                     ->label('ระบุตัวเลือกที่ต้องการ')
                     ->required()
                     ->options([
-                        'รวมvat'=>'รวมvat 7%',
-                        'ไม่รวมvat'=>'ไม่รวมvat 7%',
-                    ]),
+                        'vat_include_yes'=>'รวมvat 7%',
+                        'vat_include_no'=>'ไม่รวมvat 7%',
+                    ])->default('vat_include_yes'),
                     TextInput::make('vat')
                         ->label(__('trans.vat.text'))
                         ->disabled()
                         ->placeholder(function (Closure $get) {
                             $items = $get('quotationitems');
+                            $chooseVat = $get('choose_vat_or_not');
                             $total = 0;
-
+                            $vatTotal = 0;
                             foreach ($items as $item) {
                                 $quantity = Arr::get($item, 'quantity', 1);
 
@@ -530,8 +540,10 @@ class QuotationResource extends Resource
                                     $total += Arr::get($item, 'price') * $quantity;
                                 }
                             }
+                            if ($chooseVat == 'vat_include_yes') {
+                                $vatTotal = $total * (7/100);
+                            }
 
-                            $vatTotal = $total * (7/100);
 
                             return $vatTotal ? number_format($vatTotal, 2) : '0.00';
                         }),
@@ -540,8 +552,9 @@ class QuotationResource extends Resource
                         ->disabled()
                         ->placeholder(function (Closure $get) {
                             $items = $get('quotationitems');
+                            $chooseVat = $get('choose_vat_or_not');
                             $total = 0;
-
+                            $vatTotal = 0;
                             foreach ($items as $item) {
                                 $quantity = Arr::get($item, 'quantity', 1);
 
@@ -555,8 +568,10 @@ class QuotationResource extends Resource
                                     $total += Arr::get($item, 'price') * $quantity;
                                 }
                             }
+                            if ($chooseVat == 'vat_include_yes') {
+                                $vatTotal = $total * (7/100);
+                            }
 
-                            $vatTotal = $total * (7/100);
                             $sumTotal = $vatTotal + $total;
 
                             return $sumTotal ? number_format($sumTotal, 2) : '0.00';
