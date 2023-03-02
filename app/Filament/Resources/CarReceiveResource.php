@@ -494,6 +494,15 @@ class CarReceiveResource extends Resource
                     ->label(__('trans.policy_expiration_date.text'))
                     ->required()
                     ->hidden(fn (Closure $get) => $get('options') == 'เงินสด'),
+                DatePicker::make('accident_date')
+                ->label(__('trans.accident_date.text'))
+                ->required(),
+                DatePicker::make('repair_date')
+                ->label(__('trans.repair_date.text'))
+                ->required(),
+                TextInput::make('number_ab')
+                ->label(__('trans.number_ab.text'))
+                ->required(),
                 Fieldset::make('ประเภทการจอด')
                     ->schema([
                         Radio::make('park_type')->label(__('trans.options.text'))

@@ -95,12 +95,15 @@ class PurchaseOrderResource extends Resource
                 Card::make()->schema(static::getViewData('job_number')),
                 TextInput::make('vehicle_registration')
                 ->required()
+                ->disabled()
                 ->label(__('trans.vehicle_registration.text')),
                 TextInput::make('model')
                 ->required()
+                ->disabled()
                 ->label(__('trans.model.text')),
                 TextInput::make('car_year')
                 ->required()
+                ->disabled()
                 ->label(__('trans.car_year.text')),
                 Select::make('store')->label(__('trans.store.text'))
                     ->required()

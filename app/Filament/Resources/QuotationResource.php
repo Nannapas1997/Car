@@ -90,6 +90,9 @@ class QuotationResource extends Resource
                             $set('repair_code', $name['repair_code']);
                             $set('car_type', $name['car_type']);
                             $set('sum_insured', $name['sum_insured']);
+                            $set('number_ab', $name['number_ab']);
+                            $set('accident_date', $name['accident_date']);
+                            $set('repair_date', $name['repair_date']);
                             $set('claim_number', $name['claim_number']);
                         }
                     }
@@ -109,8 +112,10 @@ class QuotationResource extends Resource
                 Card::make()->schema(static::getViewData('job_number')),
                 TextInput::make('customer')
                 ->required()
+                ->disabled()
                 ->label(__('trans.customer.text')),
                 Select::make('brand')
+                ->disabled()
                 ->required()
                 ->label(__('trans.brand.text'))
                 ->preload()
@@ -187,6 +192,7 @@ class QuotationResource extends Resource
                     ->label(__('trans.car_year.text'))
                     ->preload()
                     ->required()
+                    ->disabled()
                     ->searchable()
                     ->options(function () {
                         $currentYear = intval(now()->format('Y'));
@@ -201,9 +207,11 @@ class QuotationResource extends Resource
                 ),
                 TextInput::make('vehicle_registration')
                 ->required()
+                ->disabled()
                 ->label(__('trans.vehicle_registration.text')),
                 Select::make('repair_code')->label(__('trans.repair_code.text'))
                 ->required()
+                ->disabled()
                 ->options([
                     'A' => 'A',
                     'B' => 'B',
@@ -236,19 +244,23 @@ class QuotationResource extends Resource
                 'รถเก๋ง 4 ประตู'=>'รถเก๋ง 4 ประตู',
                 'รถตู้'=>'รถตู้',
                 'รถสามล้อ'=>'รถสามล้อ',
-                ])->columns(25),
+                ])->columns(25)->disabled(),
                 TextInput::make('sum_insured')
                 ->required()
+                ->disabled()
                 ->label(__('trans.sum_insured.text')),
                 TextInput::make('claim_number')
                 ->required()
+                ->disabled()
                 ->label(__('trans.claim_number.text')),
-                TextInput::make('accident_number')
+                TextInput::make('number_ab')
                 ->required()
-                ->label(__('trans.accident_number.text')),
+                ->disabled()
+                ->label(__('trans.number_ab.text')),
                 Select::make('insu_company_name')
                 ->label(__('trans.insu_company_name.text'))
                 ->required()
+                ->disabled()
                 ->preload()
                 ->options([
                     'กรุงเทพประกันภัย' => 'กรุงเทพประกันภัย',
@@ -278,9 +290,11 @@ class QuotationResource extends Resource
                 ]),
                 DatePicker::make('accident_date')
                 ->required()
+                ->disabled()
                 ->label(__('trans.accident_date.text')),
                 DatePicker::make('repair_date')
                 ->required()
+                ->disabled()
                 ->label(__('trans.repair_date.text')),
                 DatePicker::make('quotation_date')
                 ->required()

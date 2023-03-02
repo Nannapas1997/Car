@@ -46,7 +46,8 @@ class Quotation extends Model
         'total',
         'vat',
         'overall',
-        'status'
+        'status',
+        'number_ab',
     ];
     public $timestamps = false;
     // turn off only updated_at

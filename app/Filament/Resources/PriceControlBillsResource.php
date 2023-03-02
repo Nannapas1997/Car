@@ -79,6 +79,7 @@ class PriceControlBillsResource extends Resource
                             $set('customer', $name['customer']);
                             $set('insu_company_name', $name['insu_company_name']);
                             $set('noti_number', $name['noti_number']);
+                            $set('number_ab', $name['number_ab']);
                         }
                     }
                 }),
@@ -90,11 +91,11 @@ class PriceControlBillsResource extends Resource
             ->schema([
                 Card::make()->schema(static::getViewData('job_number')),
                 TextInput::make('number_price_control')->label(__('trans.number_price_control.text')),
-                TextInput::make('noti_number')->label(__('trans.noti_number.text'))->required(),
-                TextInput::make('number_ab')->label(__('trans.number_ab.text'))->required(),
-                TextInput::make('customer')->label(__('trans.customer.text'))->required(),
-                TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required(),
-                TextInput::make('insu_company_name')->label(__('trans.insu_company_name.text'))->required(),
+                TextInput::make('noti_number')->label(__('trans.noti_number.text'))->required()->disabled(),
+                TextInput::make('number_ab')->label(__('trans.number_ab.text'))->required()->disabled(),
+                TextInput::make('customer')->label(__('trans.customer.text'))->required()->disabled(),
+                TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required()->disabled(),
+                TextInput::make('insu_company_name')->label(__('trans.insu_company_name.text'))->required()->disabled(),
                 TextInput::make('termination_price')->label(__('trans.termination_price.text'))->required(),
                 TextInput::make('note')->label(__('trans.note.text'))->required(),
                 TextInput::make('courier')->label(__('trans.courier.text'))->required(),

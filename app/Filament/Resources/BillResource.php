@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\BillResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\BillResource\RelationManagers;
+use App\Models\Invoice;
 
 class BillResource extends Resource
 {
@@ -85,15 +86,70 @@ class BillResource extends Resource
                 }),
         ];
     }
+    public static function BillData(): array{
+        $currentGarage =  Filament::auth()->user()->garage;
+        $optionData = Bill::query()
+            ->where('choose_garage', $currentGarage)
+            ->orderBy('bill_number', 'desc')
+            ->get('bill_number')
+            ->pluck('bill_number', 'bill_number')
+            ->toArray();
+        $optionValue = [];
+
+        if (!$optionData) {
+            $jobNumberFirst = 'B' . now()->format('-y-m-d-') . '00001';
+            $optionValue[$jobNumberFirst] = $jobNumberFirst;
+        } else {
+            $lastValue = Arr::first($optionData);
+
+            if ($lastValue) {
+                $lastValueExplode = explode('-', $lastValue);
+                $lastValue = intval($lastValueExplode[count($lastValueExplode) - 1]);
+                $lastValue += 1;
+                $lastValue = $lastValue < 10 ? "0000{$lastValue}" :
+                    ($lastValue < 100 ? "000{$lastValue}" :
+                        ($lastValue < 1000 ? "00{$lastValue}" :
+                            ($lastValue < 10000 ? "0{$lastValue}" : $lastValue)));
+
+                $lastValue = 'B' . now()->format('-y-m-d-') . $lastValue;
+                $optionValue[$lastValue] = $lastValue;
+            }
+
+            foreach ($optionData as $val) {
+                $optionValue[$val] = $val;
+            }
+        }
+
+        return [
+            Select::make('bill_number')
+                ->label('เลขที่ใบวางบิล')
+                ->preload()
+                ->required()
+                ->searchable()
+                ->options($optionValue)
+
+        ];
+    }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Card::make()->schema(static::getViewData('job_number')),
+                Card::make()->schema(static::BillData('bill_number')),
                 TextInput::make('customer')->label(__('trans.customer.text'))->required()->disabled(),
                 TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required()->disabled(),
-                TextInput::make('invoice_number')->label(__('trans.invoice_number.text'))->required(),
-                TextInput::make('bill_number')->label(__('trans.bill_number.text'))->required(),
+                TextInput::make('invoice_number')->label(__('trans.invoice_number.text'))
+                ->required()
+                ->reactive()
+                ->afterStateUpdated(function ($set, $state) {
+                    if ($state) {
+                        $name = Invoice::query()->where('INV_number', $state)->first();
+                        if ($name) {
+                            $name = $name->toArray();
+                            $set('invoice_number', $name['invoice_number']);
+                        }
+                    }
+                }),
                 TextInput::make('amount')
                     ->label(__('trans.amount.text'))
                     ->numeric()
@@ -107,7 +163,7 @@ class BillResource extends Resource
                     ->options([
                         'vat_include_yes'=>'รวมvat 7%',
                         'vat_include_no'=>'ไม่รวมvat 7%',
-                ]),
+                ])->default('vat_include_yes'),
                 TextInput::make('vat_display')
                     ->label(__('trans.vat.text'))
                     ->disabled()
