@@ -364,8 +364,8 @@ class QuotationResource extends Resource
                         $total = 0;
 
                         foreach ($items as $item) {
-                            if(Arr::get($item, 'wage') && Arr::get($item, 'spare_code') == 'C6') {
-                                $total += Arr::get($item, 'wage');
+                            if(Arr::get($item, 'price') && Arr::get($item, 'spare_code') == 'C6') {
+                                $total += Arr::get($item, 'price');
                             }
                         }
 
@@ -382,23 +382,25 @@ class QuotationResource extends Resource
                                 $quantity = Arr::get($item, 'quantity', 1);
 
                                 if(
-                                    Arr::get($item, 'spare_value') &&
+                                    Arr::get($item, 'price') &&
                                     Arr::get($item, 'spare_code') != 'C6'
                                 ) {
-                                    $total += Arr::get($item, 'spare_value') * $quantity;
+                                    $total += Arr::get($item, 'price') * $quantity;
                                 }
                             }
 
                             return $total ? number_format($total, 2) : '0.00';
                         }),
                     Radio::make('choose_vat_or_not_1')
-                    ->columnSpanFull()
-                    ->label('ระบุตัวเลือกที่ต้องการ')
-                    ->required()
-                    ->options([
-                        'vat_include_yes'=>'รวมvat 7%',
-                        'vat_include_no'=>'ไม่รวมvat 7%',
-                    ])->default('vat_include_yes'),
+                        ->columnSpanFull()
+                        ->label('ระบุตัวเลือกที่ต้องการ')
+                        ->reactive()
+                        ->required()
+                        ->options([
+                            'vat_include_yes'=>'รวมvat 7%',
+                            'vat_include_no'=>'ไม่รวมvat 7%',
+                        ])
+                        ->default('vat_include_yes'),
                     TextInput::make('vat')
                         ->label(__('trans.vat.text'))
                         ->disabled()
@@ -407,6 +409,7 @@ class QuotationResource extends Resource
                             $chooseVat = $get('choose_vat_or_not_1');
                             $total = 0;
                             $vatTotal = 0;
+
                             foreach ($items as $item) {
                                 $quantity = Arr::get($item, 'quantity', 1);
 
@@ -415,15 +418,16 @@ class QuotationResource extends Resource
                                 }
 
                                 if(
-                                    Arr::get($item, 'spare_code')
+                                    Arr::get($item, 'price')
                                 ) {
-                                    $total += Arr::get($item, 'spare_value') * $quantity;
+                                    $total += Arr::get($item, 'price') * $quantity;
                                 }
 
                             }
                             if ($chooseVat == 'vat_include_yes') {
                                 $vatTotal = $total * (7/100);
                             }
+
                             return $vatTotal ? number_format($vatTotal, 2) : '0.00';
                         }),
                     TextInput::make('overall')
@@ -433,6 +437,7 @@ class QuotationResource extends Resource
                             $items = $get('quotationitems');
                             $chooseVat = $get('choose_vat_or_not_1');
                             $total = 0;
+                            $vatTotal = 0;
 
                             foreach ($items as $item) {
                                 $quantity = Arr::get($item, 'quantity', 1);
@@ -512,13 +517,14 @@ class QuotationResource extends Resource
                             return $total ? number_format($total, 2) : '0.00';
                         }),
                     Radio::make('choose_vat_or_not')
-                    ->columnSpanFull()
-                    ->label('ระบุตัวเลือกที่ต้องการ')
-                    ->required()
-                    ->options([
-                        'vat_include_yes'=>'รวมvat 7%',
-                        'vat_include_no'=>'ไม่รวมvat 7%',
-                    ])->default('vat_include_yes'),
+                        ->columnSpanFull()
+                        ->label('ระบุตัวเลือกที่ต้องการ')
+                        ->reactive()
+                        ->required()
+                        ->options([
+                            'vat_include_yes'=>'รวมvat 7%',
+                            'vat_include_no'=>'ไม่รวมvat 7%',
+                        ])->default('vat_include_yes'),
                     TextInput::make('vat')
                         ->label(__('trans.vat.text'))
                         ->disabled()
@@ -535,7 +541,7 @@ class QuotationResource extends Resource
                                 }
 
                                 if(
-                                    Arr::get($item, 'spare_code')
+                                    Arr::get($item, 'price')
                                 ) {
                                     $total += Arr::get($item, 'price') * $quantity;
                                 }
@@ -555,6 +561,7 @@ class QuotationResource extends Resource
                             $chooseVat = $get('choose_vat_or_not');
                             $total = 0;
                             $vatTotal = 0;
+
                             foreach ($items as $item) {
                                 $quantity = Arr::get($item, 'quantity', 1);
 
