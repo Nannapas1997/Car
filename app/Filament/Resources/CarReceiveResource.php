@@ -474,6 +474,11 @@ class CarReceiveResource extends Resource
                         'แอกซ่าประกันภัย' => 'แอกซ่าประกันภัย',
                         'แอลเอ็มจี ประกันภัย' => 'แอลเอ็มจี ประกันภัย',
                     ]),
+                TextInput::make('insu_company_address')
+                ->label('ที่อยู่บริษัทประกันภัย')
+                ->required()
+                ->columnSpanFull()
+                ->hidden(fn (Closure $get) => $get('options') == 'เงินสด'),
                 TextInput::make('policy_number')
                     ->label(__('trans.policy_number.text'))
                     ->required()
@@ -751,7 +756,7 @@ class CarReceiveResource extends Resource
                 ImageColumn::make('etc')
                     ->label(__('trans.etc.text'))->size(150),
                 TextColumn::make('updated_at')
-                    ->label(__('trans.updated_at'))
+                    ->label(__('trans.updated_at.text'))
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')

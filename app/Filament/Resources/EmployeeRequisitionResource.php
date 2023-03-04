@@ -76,7 +76,7 @@ class EmployeeRequisitionResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('input')->label(__('trans.input.text')),
+                TextColumn::make('input')->label(__('trans.input.text'))->searchable(),
                 TextColumn::make('courier_document')->label(__('trans.courier_document.text')),
                 TextColumn::make('recipient_document')->label(__('trans.recipient_document.text')),
             ])

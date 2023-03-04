@@ -107,12 +107,12 @@ class PriceControlBillsResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('job_number_control')->label(__('trans.job_number.text')),
+                TextColumn::make('job_number_control')->label(__('trans.job_number.text'))->searchable(),
                 TextColumn::make('number_price_control')->label(__('trans.number_price_control.text')),
                 TextColumn::make('noti_number')->label(__('trans.noti_number.text')),
                 TextColumn::make('number_ab')->label(__('trans.number_ab.text')),
                 TextColumn::make('customer')->label(__('trans.customer.text')),
-                TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text')),
+                TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->searchable(),
                 TextColumn::make('insu_company_name')->label(__('trans.insu_company_name.text')),
                 TextColumn::make('termination_price')->label(__('trans.termination_price.text')),
                 TextColumn::make('note')->label(__('trans.note.text')),
@@ -152,6 +152,7 @@ class PriceControlBillsResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()->disabled(Filament::auth()->user()->email !== 'super@admin.com'),
             ])
             ->bulkActions([
 
@@ -173,8 +174,5 @@ class PriceControlBillsResource extends Resource
             'edit' => Pages\EditPriceControlBills::route('/{record}/edit'),
         ];
     }
-    public static function canDelete(Model $record): bool
-    {
-        return Filament::auth()->user()->email === 'super@admin.com';
-    }
+
 }

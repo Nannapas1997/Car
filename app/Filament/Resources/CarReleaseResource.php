@@ -10,6 +10,7 @@ use Illuminate\Support\Arr;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Facades\Filament;
+use Illuminate\Support\Carbon;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
@@ -220,14 +221,42 @@ class CarReleaseResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('job_number')->label(__('trans.job_number.text')),
+                TextColumn::make('job_number')->label(__('trans.job_number.text'))->searchable(),
                 TextColumn::make('oc_number')->label(__('trans.oc_number.text')),
                 TextColumn::make('staff_name')->label(__('ชื่อ (ข้าพเจ้า)')),
                 TextColumn::make('staff_position')->label(__('ตำแหน่งที่เกี่ยวข้องกับ บจ./หจก.')),
-                TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text')),
+                TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->searchable(),
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('created_at')
+                    ->form([
+                        Forms\Components\DatePicker::make('created_from')
+                            ->placeholder(fn ($state): string => 'Dec 18, ' . now()->subYear()->format('Y')),
+                        Forms\Components\DatePicker::make('created_until')
+                            ->placeholder(fn ($state): string => now()->format('M d, Y')),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        if ($data['created_from'] ?? null) {
+                            $indicators['created_from'] = 'Order from ' . Carbon::parse($data['created_from'])->toFormattedDateString();
+                        }
+                        if ($data['created_until'] ?? null) {
+                            $indicators['created_until'] = 'Order until ' . Carbon::parse($data['created_until'])->toFormattedDateString();
+                        }
+
+                        return $indicators;
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use Closure;
 use Filament\Forms;
-use Filament\Forms\Components\Hidden;
 use Filament\Tables;
 use App\Models\CarReceive;
 use Illuminate\Support\Arr;
@@ -15,9 +14,11 @@ use Filament\Facades\Filament;
 use Illuminate\Support\Carbon;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Repeater;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Placeholder;
@@ -138,7 +139,7 @@ class PurchaseOrderResource extends Resource
                             ->required()
                             ->reactive()
                             ->columnSpan([
-                                'md' => 3,
+                                'md' => 2,
                             ]),
 
                             TextInput::make('parts_list')->label(__('trans.parts_list.text'))
@@ -149,7 +150,6 @@ class PurchaseOrderResource extends Resource
                             TextInput::make('price')
                                 ->label(__('trans.price.text'))
                                 ->numeric()
-                                ->reactive()
                                 ->columnSpan([
                                     'md' => 2,
                                 ])
@@ -159,9 +159,29 @@ class PurchaseOrderResource extends Resource
                                 ->numeric()
                                 ->reactive()
                                 ->columnSpan([
-                                    'md' => 2,
+                                    'md' => 1,
                                 ])
                                 ->required(),
+                            TextInput::make('vat')
+                                ->label(__('trans.vat.text'))
+                                ->numeric()
+                                ->reactive()
+                                ->columnSpan([
+                                    'md' => 2,
+                                ])
+                                ->required()
+                                ->disabled()
+                                ->placeholder(function (Closure $get, Closure $set) {
+                                    $quantity = $get('quantity') ? $get('quantity') : 1;
+                                    $price = $get('price') ? $get('price') : 0;
+                                    $total = $price * $quantity;
+                                    $totalVat = $total * (7/100);
+                                    $result = $totalVat ? number_format($totalVat, 2) : '0.00';
+                                    $set('vat', $result);
+
+                                    return $result;
+                                }),
+                            Hidden::make('vat'),
                             TextInput::make('aggregate_price_tmp')
                                 ->label(__('trans.aggregate_price.text'))
                                 ->columnSpan([
@@ -172,7 +192,9 @@ class PurchaseOrderResource extends Resource
                                     $quantity = $get('quantity') ? $get('quantity') : 1;
                                     $price = $get('price') ? $get('price') : 0;
                                     $total = $price * $quantity;
-                                    $result = $total ? number_format($total, 2) : '0.00';
+                                    $vat = $total * (7/100);
+                                    $totalPrice = $total + $vat;
+                                    $result = $totalPrice ? number_format($totalPrice, 2) : '0.00';
                                     $set('aggregate_price', $result);
 
                                     return $result;
@@ -188,11 +210,11 @@ class PurchaseOrderResource extends Resource
                 TextInput::make('note')
                 ->label(__('trans.note.text'))
                 ->required(),
-                TextInput::make('courier_document')
-                ->label(__('trans.courier_document.text'))
+                TextInput::make('buyer')
+                ->label(__('ผู้สั่งซื้อ'))
                 ->required(),
-                TextInput::make('recipient_document')
-                ->label(__('trans.recipient_document.text'))
+                TextInput::make('approver')
+                ->label('ผู้อนุมัติ')
                 ->required(),
             ]);
 
@@ -208,9 +230,11 @@ class PurchaseOrderResource extends Resource
                 TextColumn::make('car_year')->label(__('trans.car_year.text')),
                 TextColumn::make('store')->label(__('trans.store.text')),
                 TextColumn::make('parts_list_total')->label(__('trans.parts_list_total.text')),
+                TextColumn::make('vat')->label(__('trans.vat.text')),
+                TextColumn::make('aggregate_price')->label(__('trans.aggregate_price.text')),
                 TextColumn::make('note')->label(__('trans.note.text')),
-                TextColumn::make('courier_document')->label(__('trans.courier_document.text')),
-                TextColumn::make('recipient_document')->label(__('trans.recipient_document.text')),
+                TextColumn::make('buyer')->label(__('ผู้สั่งซื้อ')),
+                TextColumn::make('approver')->label('ผู้อนุมัติ'),
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')
@@ -245,9 +269,10 @@ class PurchaseOrderResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()->disabled(Filament::auth()->user()->email !== 'super@admin.com'),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+
             ]);
     }
 
@@ -265,5 +290,9 @@ class PurchaseOrderResource extends Resource
             'create' => Pages\CreatePurchaseOrder::route('/create'),
             'edit' => Pages\EditPurchaseOrder::route('/{record}/edit'),
         ];
+    }
+    public static function canDelete(Model $record): bool
+    {
+        return Filament::auth()->user()->email === 'super@admin.com';
     }
 }

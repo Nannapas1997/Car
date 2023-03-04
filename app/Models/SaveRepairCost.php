@@ -28,6 +28,10 @@ class SaveRepairCost extends Model
         'spare_code',
         'spare_cost',
         'store',
+        'taxpayer_number',
+        'contact_name',
+        'tel_number',
+        'address'
     ];
     public $timestamps = false;
     public function user():BelongsTo

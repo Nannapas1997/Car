@@ -22,8 +22,8 @@ class PurchaseOrder extends Model
         'quantity',
         'aggregate_price',
         'note',
-        'courier_document',
-        'recipient_document',
+        'buyer',
+        'approver',
         'parts_list_total',
         'code_c0_c7',
     ];

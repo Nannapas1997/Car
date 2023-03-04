@@ -190,7 +190,23 @@ class SaveRepairCostResource extends Resource
                             ]),
                     Fieldset::make('ข้อมูลร้านค้า')
                         ->schema([
-                            
+                            Select::make('store')->label(__('trans.store.text'))
+                            ->required()
+                            ->preload()
+                            ->options([
+                                'ร้านA'=>'ร้านA',
+                                'ร้านB'=>'ร้านB',
+                                'ร้านC'=>'ร้านC',
+                                'ร้านD'=>'ร้านD',
+                            ]),
+                            TextInput::make('address')->label(__('trans.address.text'))
+                            ->required(),
+                            TextInput::make('taxpayer_number')->label('เลขที่ประจำตัวผู้เสียภาษี')
+                            ->required(),
+                            TextInput::make('contact_name')->label('ชื่อผู้ติดต่อ')
+                            ->required(),
+                            TextInput::make('tel_number')->label('เบอร์โทร')
+                            ->required()
                         ]),
                 Card::make()
                     ->schema([
