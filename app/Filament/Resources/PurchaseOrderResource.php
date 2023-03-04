@@ -181,7 +181,7 @@ class PurchaseOrderResource extends Resource
 
                                     return $result;
                                 }),
-                            Hidden::make('vat'),
+                            // Hidden::make('vat'),
                             TextInput::make('aggregate_price_tmp')
                                 ->label(__('trans.aggregate_price.text'))
                                 ->columnSpan([
@@ -199,7 +199,7 @@ class PurchaseOrderResource extends Resource
 
                                     return $result;
                                 }),
-                            Hidden::make('aggregate_price'),
+                            // Hidden::make('aggregate_price'),
                         ])
                     ->defaultItems(count: 1)
                     ->columns([
