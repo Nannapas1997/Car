@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
 use Filament\Tables;
 use App\Models\CarReceive;
 use App\Models\CarRelease;
@@ -17,8 +16,6 @@ use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CarReleaseResource\Pages;
 use App\Filament\Resources\CarReleaseResource\RelationManagers;
 
@@ -260,7 +257,7 @@ class CarReleaseResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->disabled(Filament::auth()->user()->email !== 'super@admin.com'),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
 //
@@ -274,9 +271,5 @@ class CarReleaseResource extends Resource
             'create' => Pages\CreateCarRelease::route('/create'),
             'edit' => Pages\EditCarRelease::route('/{record}/edit'),
         ];
-    }
-    public static function canDelete(Model $record): bool
-    {
-        return Filament::auth()->user()->email === 'super@admin.com';
     }
 }

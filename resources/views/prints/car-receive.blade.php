@@ -37,9 +37,9 @@
                                     <br>
                                     <span class="relative left-5">Line ID : @sp2010</span>
                                 @endif
-                                    @if(\Filament\Facades\Filament::auth()->user()->garage == 'SBO')
-                                        <img class="object-cover h-12 self-left" src="{{ asset('/assets/images/logo_SBO.png') }}" />
-                                    @endif
+                                @if(\Filament\Facades\Filament::auth()->user()->garage == 'SBO')
+                                    <img class="object-cover h-12 self-left" src="{{ asset('/assets/images/logo_SBO.png') }}" />
+                                @endif
 
                             </div>
 
