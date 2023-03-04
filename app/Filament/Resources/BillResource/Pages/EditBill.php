@@ -15,7 +15,13 @@ class EditBill extends EditRecord
     protected function mutateFormDataBeforeSave(array $data): array
     {
         $amount = $this->data['amount'] ? $this->data['amount'] : 0;
-        $vat = $amount * (7/100);
+        $vat = 0;
+        $total = 0;
+
+        if ($this->data['choose_vat_or_not'] == 'vat_include_yes') {
+            $vat = $amount * (7/100);
+        }
+
         $total = $amount + $vat;
 
         Arr::set($data, 'aggregate', number_format($total, 2));
