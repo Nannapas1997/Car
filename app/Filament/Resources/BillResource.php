@@ -22,7 +22,6 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\BillResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\BillResource\RelationManagers;
 use App\Models\Invoice;
 
@@ -32,6 +31,7 @@ class BillResource extends Resource
     protected static ?string $navigationGroup = 'บัญชี';
     protected static ?string $navigationLabel = 'ใบวางบิล';
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = CarReceive::query()
@@ -40,30 +40,26 @@ class BillResource extends Resource
             ->get('job_number')
             ->pluck('job_number', 'job_number')
             ->toArray();
+
         $optionValue = [];
 
-        if (!$optionData) {
-            $jobNumberFirst = $currentGarage . now()->format('-y-m-d-') . '0001';
-            $optionValue[$jobNumberFirst] = $jobNumberFirst;
-        } else {
-            $lastValue = Arr::first($optionData);
+        $lastValue = Arr::first($optionData);
 
-            if ($lastValue) {
-                $lastValueExplode = explode('-', $lastValue);
-                $lastValue = intval($lastValueExplode[count($lastValueExplode) - 1]);
-                $lastValue += 1;
-                $lastValue = $lastValue < 10 ? "0000{$lastValue}" :
-                    ($lastValue < 100 ? "000{$lastValue}" :
-                        ($lastValue < 1000 ? "00{$lastValue}" :
-                            ($lastValue < 10000 ? "0{$lastValue}" : $lastValue)));
+        if ($lastValue) {
+            $lastValueExplode = explode('-', $lastValue);
+            $lastValue = intval($lastValueExplode[count($lastValueExplode) - 1]);
+            $lastValue += 1;
+            $lastValue = $lastValue < 10 ? "0000{$lastValue}" :
+                ($lastValue < 100 ? "000{$lastValue}" :
+                    ($lastValue < 1000 ? "00{$lastValue}" :
+                        ($lastValue < 10000 ? "0{$lastValue}" : $lastValue)));
 
-                $lastValue = $currentGarage . now()->format('-y-m-d-') . $lastValue;
-                $optionValue[$lastValue] = $lastValue;
-            }
+            $lastValue = $currentGarage . now()->format('-y-m-d-') . $lastValue;
+            $optionValue[$lastValue] = $lastValue;
+        }
 
-            foreach ($optionData as $val) {
-                $optionValue[$val] = $val;
-            }
+        foreach ($optionData as $val) {
+            $optionValue[$val] = $val;
         }
 
         return [
@@ -74,19 +70,21 @@ class BillResource extends Resource
                 ->searchable()
                 ->options($optionData)
                 ->reactive()
-                ->afterStateUpdated(function ($set, $state) {
+                ->afterStateUpdated(function ($set, $state) use ($currentGarage) {
                     if ($state) {
                         $name = CarReceive::query()->where('job_number', $state)->first();
                         if ($name) {
                             $name = $name->toArray();
                             $set('vehicle_registration', $name['vehicle_registration']);
                             $set('customer', $name['customer']);
+                            $set('choose_garage', $currentGarage);
                         }
                     }
                 }),
         ];
     }
-    public static function BillData(): array{
+
+    public static function getBillData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = Bill::query()
             ->where('choose_garage', $currentGarage)
@@ -130,12 +128,14 @@ class BillResource extends Resource
 
         ];
     }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Hidden::make('choose_garage'),
                 Card::make()->schema(static::getViewData('job_number')),
-                Card::make()->schema(static::BillData('bill_number')),
+                Card::make()->schema(static::getBillData('bill_number')),
                 TextInput::make('customer')->label(__('trans.customer.text'))->required()->disabled(),
                 TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required()->disabled(),
                 TextInput::make('invoice_number')->label(__('trans.invoice_number.text'))

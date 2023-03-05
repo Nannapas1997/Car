@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
 use Filament\Tables;
 use App\Models\CarReceive;
 use App\Models\CarRelease;
@@ -17,10 +16,9 @@ use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CarReleaseResource\Pages;
 use App\Filament\Resources\CarReleaseResource\RelationManagers;
+use Illuminate\Support\Facades\Config;
 
 class CarReleaseResource extends Resource
 {
@@ -114,73 +112,9 @@ class CarReleaseResource extends Resource
                 Card::make()->schema(static::OCData('oc_number')),
                 TextInput::make('staff_name')->label('ชื่อ (ข้าพเจ้า)'),
                 TextInput::make('staff_position')->label('ตำแหน่งที่เกี่ยวข้องกับ บจ./หจก.'),
-                Select::make('brand')->label(__('trans.brand.text'))->required()->disabled()
-                    ->options([
-                        'Toyota' => 'Toyota',
-                        'Honda' => 'Honda',
-                        'Nissan' => 'Nissan',
-                        'Mitsubishi'=>'Mitsubishi',
-                        'Isuzu'=>'Isuzu',
-                        'Mazda'=>'Mazda',
-                        'Ford'=>'Ford',
-                        'Suzuki'=>'Suzuki',
-                        'Chevrolet'=>'Chevrolet',
-                        'Alfa Romeo'=>'Alfo Romeo',
-                        'Aston Martin'=>'Aston Martin',
-                        'Audi'=>'Audi',
-                        'Bentley'=>'Bentley',
-                        'BMW'=>'BMW',
-                        'Chery'=>'Chery',
-                        'Chrysler'=>'Chrysler',
-                        'Citroen'=>'Citroen',
-                        'Daewoo'=>'Daewoo',
-                        'Daihatsu'=>'Daihatsu',
-                        'DFM'=>'DFM',
-                        'DFSK'=>'DFSK',
-                        'Ferrari'=>'Ferrari',
-                        'Fiat'=>'Fiat',
-                        'FOMM'=>'FOMM',
-                        'Foton'=>'Foton',
-                        'Great Wall Motor'=>'Great Wall Motor',
-                        'Haval'=>'Haval',
-                        'HINO' =>'HINO',
-                        'Holden'=>'Holden',
-                        'Hummer'=>'Hummer',
-                        'Hyundai'=>'Hyundai',
-                        'Jaguar'=>'Jaguar',
-                        'Jeep'=>'Jeep',
-                        'Kia'=>'Kia',
-                        'Lamborghini'=>'Lamborghini',
-                        'Land Rover'=>'Land Rover',
-                        'Lexus'=>'Lexus',
-                        'Lotus'=>'Lotus',
-                        'Maserati'=>'Maserati',
-                        'Maxus'=>'Maxus',
-                        'McLaren'=>'McLaren',
-                        'Mercedes-Benz'=>'Mercedes-Benz',
-                        'MG'=>'MG',
-                        'Mini'=>'Mini',
-                        'Mitsuoka'=>'Mitsuoka',
-                        'Naza'=>'Naza',
-                        'Opel'=>'Opel',
-                        'ORA'=>'ORA',
-                        'Peugeot'=>'Peugeot',
-                        'Polarsun'=>'Polarsun',
-                        'Porsche'=>'Porsche',
-                        'Proton'=>'Proton',
-                        'Rolls-Royce'=>'Rolls-Royce',
-                        'Rover'=>'Rover',
-                        'Saab'=>'Saab',
-                        'Seat'=>'Seat',
-                        'Skoda'=>'Skoda',
-                        'Spyker'=>'Spyker',
-                        'Ssangyong'=>'Ssangyong',
-                        'Subaru'=>'Subaru',
-                        'Tata'=>'Tata',
-                        'Thairung'=>'Thairung',
-                        'Volkswagen'=>'Volkswagen',
-                        'Volvo'=>'Volvo',
-                        ])->columns(65),
+                Select::make('brand')
+                    ->label(__('trans.brand.text'))->required()->disabled()
+                    ->options(Config::get('static.car-brand'))->columns(65),
                 TextInput::make('vehicle_registration')->label('เลขทะเบียนรถ')->disabled(),
                 Select::make('insu_company_name')
                 ->label(__('trans.insu_company_name.text'))
@@ -260,7 +194,7 @@ class CarReleaseResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->disabled(Filament::auth()->user()->email !== 'super@admin.com'),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
 //
@@ -274,9 +208,5 @@ class CarReleaseResource extends Resource
             'create' => Pages\CreateCarRelease::route('/create'),
             'edit' => Pages\EditCarRelease::route('/{record}/edit'),
         ];
-    }
-    public static function canDelete(Model $record): bool
-    {
-        return Filament::auth()->user()->email === 'super@admin.com';
     }
 }

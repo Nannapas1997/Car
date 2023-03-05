@@ -29,18 +29,23 @@ class Invoice extends Model
         'choose_vat_or_not',
         'INV_number',
         'biller',
-        'bill_payer'
+        'bill_payer',
+        'choose_garage',
+        'insu_company_name',
+        'brand',
     ];
     public $timestamps = false;
+
     public function user():BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
     public function invoiceItems():HasMany
     {
         return $this->hasMany(InvoiceItem::class);
     }
-// turn off only updated_at
+
     const UPDATED_AT = false;
     protected $primaryKey = 'id';
 }

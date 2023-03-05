@@ -17,8 +17,8 @@ class CreateInvoice extends CreateRecord
         $vatTotal = 0;
 
         foreach ($invoiceItems as $item) {
-            if(Arr::get($item, 'amount')) {
-                $total += Arr::get($item, 'amount');
+            if(Arr::get($item, 'price')) {
+                $total += Arr::get($item, 'price');
             }
         }
 
