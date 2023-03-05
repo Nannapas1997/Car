@@ -66,8 +66,8 @@ class EmployeeRequisitionResource extends Resource
                 TextInput::make('courier_document')
                 ->label(__('trans.courier_document.text'))
                 ->required(),
-                TextInput::make('recipient_document')
-                ->label(__('trans.recipient_document.text'))
+                TextInput::make('approver')
+                ->label(__('trans.approver.text'))
                 ->required(),
             ]);
     }

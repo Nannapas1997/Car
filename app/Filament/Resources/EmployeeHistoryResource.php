@@ -2,14 +2,21 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\CarReceive;
+use Illuminate\Support\Arr;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
+use Filament\Facades\Filament;
 use Illuminate\Support\Carbon;
 use App\Models\EmployeeHistory;
+use App\Models\ThailandAddress;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -26,14 +33,54 @@ class EmployeeHistoryResource extends Resource
     protected static ?string $navigationGroup = 'ประวัติ';
     protected static ?string $navigationLabel = 'ประวัติพนักงาน';
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
+    public static function getViewData(): array{
+        $currentGarage =  Filament::auth()->user()->garage;
+        $optionData = EmployeeHistory::query()
+            ->where('choose_garage', $currentGarage)
+            ->orderBy('employee_code', 'desc')
+            ->get('employee_code')
+            ->pluck('employee_code', 'employee_code')
+            ->toArray();
+        $optionValue = [];
 
+        if (!$optionData) {
+            $employeeCodeFirst = 'R-'. '00001';
+            $optionValue[$employeeCodeFirst] = $employeeCodeFirst;
+        } else {
+            $lastValue = Arr::first($optionData);
+
+            if ($lastValue) {
+                $lastValueExplode = explode('-', $lastValue);
+                $lastValue = intval($lastValueExplode[count($lastValueExplode) - 1]);
+                $lastValue += 1;
+                $lastValue = $lastValue < 10 ? "0000{$lastValue}" :
+                    ($lastValue < 100 ? "000{$lastValue}" :
+                        ($lastValue < 1000 ? "00{$lastValue}" :
+                            ($lastValue < 10000 ? "0{$lastValue}" : $lastValue)));
+
+                $lastValue = 'R-'. $lastValue;
+                $optionValue[$lastValue] = $lastValue;
+            }
+
+            foreach ($optionData as $val) {
+                $optionValue[$val] = $val;
+            }
+        }
+
+        return [
+            Select::make('employee_code')
+                ->label(' ' . __('trans.employee_code.text'))
+                ->preload()
+                ->required()
+                ->searchable()
+                ->options($optionValue)
+        ];
+    }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('employee_code')
-                ->label(__('trans.employee_code.text'))
-                ->required(),
+                Card::make()->schema(static::getViewData('employee_code')),
                 Select::make('prefix')
                 ->label(__('trans.prefix.text'))
                 ->required()
@@ -56,9 +103,49 @@ class EmployeeHistoryResource extends Resource
                 TextInput::make('nationality')
                 ->label(__('trans.nationality.text'))
                 ->required(),
-                Textarea::make('address')
-                ->label(__('trans.address.text'))
-                ->required(),
+                Fieldset::make('ที่อยู่พนักงาน')
+                    ->schema([
+                        TextInput::make('address')->label(__('trans.address.text'))->required()->columnSpanFull(),
+                        Select::make('postal_code')
+                            ->label(__('trans.postal_code.text'))
+                            ->required()
+                            ->preload()
+                            ->searchable()
+                            ->reactive()
+                            ->options(function (Closure $get) {
+                                $displayAddress = [];
+                                $address = ThailandAddress::where('zipcode', 'like', '%' . $get('postal_code') . '%')
+                                    ->get()
+                                    ->toArray();
+
+                                if ($address) {
+                                    foreach ($address as $val) {
+                                        $displayAddress[Arr::get($val, 'id')] = Arr::get($val, 'zipcode')
+                                            . ' '
+                                            . Arr::get($val, 'district')
+                                            . ' '
+                                            . Arr::get($val, 'amphoe')
+                                            . ' '
+                                            . Arr::get($val, 'province');
+                                    }
+                                }
+
+                                return $displayAddress;
+                            })
+                            ->afterStateUpdated(function ($set, $state) {
+                                if ($state) {
+                                    $name = ThailandAddress::find($state)->toArray();
+                                    if ($name) {
+                                        $set('district', $name['district']);
+                                        $set('amphoe', $name['amphoe']);
+                                        $set('province', $name['province']);
+                                    }
+                                }
+                            }),
+                         TextInput::make('district')->label(__('trans.district.text'))->required(),
+                         TextInput::make('amphoe')->label(__('trans.amphoe.text'))->required(),
+                         TextInput::make('province')->label(__('trans.province.text'))->required(),
+                    ]),
                 TextInput::make('tel_number')
                 ->label(__('trans.tel_number.text'))
                 ->required(),
@@ -102,7 +189,6 @@ class EmployeeHistoryResource extends Resource
                 TextColumn::make('birthdate')->label(__('trans.birthdate.text')),
                 TextColumn::make('id_card')->label(__('trans.id_card.text'))->searchable(),
                 TextColumn::make('nationality')->label(__('trans.nationality.text')),
-                TextColumn::make('address')->label(__('trans.address.text')),
                 TextColumn::make('tel_number')->label(__('trans.tel_number.text')),
                 TextColumn::make('email')->label(__('trans.email.text')),
                 TextColumn::make('start_work_date')->label(__('trans.start_work_date.text')),

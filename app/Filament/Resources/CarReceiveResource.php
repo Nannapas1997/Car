@@ -214,6 +214,13 @@ class CarReceiveResource extends Resource
                                 $set('copy_of_person', $name['copy_of_person']);
                                 $set('account_book', $name['account_book']);
                                 $set('atm_card', $name['atm_card']);
+                                $set('postal_code', $name['postal_code']);
+                                $set('district', $name['district']);
+                                $set('amphoe', $name['amphoe']);
+                                $set('province', $name['province']);
+                                $set('driver_tel_number', $name['driver_tel_number']);
+                                $set('customer_tel_number', $name['customer_tel_number']);
+                                $set('repairman_tel_number', $name['repairman_tel_number']);
                             }
                         }
                     }),
