@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use Closure;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
 use App\Models\CarReceive;
 use Illuminate\Database\Eloquent\Model;
@@ -267,6 +268,11 @@ class SaveRepairCostResource extends Resource
 
                                 return $total;
                             }),
+                SpatieMediaLibraryFileUpload::make('other_files')
+                    ->multiple()
+                    ->label(__('trans.other_files.text'))
+                    ->image()
+                    ->enableDownload(),
             ]);
 
     }

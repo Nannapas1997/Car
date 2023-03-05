@@ -169,5 +169,6 @@ return [
     'updated_at.text' => 'อัพเดทข้อมูล ณ วันและเวลา',
     'price_control_officer.text' => 'เจ้าหน้าที่คุมราคา',
     'policy_expiration_date.text' => 'วันหมดอายุกรมธรรม์',
-    'INV_number.text' => 'เลขที่ใบแจ้งหนี้'
+    'INV_number.text' => 'เลขที่ใบแจ้งหนี้',
+    'other_files.text' => 'แนบไฟล์เอกสาร',
 ];

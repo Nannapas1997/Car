@@ -8,10 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class SaveRepairCost extends Model
+class SaveRepairCost extends Model implements HasMedia
 {
+    use InteractsWithMedia;
     use HasFactory;
+
     protected $fillable = [
         'id',
         'job_number',
@@ -42,8 +46,13 @@ class SaveRepairCost extends Model
     {
         return $this->hasMany(SaveRepairCostItem::class);
     }
-// turn off only updated_at
-const UPDATED_AT = false;
-protected $primaryKey = 'id';
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('other_files');
+    }
+
+    const UPDATED_AT = false;
+    protected $primaryKey = 'id';
 
 }

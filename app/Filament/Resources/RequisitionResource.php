@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
 use App\Models\CarReceive;
 use App\Models\Requisition;
@@ -138,6 +139,11 @@ class RequisitionResource extends Resource
                     TextInput::make('approver')
                     ->label(__('trans.approver.text'))
                     ->required(),
+                SpatieMediaLibraryFileUpload::make('other_files')
+                    ->multiple()
+                    ->label(__('trans.other_files.text'))
+                    ->image()
+                    ->enableDownload(),
             ]);
     }
 

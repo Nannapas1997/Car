@@ -2,14 +2,19 @@
 
 namespace App\Models;
 
+use App\Scopes\HasChooseGarageScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class EmployeeRequisition extends Model
+class EmployeeRequisition extends Model implements HasMedia
 {
+    use InteractsWithMedia;
     use HasFactory;
+
     protected $fillable = [
         'order',
         'employee_lists',
@@ -18,7 +23,6 @@ class EmployeeRequisition extends Model
         'financial',
         'courier_document',
         'recipient_document'
-
     ];
     const UPDATED_AT = false;
     public $timestamps = false;
@@ -29,5 +33,10 @@ class EmployeeRequisition extends Model
     public function employeerequisitionitems():HasMany
     {
         return $this->hasMany(EmployeeRequisitionItem::class);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('other_files');
     }
 }

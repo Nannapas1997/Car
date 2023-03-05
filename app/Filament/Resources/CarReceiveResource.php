@@ -799,7 +799,7 @@ class CarReceiveResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->disabled(Filament::auth()->user()->email !== 'super@admin.com'),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([]);
     }
@@ -811,11 +811,6 @@ class CarReceiveResource extends Resource
             'create' => Pages\CreateCarReceive::route('/create'),
             'edit' => Pages\EditCarReceive::route('/{record}/edit'),
         ];
-    }
-
-    public static function canDelete(Model $record): bool
-    {
-        return Filament::auth()->user()->email === 'super@admin.com';
     }
 }
 

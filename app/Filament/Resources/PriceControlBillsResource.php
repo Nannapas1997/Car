@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
 use App\Models\CarReceive;
 use Illuminate\Support\Arr;
@@ -103,6 +104,11 @@ class PriceControlBillsResource extends Resource
                 TextInput::make('note')->label(__('trans.note.text'))->required(),
                 TextInput::make('courier')->label(__('trans.courier.text'))->required(),
                 TextInput::make('price_dealer')->label(__('trans.price_dealer.text'))->required(),
+                SpatieMediaLibraryFileUpload::make('other_files')
+                    ->multiple()
+                    ->label(__('trans.other_files.text'))
+                    ->image()
+                    ->enableDownload(),
             ]);
     }
 

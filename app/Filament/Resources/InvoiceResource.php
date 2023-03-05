@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
 use App\Models\Invoice;
 use App\Models\CarReceive;
@@ -262,6 +263,11 @@ class InvoiceResource extends Resource
                 TextInput::make('bill_payer')->label('ผู้รับวางบิล(ลูกค้า)')->required(),
                 Hidden::make('recipient_document'),
                 Hidden::make('courier_document'),
+                SpatieMediaLibraryFileUpload::make('other_files')
+                    ->multiple()
+                    ->label(__('trans.other_files.text'))
+                    ->image()
+                    ->enableDownload(),
             ]);
     }
 

@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Forms\Components\DatePicker;
 use Filament\Tables;
 use App\Models\CarReceive;
 use App\Models\CarRelease;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
@@ -14,7 +16,6 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use App\Filament\Resources\CarReleaseResource\Pages;
 use App\Filament\Resources\CarReleaseResource\RelationManagers;
@@ -164,9 +165,9 @@ class CarReleaseResource extends Resource
             ->filters([
                 Tables\Filters\Filter::make('created_at')
                     ->form([
-                        Forms\Components\DatePicker::make('created_from')
+                        DatePicker::make('created_from')
                             ->placeholder(fn ($state): string => 'Dec 18, ' . now()->subYear()->format('Y')),
-                        Forms\Components\DatePicker::make('created_until')
+                        DatePicker::make('created_until')
                             ->placeholder(fn ($state): string => now()->format('M d, Y')),
                     ])
                     ->query(function (Builder $query, array $data): Builder {

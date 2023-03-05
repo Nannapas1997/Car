@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Scopes\HasChooseGarageScope;
-use Filament\Facades\Filament;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -15,11 +14,6 @@ class CarReceive extends Model implements HasMedia
 {
     use InteractsWithMedia;
     use HasFactory, SoftDeletes;
-
-    protected static function booted()
-    {
-        static::addGlobalScope(new HasChooseGarageScope);
-    }
 
     protected $fillable = [
         'id',
@@ -123,6 +117,11 @@ class CarReceive extends Model implements HasMedia
 
     // turn off only updated_at
     protected $primaryKey = 'id';
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new HasChooseGarageScope);
+    }
 
     public function registerMediaCollections(): void
     {

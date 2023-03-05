@@ -5,9 +5,12 @@ namespace App\Models;
 use App\Scopes\HasChooseGarageScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Bill extends Model
+class Bill extends Model implements HasMedia
 {
+    use InteractsWithMedia;
     use HasFactory;
 
     protected $fillable = [
@@ -32,5 +35,10 @@ class Bill extends Model
     protected static function booted()
     {
         static::addGlobalScope(new HasChooseGarageScope);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('other_files');
     }
 }

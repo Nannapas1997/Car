@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use Closure;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
 use App\Models\CarReceive;
 use Illuminate\Support\Arr;
@@ -216,6 +217,11 @@ class PurchaseOrderResource extends Resource
                 TextInput::make('approver')
                 ->label('ผู้อนุมัติ')
                 ->required(),
+                SpatieMediaLibraryFileUpload::make('other_files')
+                    ->multiple()
+                    ->label(__('trans.other_files.text'))
+                    ->image()
+                    ->enableDownload(),
             ]);
 
     }

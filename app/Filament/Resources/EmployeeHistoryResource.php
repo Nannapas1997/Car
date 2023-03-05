@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use Closure;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
 use App\Models\CarReceive;
 use Illuminate\Support\Arr;
@@ -176,6 +177,11 @@ class EmployeeHistoryResource extends Resource
                 ->label(__('trans.cause.text')),
                 FileUpload::make('resignation_document')
                 ->label(__('trans.resignation_document.text')),
+                SpatieMediaLibraryFileUpload::make('other_files')
+                    ->multiple()
+                    ->label(__('trans.other_files.text'))
+                    ->image()
+                    ->enableDownload(),
             ]);
     }
 

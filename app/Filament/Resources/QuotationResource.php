@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
 use App\Models\Quotation;
 use App\Models\CarReceive;
@@ -491,6 +492,11 @@ class QuotationResource extends Resource
                                 'เสร็จสิ้น' => 'เสร็จสิ้น',
                             ])
                         ]),
+                SpatieMediaLibraryFileUpload::make('other_files')
+                    ->multiple()
+                    ->label(__('trans.other_files.text'))
+                    ->image()
+                    ->enableDownload(),
 
             ]);
     }

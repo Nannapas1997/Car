@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use App\Scopes\HasChooseGarageScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class EmployeeHistory extends Model
+class EmployeeHistory extends Model implements HasMedia
 {
+    use InteractsWithMedia;
     use HasFactory;
+
     protected $fillable = [
         'employee_code',
         'employee_lists',
@@ -32,4 +37,9 @@ class EmployeeHistory extends Model
     ];
     const UPDATED_AT = null;
     const CREATED_AT = null;
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('other_files');
+    }
 }

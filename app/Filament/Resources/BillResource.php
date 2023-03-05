@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use Closure;
 use Filament\Forms;
 use App\Models\Bill;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
 use App\Models\CarReceive;
 use Illuminate\Support\Arr;
@@ -139,17 +140,17 @@ class BillResource extends Resource
                 TextInput::make('customer')->label(__('trans.customer.text'))->required()->disabled(),
                 TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required()->disabled(),
                 TextInput::make('invoice_number')->label(__('trans.invoice_number.text'))
-                ->required()
-                ->reactive()
-                ->afterStateUpdated(function ($set, $state) {
-                    if ($state) {
-                        $name = Invoice::query()->where('INV_number', $state)->first();
-                        if ($name) {
-                            $name = $name->toArray();
-                            $set('invoice_number', $name['invoice_number']);
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function ($set, $state) {
+                        if ($state) {
+                            $name = Invoice::query()->where('invoice_number', $state)->first();
+                            if ($name) {
+                                $name = $name->toArray();
+                                $set('invoice_number', $name['invoice_number']);
+                            }
                         }
-                    }
-                }),
+                    }),
                 TextInput::make('amount')
                     ->label(__('trans.amount.text'))
                     ->numeric()
@@ -196,8 +197,17 @@ class BillResource extends Resource
 
                         return $total ? number_format($total, 2) : '0.00';
                     }),
-                TextInput::make('courier_document')->label(__('trans.courier_document.text'))->required(),
-                TextInput::make('recipient_document')->label(__('trans.recipient_document.text'))->required(),
+                TextInput::make('courier_document')
+                    ->label(__('trans.courier_document.text'))
+                    ->required(),
+                TextInput::make('recipient_document')
+                    ->label(__('trans.recipient_document.text'))
+                    ->required(),
+                SpatieMediaLibraryFileUpload::make('other_files')
+                    ->multiple()
+                    ->label(__('trans.other_files.text'))
+                    ->image()
+                    ->enableDownload(),
             ]);
     }
 
