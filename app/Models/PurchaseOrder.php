@@ -26,6 +26,8 @@ class PurchaseOrder extends Model
         'approver',
         'parts_list_total',
         'code_c0_c7',
+        'buyer',
+        'approver',
     ];
     public $timestamps = false;
 // turn off only updated_at
