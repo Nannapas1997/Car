@@ -28,6 +28,7 @@ class PriceControlBillsResource extends Resource
     protected static ?string $navigationGroup = 'บัญชี';
     protected static ?string $navigationLabel = 'ใบคุมราคา';
     protected static ?string $navigationIcon = 'heroicon-o-receipt-tax';
+
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = CarReceive::query()
@@ -92,7 +93,9 @@ class PriceControlBillsResource extends Resource
                 Card::make()->schema(static::getViewData('job_number')),
                 TextInput::make('number_price_control')->label(__('trans.number_price_control.text')),
                 TextInput::make('noti_number')->label(__('trans.noti_number.text'))->required()->disabled(),
-                TextInput::make('number_ab')->label(__('trans.number_ab.text'))->required()->disabled(),
+                TextInput::make('number_ab')
+                    ->label(__('trans.number_ab.text'))
+                    ->required(),
                 TextInput::make('customer')->label(__('trans.customer.text'))->required()->disabled(),
                 TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required()->disabled(),
                 TextInput::make('insu_company_name')->label(__('trans.insu_company_name.text'))->required()->disabled(),

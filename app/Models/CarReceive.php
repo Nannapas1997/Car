@@ -115,7 +115,8 @@ class CarReceive extends Model implements HasMedia
         'cassie_number',
         'accident_date',
         'repair_date',
-        'number_ab'
+        'number_ab',
+        'choose_garage',
     ];
     // turn off both
     public $timestamps = false;

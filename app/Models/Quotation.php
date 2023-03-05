@@ -48,6 +48,9 @@ class Quotation extends Model
         'overall',
         'status',
         'number_ab',
+        'price_control_officer',
+        'choose_vat_or_not',
+        'choose_vat_or_not_1',
     ];
     public $timestamps = false;
     // turn off only updated_at
