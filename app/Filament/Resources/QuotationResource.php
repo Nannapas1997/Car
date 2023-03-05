@@ -36,6 +36,7 @@ class QuotationResource extends Resource
     protected static ?string $navigationGroup = 'งานของฉัน';
     protected static ?string $navigationLabel = 'ใบเสนอราคา';
     protected static ?string $navigationIcon = 'heroicon-o-document-search';
+    protected static ?string $pluralLabel = 'ใบเสนอราคา';
 
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
@@ -521,18 +522,33 @@ class QuotationResource extends Resource
                 TextColumn::make('accident_date')->label(__('trans.accident_date.text')),
                 TextColumn::make('repair_date')->label(__('trans.repair_date.text')),
                 TextColumn::make('quotation_date')->label(__('trans.quotation_date.text'))->searchable(),
-                TextColumn::make('wage')->label(__('trans.wage.text')),
-                TextColumn::make('including_spare_parts')->label(__('trans.including_spare_parts.text')),
-                TextColumn::make('total_wage')->label(__('trans.total_wage.text')),
-                TextColumn::make('vat')->label(__('trans.vat.text')),
-                TextColumn::make('overall')->label(__('trans.overall.text')),
+                TextColumn::make('wage')
+                    ->label(__('trans.wage.text'))
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                TextColumn::make('including_spare_parts')
+                    ->label(__('trans.including_spare_parts.text'))
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                TextColumn::make('total_wage')
+                    ->label(__('trans.total_wage.text'))
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                TextColumn::make('vat')
+                    ->label(__('trans.vat.text'))
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                TextColumn::make('overall')
+                    ->label(__('trans.overall.text'))
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
                 BadgeColumn::make('status')
-                ->label(__('trans.status.text'))
-                ->colors([
-                    'danger' => 'รออนุมัติ',
-                    'warning' => 'กำลังดำเนินการ',
-                    'success' => 'เสร็จสิ้น',
-                ]),
+                    ->label(__('trans.status.text'))
+                    ->colors([
+                        'danger' => 'รออนุมัติ',
+                        'warning' => 'กำลังดำเนินการ',
+                        'success' => 'เสร็จสิ้น',
+                    ]),
                 TextColumn::make('sks')->label(__('trans.sks.text')),
                 TextColumn::make('wchp')->label(__('trans.wchp.text')),
             ])

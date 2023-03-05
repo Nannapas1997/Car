@@ -27,6 +27,7 @@ class CarReleaseResource extends Resource
     protected static ?string $navigationGroup = 'บัญชี';
     protected static ?string $navigationLabel = 'ใบปล่อยรถ';
     protected static ?string $navigationIcon = 'heroicon-o-arrows-expand';
+    protected static ?string $pluralLabel = 'ใบปล่อยรถ';
 
     public static function getViewData(): array
     {

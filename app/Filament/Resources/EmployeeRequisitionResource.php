@@ -28,6 +28,7 @@ class EmployeeRequisitionResource extends Resource
     protected static ?string $navigationGroup = 'การเงิน';
     protected static ?string $navigationLabel = 'ใบเบิกเงินพนักงาน';
     protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $pluralLabel = 'ใบเบิกเงินพนักงาน';
 
     public static function form(Form $form): Form
     {

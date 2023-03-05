@@ -34,6 +34,7 @@ class SaveRepairCostResource extends Resource
     protected static ?string $navigationGroup = 'บัญชี';
     protected static ?string $navigationLabel = 'ต้นทุนค่าแรง';
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
+    protected static ?string $pluralLabel = 'ต้นทุนค่าแรง';
 
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
@@ -288,7 +289,10 @@ class SaveRepairCostResource extends Resource
                 TextColumn::make('brand')->label(__('trans.brand.text')),
                 TextColumn::make('model')->label(__('trans.model.text')),
                 TextColumn::make('car_year')->label(__('trans.car_year.text')),
-                TextColumn::make('total')->label(__('trans.total.text')),
+                TextColumn::make('total')
+                    ->label(__('trans.total.text'))
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')

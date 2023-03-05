@@ -30,6 +30,7 @@ class RequisitionResource extends Resource
     protected static ?string $navigationGroup = 'Account';
     protected static ?string $navigationIcon = 'heroicon-o-receipt-refund';
     protected static bool $shouldRegisterNavigation = false;
+
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = CarReceive::query()

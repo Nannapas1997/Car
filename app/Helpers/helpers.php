@@ -197,3 +197,30 @@ if (! function_exists('helperGetYearList')) {
         return $options;
     }
 }
+
+if (! function_exists('calVat')) {
+    function calVat($num, $chooseVat = 'vat_include_yes'): string
+    {
+        $vat = 0;
+
+        if ($chooseVat == 'vat_include_yes' && is_numeric($num)) {
+            $vat = $num * (7/100);
+        }
+
+        return $vat ? number_format($vat, 2) : '0.00';
+    }
+}
+
+if (! function_exists('calTotal')) {
+    function calTotal($num, $chooseVat = 'vat_include_yes'): string
+    {
+        $total = 0;
+
+        if ($chooseVat == 'vat_include_yes' && is_numeric($num)) {
+            $vat = $num * (7/100);
+            $total = $num + $vat;
+        }
+
+        return $total ? number_format($total, 2) : '0.00';
+    }
+}

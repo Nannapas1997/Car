@@ -34,6 +34,8 @@ class EmployeeHistoryResource extends Resource
     protected static ?string $navigationGroup = 'ประวัติ';
     protected static ?string $navigationLabel = 'ประวัติพนักงาน';
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
+    protected static ?string $pluralLabel = 'ประวัติพนักงาน';
+
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = EmployeeHistory::query()

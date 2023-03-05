@@ -29,6 +29,7 @@ class PriceControlBillsResource extends Resource
     protected static ?string $navigationGroup = 'บัญชี';
     protected static ?string $navigationLabel = 'ใบคุมราคา';
     protected static ?string $navigationIcon = 'heroicon-o-receipt-tax';
+    protected static ?string $pluralLabel = 'ใบคุมราคา';
 
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;

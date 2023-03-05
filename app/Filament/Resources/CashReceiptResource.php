@@ -25,6 +25,7 @@ class CashReceiptResource extends Resource
     protected static ?string $navigationGroup = 'การเงิน';
     protected static ?string $navigationLabel = 'ใบเบิกเงินสด';
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
+    protected static ?string $pluralLabel = 'ใบเบิกเงินสด';
 
     public static function form(Form $form): Form
     {

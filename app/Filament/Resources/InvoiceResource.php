@@ -34,6 +34,7 @@ class InvoiceResource extends Resource
     protected static ?string $navigationGroup = 'บัญชี';
     protected static ?string $navigationLabel = 'ใบแจ้งหนี้';
     protected static ?string $navigationIcon = 'heroicon-o-document-add';
+    protected static ?string $pluralLabel = 'ใบแจ้งหนี้';
 
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
@@ -278,14 +279,21 @@ class InvoiceResource extends Resource
                 TextColumn::make('job_number')
                     ->label(__('trans.job_number.text'))
                     ->searchable(),
-                TextColumn::make('customer')->label(__('trans.customer.text')),
                 TextColumn::make('invoice_number')->label(__('trans.invoice_number.text')),
+                TextColumn::make('customer')->label(__('trans.customer.text')),
                 TextColumn::make('vehicle_registration')
                     ->label(__('trans.vehicle_registration.text'))
                     ->searchable(),
-                TextColumn::make('amount')->label(__('trans.amount.text')),
-                TextColumn::make('vat')->label(__('trans.vat.text')),
-                TextColumn::make('aggregate')->label(__('trans.aggregate.text')),
+                TextColumn::make('amount')
+                    ->label(__('trans.amount.text'))
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                TextColumn::make('vat')
+                    ->label(__('trans.vat.text'))
+                    ->alignEnd(),
+                TextColumn::make('aggregate')
+                    ->label(__('trans.aggregate.text'))
+                    ->alignEnd(),
                 TextColumn::make('courier_document')->label(__('trans.courier_document.text')),
                 TextColumn::make('recipient_document')->label(__('trans.recipient_document.text')),
             ])

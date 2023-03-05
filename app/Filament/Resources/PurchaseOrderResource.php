@@ -33,6 +33,8 @@ class PurchaseOrderResource extends Resource
     protected static ?string $navigationGroup = 'บัญชี';
     protected static ?string $navigationLabel = 'ใบคำสั่งซื้อ';
     protected static ?string $navigationIcon = 'heroicon-o-save-as';
+    protected static ?string $pluralLabel = 'ใบคำสั่งซื้อ';
+
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = CarReceive::query()
@@ -236,8 +238,14 @@ class PurchaseOrderResource extends Resource
                 TextColumn::make('car_year')->label(__('trans.car_year.text')),
                 TextColumn::make('store')->label(__('trans.store.text')),
                 TextColumn::make('parts_list_total')->label(__('trans.parts_list_total.text')),
-                TextColumn::make('vat')->label(__('trans.vat.text')),
-                TextColumn::make('aggregate_price')->label(__('trans.aggregate_price.text')),
+                TextColumn::make('vat')
+                    ->label(__('trans.vat.text'))
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                TextColumn::make('aggregate_price')
+                    ->label(__('trans.aggregate_price.text'))
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
                 TextColumn::make('note')->label(__('trans.note.text')),
                 TextColumn::make('buyer')->label(__('ผู้สั่งซื้อ')),
                 TextColumn::make('approver')->label('ผู้อนุมัติ'),
