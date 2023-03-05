@@ -14,6 +14,9 @@ class CarRelease extends Model implements HasMedia
     use InteractsWithMedia;
     use HasFactory, SoftDeletes;
 
+    const UPDATED_AT = null;
+    const CREATED_AT = null;
+
     protected $fillable = [
         'id',
         'job_number',
@@ -32,9 +35,6 @@ class CarRelease extends Model implements HasMedia
         'choose_garage',
         'oc_number',
     ];
-
-    const UPDATED_AT = null;
-    const CREATED_AT = null;
 
     protected static function booted()
     {

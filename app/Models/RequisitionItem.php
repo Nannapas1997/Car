@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class RequisitionItem extends Model
 {
     use HasFactory;
+
+    public $timestamps = false;
+    const UPDATED_AT = false;
+
     protected $fillable = [
         'job_number',
         'picking_list',
@@ -17,7 +21,4 @@ class RequisitionItem extends Model
         'unit',
         'order',
     ];
-    public $timestamps = false;
-    // turn off only updated_at
-    const UPDATED_AT = false;
 }

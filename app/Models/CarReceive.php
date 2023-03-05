@@ -15,6 +15,9 @@ class CarReceive extends Model implements HasMedia
     use InteractsWithMedia;
     use HasFactory, SoftDeletes;
 
+    public $timestamps = false;
+    protected $primaryKey = 'id';
+
     protected $fillable = [
         'id',
         'choose_garage',
@@ -112,11 +115,6 @@ class CarReceive extends Model implements HasMedia
         'number_ab',
         'choose_garage',
     ];
-    // turn off both
-    public $timestamps = false;
-
-    // turn off only updated_at
-    protected $primaryKey = 'id';
 
     protected static function booted()
     {

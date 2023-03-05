@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class ApprovalRequest extends Model
 {
     use HasFactory;
+
+    public $timestamps = false;
+    const UPDATED_AT = null;
+
     protected $fillable = [
         'job_number',
         'approval_number',
@@ -23,8 +27,4 @@ class ApprovalRequest extends Model
         'courier_document',
         'recipient_document',
     ];
-    public $timestamps = false;
-
-    // turn off only updated_at
-    const UPDATED_AT = null;
 }

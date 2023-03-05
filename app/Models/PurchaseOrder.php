@@ -14,6 +14,9 @@ class PurchaseOrder extends Model implements HasMedia
     use InteractsWithMedia;
     use HasFactory;
 
+    public $timestamps = false;
+    const UPDATED_AT = false;
+
     protected $fillable = [
         'job_number',
         'vehicle_registration',
@@ -33,9 +36,6 @@ class PurchaseOrder extends Model implements HasMedia
         'buyer',
         'approver',
     ];
-    public $timestamps = false;
-// turn off only updated_at
-    const UPDATED_AT = false;
 
     public function user():BelongsTo
     {

@@ -13,6 +13,9 @@ class Bill extends Model implements HasMedia
     use InteractsWithMedia;
     use HasFactory;
 
+    public $timestamps = false;
+    const UPDATED_AT = false;
+
     protected $fillable = [
         'job_number',
         'customer',
@@ -27,10 +30,6 @@ class Bill extends Model implements HasMedia
         'choose_garage',
         'choose_vat_or_not',
     ];
-
-    public $timestamps = false;
-
-    const UPDATED_AT = false;
 
     protected static function booted()
     {

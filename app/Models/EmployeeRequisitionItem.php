@@ -12,16 +12,16 @@ class EmployeeRequisitionItem extends Model implements HasMedia
     use InteractsWithMedia;
     use HasFactory;
 
+    const UPDATED_AT = false;
+    public $timestamps = false;
+
     protected $fillable = [
         'order',
         'employee_lists',
         'disbursement_amount',
         'input',
         'financial',
-
     ];
-    const UPDATED_AT = false;
-    public $timestamps = false;
 
     public function registerMediaCollections(): void
     {

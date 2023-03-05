@@ -15,6 +15,9 @@ class Quotation extends Model implements HasMedia
     use InteractsWithMedia;
     use HasFactory;
 
+    public $timestamps = false;
+    const UPDATED_AT = false;
+
     protected $fillable = [
         'job_number',
         'customer',
@@ -56,13 +59,12 @@ class Quotation extends Model implements HasMedia
         'choose_vat_or_not',
         'choose_vat_or_not_1',
     ];
-    public $timestamps = false;
-    // turn off only updated_at
-    const UPDATED_AT = false;
+
     public function user():BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
     public function quotationitems():HasMany
     {
         return $this->hasMany(QuotationItem::class);

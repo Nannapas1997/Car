@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class QuotationItem extends Model
 {
     use HasFactory;
+
+    public $timestamps = false;
+    const UPDATED_AT = false;
+
     protected $fillable = [
         'job_number',
         'number',
@@ -23,7 +27,4 @@ class QuotationItem extends Model
         'status',
         'total_wage'
     ];
-    public $timestamps = false;
-
-    const UPDATED_AT = false;
 }

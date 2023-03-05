@@ -14,6 +14,9 @@ class PriceControlBills extends Model implements HasMedia
     use InteractsWithMedia;
     use HasFactory;
 
+    public $timestamps = false;
+    const UPDATED_AT = false;
+
     protected $fillable = [
         'job_number_control',
         'number_price_control',
@@ -27,9 +30,6 @@ class PriceControlBills extends Model implements HasMedia
         'courier',
         'price_dealer',
     ];
-    public $timestamps = false;
-// turn off only updated_at
-    const UPDATED_AT = false;
 
     public function registerMediaCollections(): void
     {

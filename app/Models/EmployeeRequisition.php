@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Scopes\HasChooseGarageScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +14,9 @@ class EmployeeRequisition extends Model implements HasMedia
     use InteractsWithMedia;
     use HasFactory;
 
+    const UPDATED_AT = false;
+    public $timestamps = false;
+
     protected $fillable = [
         'order',
         'employee_lists',
@@ -24,12 +26,12 @@ class EmployeeRequisition extends Model implements HasMedia
         'courier_document',
         'recipient_document'
     ];
-    const UPDATED_AT = false;
-    public $timestamps = false;
+
     public function user():BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
     public function employeerequisitionitems():HasMany
     {
         return $this->hasMany(EmployeeRequisitionItem::class);

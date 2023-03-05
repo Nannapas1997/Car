@@ -11,15 +11,17 @@ class SaveRepairCostItem extends Model implements HasMedia
 {
     use InteractsWithMedia;
     use HasFactory;
+
+    protected $primaryKey = 'id';
+    const UPDATED_AT = false;
+    public $timestamps = false;
+
     protected $fillable = [
         'vehicle_registration',
         'code_c0_c7',
         'price',
         'spare_code'
     ];
-    protected $primaryKey = 'id';
-    const UPDATED_AT = false;
-    public $timestamps = false;
 
     public function registerMediaCollections(): void
     {

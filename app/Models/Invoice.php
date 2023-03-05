@@ -15,6 +15,10 @@ class Invoice extends Model implements HasMedia
     use InteractsWithMedia;
     use HasFactory;
 
+    const UPDATED_AT = false;
+    protected $primaryKey = 'id';
+    public $timestamps = false;
+
     protected $fillable = [
         'job_number',
         'customer',
@@ -39,7 +43,6 @@ class Invoice extends Model implements HasMedia
         'insu_company_name',
         'brand',
     ];
-    public $timestamps = false;
 
     public function user():BelongsTo
     {
@@ -50,9 +53,6 @@ class Invoice extends Model implements HasMedia
     {
         return $this->hasMany(InvoiceItem::class);
     }
-
-    const UPDATED_AT = false;
-    protected $primaryKey = 'id';
 
     protected static function booted()
     {

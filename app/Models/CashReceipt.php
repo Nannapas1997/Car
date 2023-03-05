@@ -13,6 +13,9 @@ class CashReceipt extends Model implements HasMedia
     use InteractsWithMedia;
     use HasFactory;
 
+    const UPDATED_AT = false;
+    public $timestamps = false;
+
     protected $fillable = [
         'disbursement_amount',
         'buy_consumables',
@@ -22,9 +25,6 @@ class CashReceipt extends Model implements HasMedia
         'recipient_document'
 
     ];
-
-    const UPDATED_AT = false;
-    public $timestamps = false;
 
     protected static function booted()
     {
