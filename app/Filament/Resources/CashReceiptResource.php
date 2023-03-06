@@ -3,21 +3,19 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
 use App\Models\CashReceipt;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Illuminate\Support\Carbon;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Forms\Components\CheckboxList;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CashReceiptResource\Pages;
 use App\Filament\Resources\CashReceiptResource\RelationManagers;
 
@@ -27,6 +25,7 @@ class CashReceiptResource extends Resource
     protected static ?string $navigationGroup = 'การเงิน';
     protected static ?string $navigationLabel = 'ใบเบิกเงินสด';
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
+    protected static ?string $pluralLabel = 'ใบเบิกเงินสด';
 
     public static function form(Form $form): Form
     {
@@ -49,11 +48,16 @@ class CashReceiptResource extends Resource
                     Checkbox::make('internal_certification_fee')->label(__('trans.internal_certification_fee.text')),
                 ]),
                 TextInput::make('courier_document')
-                ->label(__('trans.courier_document.text'))
-                ->required(),
+                    ->label(__('trans.courier_document.text'))
+                    ->required(),
                 TextInput::make('recipient_document')
-                ->label(__('trans.recipient_document.text'))
-                ->required(),
+                    ->label(__('trans.recipient_document.text'))
+                    ->required(),
+                SpatieMediaLibraryFileUpload::make('other_files')
+                    ->multiple()
+                    ->label(__('trans.other_files.text'))
+                    ->image()
+                    ->enableDownload(),
             ]);
     }
 

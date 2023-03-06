@@ -6,15 +6,16 @@ use App\Scopes\HasChooseGarageScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class CarRelease extends Model
+class CarRelease extends Model implements HasMedia
 {
+    use InteractsWithMedia;
     use HasFactory, SoftDeletes;
 
-    protected static function booted()
-    {
-        static::addGlobalScope(new HasChooseGarageScope);
-    }
+    const UPDATED_AT = null;
+    const CREATED_AT = null;
 
     protected $fillable = [
         'id',
@@ -35,6 +36,13 @@ class CarRelease extends Model
         'oc_number',
     ];
 
-    const UPDATED_AT = null;
-    const CREATED_AT = null;
+    protected static function booted()
+    {
+        static::addGlobalScope(new HasChooseGarageScope);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('other_files');
+    }
 }

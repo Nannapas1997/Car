@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use Closure;
 use Filament\Forms;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
 use App\Models\Quotation;
 use App\Models\CarReceive;
@@ -25,6 +27,7 @@ use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Placeholder;
 use App\Filament\Resources\QuotationResource\Pages;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 
 class QuotationResource extends Resource
@@ -33,6 +36,7 @@ class QuotationResource extends Resource
     protected static ?string $navigationGroup = 'งานของฉัน';
     protected static ?string $navigationLabel = 'ใบเสนอราคา';
     protected static ?string $navigationIcon = 'heroicon-o-document-search';
+    protected static ?string $pluralLabel = 'ใบเสนอราคา';
 
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
@@ -104,90 +108,28 @@ class QuotationResource extends Resource
     {
         return $form
             ->schema([
+                Hidden::make('choose_garage')
+                    ->default(Filament::auth()->user()->garage),
                 DatePicker::make('creation_date')
-                ->required()
-                ->disabled()
-                ->default(now()->format('Y-m-d'))
-                ->label(__('trans.creation_date.text')),
+                    ->required()
+                    ->disabled()
+                    ->default(now()->format('Y-m-d'))
+                    ->label(__('trans.creation_date.text')),
                 Card::make()->schema(static::getViewData('job_number')),
                 TextInput::make('customer')
-                ->required()
-                ->disabled()
-                ->label(__('trans.customer.text')),
+                    ->required()
+                    ->disabled()
+                    ->label(__('trans.customer.text')),
                 Select::make('brand')
-                ->disabled()
-                ->required()
-                ->label(__('trans.brand.text'))
-                ->preload()
-                ->options([
-                    'Toyota' => 'Toyota',
-                    'Honda' => 'Honda',
-                    'Nissan' => 'Nissan',
-                    'Mitsubishi'=>'Mitsubishi',
-                    'Isuzu'=>'Isuzu',
-                    'Mazda'=>'Mazda',
-                    'Ford'=>'Ford',
-                    'Suzuki'=>'Suzuki',
-                    'Chevrolet'=>'Chevrolet',
-                    'Alfa Romeo'=>'Alfo Romeo',
-                    'Aston Martin'=>'Aston Martin',
-                    'Audi'=>'Audi',
-                    'Bentley'=>'Bentley',
-                    'BMW'=>'BMW',
-                    'Chery'=>'Chery',
-                    'Chrysler'=>'Chrysler',
-                    'Citroen'=>'Citroen',
-                    'Daewoo'=>'Daewoo',
-                    'Daihatsu'=>'Daihatsu',
-                    'DFM'=>'DFM',
-                    'DFSK'=>'DFSK',
-                    'Ferrari'=>'Ferrari',
-                    'Fiat'=>'Fiat',
-                    'FOMM'=>'FOMM',
-                    'Foton'=>'Foton',
-                    'Great Wall Motor'=>'Great Wall Motor',
-                    'Haval'=>'Haval',
-                    'HINO' =>'HINO',
-                    'Holden'=>'Holden',
-                    'Hummer'=>'Hummer',
-                    'Hyundai'=>'Hyundai',
-                    'Jaguar'=>'Jaguar',
-                    'Jeep'=>'Jeep',
-                    'Kia'=>'Kia',
-                    'Lamborghini'=>'Lamborghini',
-                    'Land Rover'=>'Land Rover',
-                    'Lexus'=>'Lexus',
-                    'Lotus'=>'Lotus',
-                    'Maserati'=>'Maserati',
-                    'Maxus'=>'Maxus',
-                    'McLaren'=>'McLaren',
-                    'Mercedes-Benz'=>'Mercedes-Benz',
-                    'MG'=>'MG',
-                    'Mini'=>'Mini',
-                    'Mitsuoka'=>'Mitsuoka',
-                    'Naza'=>'Naza',
-                    'Opel'=>'Opel',
-                    'ORA'=>'ORA',
-                    'Peugeot'=>'Peugeot',
-                    'Polarsun'=>'Polarsun',
-                    'Porsche'=>'Porsche',
-                    'Proton'=>'Proton',
-                    'Rolls-Royce'=>'Rolls-Royce',
-                    'Rover'=>'Rover',
-                    'Saab'=>'Saab',
-                    'Seat'=>'Seat',
-                    'Skoda'=>'Skoda',
-                    'Spyker'=>'Spyker',
-                    'Ssangyong'=>'Ssangyong',
-                    'Subaru'=>'Subaru',
-                    'Tata'=>'Tata',
-                    'Thairung'=>'Thairung',
-                    'Volkswagen'=>'Volkswagen',
-                    'Volvo'=>'Volvo',
-                ])->columns(65),
+                    ->disabled()
+                    ->required()
+                    ->label(__('trans.brand.text'))
+                    ->preload()
+                    ->options(Config::get('static.car-brand'))
+                    ->columns(65),
                 TextInput::make('model')
-                ->required()
-                ->label(__('trans.model.text')),
+                    ->required()
+                    ->label(__('trans.model.text')),
                 Select::make('car_year')
                     ->label(__('trans.car_year.text'))
                     ->preload()
@@ -206,171 +148,239 @@ class QuotationResource extends Resource
                     }
                 ),
                 TextInput::make('vehicle_registration')
-                ->required()
-                ->disabled()
-                ->label(__('trans.vehicle_registration.text')),
-                Select::make('repair_code')->label(__('trans.repair_code.text'))
-                ->required()
-                ->disabled()
-                ->options([
-                    'A' => 'A',
-                    'B' => 'B',
-                    'C'=>'C',
-                    'D'=>'D'
-                ])->columns(5),
-                Select::make('car_type')->label(__('trans.car_type.text'))->required()
-                ->options([
-                'รถหัวลาก 10 ล้อ' => 'รถหัวลาก 10 ล้อ',
-                'รถหัวลาก 6 ล้อ' => 'รถหัวลาก 6 ล้อ',
-                'รถตู้แห้ง 10 ล้อ' => 'รถตู้แห้ง 10 ล้อ',
-                'รถตู้แห้ง 6 ล้อ'=>'รถตู้แห้ง 6 ล้อ',
-                'รถตู้แห้ง 4 ล้อใหญ่'=>'รถตู้แห้ง 4 ล้อใหญ่',
-                'รถกระบะตู้แห้ง'=>'รถกระบะตู้แห้ง',
-                'รถตู้เย็น 10 ล้อ'=>'รถตู้เย็น 10 ล้อ',
-                'รถตู้เย็น 6 ล้อ'=>'รถตู้เย็น 6 ล้อ',
-                'รถตู้เย็น 4 ล้อใหญ่'=>'รถตู้เย็น 4 ล้อใหญ่',
-                'รถบรรทุกกระบะคอกสูง 10 ล้อ'=>'รถบรรทุกกระบะคอกสูง 10 ล้อ',
-                'รถบรรทุกกระบะคอกสูง 6 ล้อ'=>'รถบรรทุกกระบะคอกสูง 6 ล้อ',
-                'รถบรรทุกกระบะคอกเตี้ย 10 ล้อ'=>'รถบรรทุกกระบะคอกเตี้ย 10 ล้อ',
-                'รถบรรทุกกระบะคอกเตี้ย 6 ล้อ'=>'รถบรรทุกกระบะคอกเตี้ย 6 ล้อ',
-                'รถหางพ่วง'=>'รถหางพ่วง',
-                'รถหางพ่วง ตู้แห้ง'=>'รถหางพ่วง ตู้แห้ง',
-                'รถหางพ่วง พื้นเรียบ'=>'รถหางพ่วง พื้นเรียบ',
-                'รถหางเทรนเลอร์ '=>'รถหางเทรนเลอร์',
-                'รถหางเทรนเลอร์ ผ้าใบ'=>'รถหางเทรนเลอร์ ผ้าใบ',
-                'รถกระบะ 4 ประตู'=>'รถกระบะ 4 ประตู',
-                'รถกระบะแคป'=>'รถกระบะแคป',
-                'รถกระบะตอนเดียว'=>'รถกระบะตอนเดียว',
-                'รถเก๋ง 4 ประตู'=>'รถเก๋ง 4 ประตู',
-                'รถตู้'=>'รถตู้',
-                'รถสามล้อ'=>'รถสามล้อ',
-                ])->columns(25)->disabled(),
+                    ->required()
+                    ->disabled()
+                    ->label(__('trans.vehicle_registration.text')),
+                Select::make('repair_code')
+                    ->label(__('trans.repair_code.text'))
+                    ->required()
+                    ->disabled()
+                    ->options(Config::get('static.editor-tools'))
+                    ->columns(5),
+                Select::make('car_type')
+                    ->label(__('trans.car_type.text'))
+                    ->required()
+                    ->options(Config::get('static.car-type'))
+                    ->columns(25)
+                    ->disabled(),
                 TextInput::make('sum_insured')
-                ->required()
-                ->disabled()
-                ->label(__('trans.sum_insured.text')),
+                    ->required()
+                    ->label(__('trans.sum_insured.text')),
                 TextInput::make('claim_number')
-                ->required()
-                ->disabled()
-                ->label(__('trans.claim_number.text')),
+                    ->required()
+                    ->disabled()
+                    ->label(__('trans.claim_number.text')),
                 TextInput::make('number_ab')
-                ->required()
-                ->disabled()
-                ->label(__('trans.number_ab.text')),
+                    ->required()
+                    ->label(__('trans.number_ab.text')),
                 Select::make('insu_company_name')
-                ->label(__('trans.insu_company_name.text'))
-                ->required()
-                ->disabled()
-                ->preload()
-                ->options([
-                    'กรุงเทพประกันภัย' => 'กรุงเทพประกันภัย',
-                    'กรุงไทยพานิชประกันภัย' => 'กรุงไทยพานิชประกันภัย',
-                    'คุ้มภัยโตเกียวมารีน' => 'คุ้มภัยโตเกียวมารีน',
-                    'เคเอสเค ประกันภัย' => 'เคเอสเค ประกันภัย',
-                    'เจมาร์ท ประกันภัย' => 'เจมาร์ท ประกันภัย',
-                    'ชับบ์สามัคคีประกันภัย' => 'ชับบ์สามัคคีประกันภัย',
-                    'ทิพยประกันภัย' => 'ทิพยประกันภัย',
-                    'เทเวศประกันภัย' => 'เทเวศประกันภัย',
-                    'ไทยไพบูลย์' => 'ไทยไพบูลย์',
-                    'ไทยวิวัฒน์' => 'ไทยวิวัฒน์',
-                    'ไทยศรี' => 'ไทยศรี',
-                    'ไทยเศรษฐฯ' => 'ไทยเศรษฐฯ',
-                    'นวกิจประกันภัย' => 'นวกิจประกันภัย',
-                    'บริษัทกลางฯ' => 'บริษัทกลางฯ',
-                    'แปซิฟิค ครอส' => 'แปซิฟิค ครอส',
-                    'เมืองไทยประกันภัย' => 'เมืองไทยประกันภัย',
-                    'วิริยะประกันภัย' => 'วิริยะประกันภัย',
-                    'สินมั่นคง' => 'สินมั่นคง',
-                    'อลิอันซ์ อยุธยา' => 'อลิอันซ์ อยุธยา',
-                    'อินทรประกันภัย' => 'อินทรประกันภัย',
-                    'เอ็ทน่า' => 'เอ็ทน่า',
-                    'เอ็มเอสไอจี' => 'เอ็มเอสไอจี',
-                    'แอกซ่าประกันภัย' => 'แอกซ่าประกันภัย',
-                    'แอลเอ็มจี ประกันภัย' => 'แอลเอ็มจี ประกันภัย',
-                ]),
+                    ->label(__('trans.insu_company_name.text'))
+                    ->required()
+                    ->disabled()
+                    ->preload()
+                    ->options(Config::get('static.insu-company')),
                 DatePicker::make('accident_date')
-                ->required()
-                ->disabled()
-                ->label(__('trans.accident_date.text')),
+                    ->required()
+                    ->disabled()
+                    ->label(__('trans.accident_date.text')),
                 DatePicker::make('repair_date')
-                ->required()
-                ->disabled()
-                ->label(__('trans.repair_date.text')),
+                    ->required()
+                    ->disabled()
+                    ->label(__('trans.repair_date.text')),
                 DatePicker::make('quotation_date')
-                ->required()
-                ->label(__('trans.quotation_date.text'))
-                ->default(now()->format('Y-m-d'))
-                ->disabled(),
+                    ->required()
+                    ->label(__('trans.quotation_date.text'))
+                    ->default(now()->format('Y-m-d'))
+                    ->disabled(),
                 Card::make()
                     ->schema([
                         Placeholder::make('รายการอะไหล่ที่เสียหาย'),
                         Repeater::make('quotationitems')
                             ->reactive()
                             ->relationship()
-                        ->schema(
-                            [
-                                Forms\Components\Hidden::make('order_hidden')
-                                    ->disabled(true),
-                                Select::make('spare_code')
-                                    ->label(__('trans.code_c0_c7.text'))
-                                    ->options([
-                                        'C0' => 'C0',
-                                        'C1' => 'C1',
-                                        'C2' => 'C2',
-                                        'C3' => 'C3',
-                                        'C4' => 'C4',
-                                        'C5' => 'C5',
-                                        'C6' => 'C6',
-                                        'C7' => 'C7',
-                                    ])
-                                    ->required()
-                                    ->reactive()
-                                    ->afterStateUpdated(function ($state, Closure $set) {
-                                        $set('order_hidden', $state);
-                                    })
-                                    ->columnSpan([
-                                        'md' => 2,
-                                    ]),
+                            ->schema(
+                                [
+                                    Hidden::make('order_hidden')->disabled(true),
+                                    Select::make('spare_code')
+                                        ->label(__('trans.code_c0_c7.text'))
+                                        ->options(Config::get('static.code-c0-c7'))
+                                        ->required()
+                                        ->reactive()
+                                        ->afterStateUpdated(function ($state, Closure $set) {
+                                            $set('order_hidden', $state);
+                                        })
+                                        ->columnSpan([
+                                            'md' => 2,
+                                        ]),
 
-                                TextInput::make('list_damaged_parts')
-                                    ->label(__('trans.list_damaged_parts.text'))
-                                    ->columnSpan([
-                                        'md' => 5,
-                                    ])
-                                    ->hidden(fn (Closure $get) => $get('spare_code') == 'C6'),
-                                TextInput::make('quantity')
-                                    ->label(__('trans.quantity.text'))
-                                    ->numeric()
-                                    ->default(1)
-                                    ->columnSpan([
-                                        'md' => 2,
-                                    ])
-                                    ->hidden(fn (Closure $get) => $get('spare_code') == 'C6'),
-                                TextInput::make('price')
-                                    ->label(function (Closure $get) {
-                                        if ($get('spare_code') == 'C6') {
-                                            return 'ค่าแรง';
-                                        }
-                                        return __('trans.spare_value.text');
-                                    })
-                                    ->columnSpan([
-                                        'md' => 3,
-                                    ])
-                                    ->required(),
+                                    TextInput::make('list_damaged_parts')
+                                        ->label(__('trans.list_damaged_parts.text'))
+                                        ->columnSpan([
+                                            'md' => 5,
+                                        ])
+                                        ->hidden(fn (Closure $get) => $get('spare_code') == 'C6'),
+                                    TextInput::make('quantity')
+                                        ->label(__('trans.quantity.text'))
+                                        ->numeric()
+                                        ->default(1)
+                                        ->columnSpan([
+                                            'md' => 2,
+                                        ])
+                                        ->hidden(fn (Closure $get) => $get('spare_code') == 'C6'),
+                                    TextInput::make('price')
+                                        ->numeric()
+                                        ->reactive()
+                                        ->label(function (Closure $get) {
+                                            if ($get('spare_code') == 'C6') {
+                                                return 'ค่าแรง';
+                                            }
+                                            return __('trans.spare_value.text');
+                                        })
+                                        ->columnSpan([
+                                            'md' => 3,
+                                        ])
+                                        ->required(),
+                                ])
+                            ->defaultItems(count: 1)
+                            ->columns([
+                                'md' => 12,
                             ])
-                        ->defaultItems(count: 1)
-                        ->columns([
-                            'md' => 12,
-                        ]) ->createItemButtonLabel('เพิ่มรายการอะไหล่ที่เสียหาย'),
+                            ->createItemButtonLabel('เพิ่มรายการอะไหล่ที่เสียหาย'),
 
-                    ])->columnSpan('full'),
+                    ])
+                    ->columnSpan('full'),
+                TextInput::make('overall_price')
+                    ->label(__('trans.overall_price.text'))
+                    ->disabled()
+                    ->placeholder(function (Closure $get) {
+                        return count($get('quotationitems')) . ' รายการ';
+                    }),
+                TextInput::make('wage_display')
+                    ->label(__('trans.wage.text'))
+                    ->disabled()
+                    ->placeholder(function (Closure $get) {
+                        $items = $get('quotationitems');
+                        $total = 0;
+
+                        foreach ($items as $item) {
+                            if(Arr::get($item, 'price') && Arr::get($item, 'spare_code') == 'C6') {
+                                $total += intval(Arr::get($item, 'price'));
+                            }
+                        }
+
+                        return $total ? number_format($total, 2) : '0.00';
+                    }),
+                TextInput::make('including_spare_parts_display')
+                    ->label(__('trans.including_spare_parts.text'))
+                    ->disabled()
+                    ->placeholder(function (Closure $get) {
+                        $items = $get('quotationitems');
+                        $total = 0;
+
+                        foreach ($items as $item) {
+                            $quantity = Arr::get($item, 'quantity', 1);
+
+                            if(
+                                Arr::get($item, 'price') &&
+                                Arr::get($item, 'spare_code') != 'C6'
+                            ) {
+                                $total += Arr::get($item, 'price') * $quantity;
+                            }
+                        }
+
+                        return $total ? number_format($total, 2) : '0.00';
+                    }),
+                Radio::make('choose_vat_or_not_1')
+                    ->columnSpanFull()
+                    ->label('ระบุตัวเลือกที่ต้องการ')
+                    ->reactive()
+                    ->required()
+                    ->options([
+                        'vat_include_yes'=>'รวมvat 7%',
+                        'vat_include_no'=>'ไม่รวมvat 7%',
+                    ])
+                    ->default('vat_include_yes'),
+                TextInput::make('vat_display')
+                    ->label(__('trans.vat.text'))
+                    ->disabled()
+                    ->placeholder(function (Closure $get) {
+                        $items = $get('quotationitems');
+                        $chooseVat = $get('choose_vat_or_not_1');
+                        $total = 0;
+                        $vatTotal = 0;
+
+                        foreach ($items as $item) {
+                            $quantity = Arr::get($item, 'quantity', 1);
+
+                            if (Arr::get($item, 'spare_code') == 'C6') {
+                                $quantity = 1;
+                            }
+
+                            if(
+                                Arr::get($item, 'price')
+                            ) {
+                                $total += Arr::get($item, 'price') * $quantity;
+                            }
+
+                        }
+                        if ($chooseVat == 'vat_include_yes') {
+                            $vatTotal = $total * (7/100);
+                        }
+
+                        return $vatTotal ? number_format($vatTotal, 2) : '0.00';
+                    }),
+                TextInput::make('overall_display')
+                    ->label(__('trans.overall.text'))
+                    ->disabled()
+                    ->placeholder(function (Closure $get) {
+                        $items = $get('quotationitems');
+                        $chooseVat = $get('choose_vat_or_not_1');
+                        $total = 0;
+                        $vatTotal = 0;
+
+                        foreach ($items as $item) {
+                            $quantity = Arr::get($item, 'quantity', 1);
+
+                            if (Arr::get($item, 'spare_code') == 'C6') {
+                                $quantity = 1;
+                            }
+
+                            if(
+                                Arr::get($item, 'price')
+                            ) {
+                                $total += Arr::get($item, 'price') * $quantity;
+                            }
+                        }
+
+                        if ($chooseVat == 'vat_include_yes') {
+                            $vatTotal = $total * (7/100);
+                        }
+                        $sumTotal = $vatTotal + $total;
+
+                        return $sumTotal ? number_format($sumTotal, 2) : '0.00';
+                    }),
+                    TextInput::make('sks')
+                    ->required()
+                    ->label(__('trans.sks.text')),
+                    TextInput::make('wchp')
+                    ->required()
+                    ->label(__('trans.wchp.text')),
+                    Select::make('price_control_officer')->label(__('trans.price_control_officer.text'))
+                    ->required()
+                    ->preload()
+                    ->options([
+                        'ติณณภพ สุขจิต'=>'ติณณภพ สุขจิต',
+                        'อัจฉรียสา เขษมบุษป์'=>'อัจฉรียสา เขษมบุษป์',
+                        'อัคคัญญ์ กิตติ์จีระภูมิ '=>'อัคคัญญ์ กิตติ์จีระภูมิ',
+                        'ธนพฤทธ์ เถกิงศักดิ์'=>'ธนพฤทธ์ เถกิงศักดิ์',
+                    ]),
                     TextInput::make('overall_price')
-                        ->label(__('trans.overall_price.text'))
-                        ->disabled()
-                        ->placeholder(function (Closure $get) {
-                            return count($get('quotationitems')) . ' รายการ';
-                        }),
-                TextInput::make('wage')
+                    ->label(__('trans.overall_price.text'))
+                    ->disabled()
+                    ->placeholder(function (Closure $get) {
+                        return count($get('quotationitems')) . ' รายการ';
+                    }),
+                TextInput::make('wage_display_1')
                     ->label(__('trans.wage.text'))
                     ->disabled()
                     ->placeholder(function (Closure $get) {
@@ -385,132 +395,7 @@ class QuotationResource extends Resource
 
                         return $total ? number_format($total, 2) : '0.00';
                     }),
-                    TextInput::make('including_spare_parts')
-                        ->label(__('trans.including_spare_parts.text'))
-                        ->disabled()
-                        ->placeholder(function (Closure $get) {
-                            $items = $get('quotationitems');
-                            $total = 0;
-
-                            foreach ($items as $item) {
-                                $quantity = Arr::get($item, 'quantity', 1);
-
-                                if(
-                                    Arr::get($item, 'price') &&
-                                    Arr::get($item, 'spare_code') != 'C6'
-                                ) {
-                                    $total += Arr::get($item, 'price') * $quantity;
-                                }
-                            }
-
-                            return $total ? number_format($total, 2) : '0.00';
-                        }),
-                    Radio::make('choose_vat_or_not_1')
-                        ->columnSpanFull()
-                        ->label('ระบุตัวเลือกที่ต้องการ')
-                        ->reactive()
-                        ->required()
-                        ->options([
-                            'vat_include_yes'=>'รวมvat 7%',
-                            'vat_include_no'=>'ไม่รวมvat 7%',
-                        ])
-                        ->default('vat_include_yes'),
-                    TextInput::make('vat')
-                        ->label(__('trans.vat.text'))
-                        ->disabled()
-                        ->placeholder(function (Closure $get) {
-                            $items = $get('quotationitems');
-                            $chooseVat = $get('choose_vat_or_not_1');
-                            $total = 0;
-                            $vatTotal = 0;
-
-                            foreach ($items as $item) {
-                                $quantity = Arr::get($item, 'quantity', 1);
-
-                                if (Arr::get($item, 'spare_code') == 'C6') {
-                                    $quantity = 1;
-                                }
-
-                                if(
-                                    Arr::get($item, 'price')
-                                ) {
-                                    $total += Arr::get($item, 'price') * $quantity;
-                                }
-
-                            }
-                            if ($chooseVat == 'vat_include_yes') {
-                                $vatTotal = $total * (7/100);
-                            }
-
-                            return $vatTotal ? number_format($vatTotal, 2) : '0.00';
-                        }),
-                    TextInput::make('overall')
-                        ->label(__('trans.overall.text'))
-                        ->disabled()
-                        ->placeholder(function (Closure $get) {
-                            $items = $get('quotationitems');
-                            $chooseVat = $get('choose_vat_or_not_1');
-                            $total = 0;
-                            $vatTotal = 0;
-
-                            foreach ($items as $item) {
-                                $quantity = Arr::get($item, 'quantity', 1);
-
-                                if (Arr::get($item, 'spare_code') == 'C6') {
-                                    $quantity = 1;
-                                }
-
-                                if(
-                                    Arr::get($item, 'price')
-                                ) {
-                                    $total += Arr::get($item, 'price') * $quantity;
-                                }
-                            }
-
-                            if ($chooseVat == 'vat_include_yes') {
-                                $vatTotal = $total * (7/100);
-                            }
-                            $sumTotal = $vatTotal + $total;
-
-                            return $sumTotal ? number_format($sumTotal, 2) : '0.00';
-                        }),
-                        TextInput::make('sks')
-                        ->required()
-                        ->label(__('trans.sks.text')),
-                        TextInput::make('wchp')
-                        ->required()
-                        ->label(__('trans.wchp.text')),
-                        Select::make('price_control_officer')->label(__('trans.price_control_officer.text'))
-                        ->required()
-                        ->preload()
-                        ->options([
-                            'ติณณภพ สุขจิต'=>'ติณณภพ สุขจิต',
-                            'อัจฉรียสา เขษมบุษป์'=>'อัจฉรียสา เขษมบุษป์',
-                            'อัคคัญญ์ กิตติ์จีระภูมิ '=>'อัคคัญญ์ กิตติ์จีระภูมิ',
-                            'ธนพฤทธ์ เถกิงศักดิ์'=>'ธนพฤทธ์ เถกิงศักดิ์',
-                        ]),
-                        TextInput::make('overall_price')
-                        ->label(__('trans.overall_price.text'))
-                        ->disabled()
-                        ->placeholder(function (Closure $get) {
-                            return count($get('quotationitems')) . ' รายการ';
-                        }),
-                TextInput::make('wage')
-                    ->label(__('trans.wage.text'))
-                    ->disabled()
-                    ->placeholder(function (Closure $get) {
-                        $items = $get('quotationitems');
-                        $total = 0;
-
-                        foreach ($items as $item) {
-                            if(Arr::get($item, 'price') && Arr::get($item, 'spare_code') == 'C6') {
-                                $total += Arr::get($item, 'price');
-                            }
-                        }
-
-                        return $total ? number_format($total, 2) : '0.00';
-                    }),
-                    TextInput::make('including_spare_parts')
+                    TextInput::make('including_spare_parts_1')
                         ->label(__('trans.including_spare_parts.text'))
                         ->disabled()
                         ->placeholder(function (Closure $get) {
@@ -539,7 +424,7 @@ class QuotationResource extends Resource
                             'vat_include_yes'=>'รวมvat 7%',
                             'vat_include_no'=>'ไม่รวมvat 7%',
                         ])->default('vat_include_yes'),
-                    TextInput::make('vat')
+                    TextInput::make('vat_display_1')
                         ->label(__('trans.vat.text'))
                         ->disabled()
                         ->placeholder(function (Closure $get) {
@@ -567,7 +452,7 @@ class QuotationResource extends Resource
 
                             return $vatTotal ? number_format($vatTotal, 2) : '0.00';
                         }),
-                    TextInput::make('overall')
+                    TextInput::make('overall_1')
                         ->label(__('trans.overall.text'))
                         ->disabled()
                         ->placeholder(function (Closure $get) {
@@ -598,16 +483,21 @@ class QuotationResource extends Resource
                             return $sumTotal ? number_format($sumTotal, 2) : '0.00';
                         }),
                     Fieldset::make('สถานะการจัดการใบเสนอราคา')
-                    ->schema([
-                        Radio::make('status')
-                        ->label(__('trans.status.text'))
-                        ->required()
-                        ->options([
-                            'รออนุมัติ' => 'รออนุมัติ',
-                            'กำลังดำเนินการ' => 'กำลังดำเนินการ',
-                            'เสร็จสิ้น' => 'เสร็จสิ้น',
-                        ])
-                    ]),
+                        ->schema([
+                            Radio::make('status')
+                            ->label(__('trans.status.text'))
+                            ->required()
+                            ->options([
+                                'รออนุมัติ' => 'รออนุมัติ',
+                                'กำลังดำเนินการ' => 'กำลังดำเนินการ',
+                                'เสร็จสิ้น' => 'เสร็จสิ้น',
+                            ])
+                        ]),
+                SpatieMediaLibraryFileUpload::make('other_files')
+                    ->multiple()
+                    ->label(__('trans.other_files.text'))
+                    ->image()
+                    ->enableDownload(),
 
             ]);
     }
@@ -632,18 +522,33 @@ class QuotationResource extends Resource
                 TextColumn::make('accident_date')->label(__('trans.accident_date.text')),
                 TextColumn::make('repair_date')->label(__('trans.repair_date.text')),
                 TextColumn::make('quotation_date')->label(__('trans.quotation_date.text'))->searchable(),
-                TextColumn::make('wage')->label(__('trans.wage.text')),
-                TextColumn::make('including_spare_parts')->label(__('trans.including_spare_parts.text')),
-                TextColumn::make('total_wage')->label(__('trans.total_wage.text')),
-                TextColumn::make('vat')->label(__('trans.vat.text')),
-                TextColumn::make('overall')->label(__('trans.overall.text')),
+                TextColumn::make('wage')
+                    ->label(__('trans.wage.text'))
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                TextColumn::make('including_spare_parts')
+                    ->label(__('trans.including_spare_parts.text'))
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                TextColumn::make('total_wage')
+                    ->label(__('trans.total_wage.text'))
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                TextColumn::make('vat')
+                    ->label(__('trans.vat.text'))
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                TextColumn::make('overall')
+                    ->label(__('trans.overall.text'))
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
                 BadgeColumn::make('status')
-                ->label(__('trans.status.text'))
-                ->colors([
-                    'danger' => 'รออนุมัติ',
-                    'warning' => 'กำลังดำเนินการ',
-                    'success' => 'เสร็จสิ้น',
-                ]),
+                    ->label(__('trans.status.text'))
+                    ->colors([
+                        'danger' => 'รออนุมัติ',
+                        'warning' => 'กำลังดำเนินการ',
+                        'success' => 'เสร็จสิ้น',
+                    ]),
                 TextColumn::make('sks')->label(__('trans.sks.text')),
                 TextColumn::make('wchp')->label(__('trans.wchp.text')),
             ])
@@ -685,6 +590,7 @@ class QuotationResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
+
     public static function getRelations(): array
     {
         return [

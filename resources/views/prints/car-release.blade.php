@@ -18,7 +18,21 @@
             <div class="bg-[white] rounded-b-md">
                 <div class="p-9">
                     <div class="text-slate-700">
-                        <div class="flex justify-between">
+                        @if(\Filament\Facades\Filament::auth()->user()->garage == 'SP')
+                            <img class=" h-150 self-left float-left" src="{{ asset('/assets/images/logo_SP.png') }}" width="150" />
+                            <span class="relative left-5"><strong>บริษัท เอส.พี.ภัทร อินเตอร์ทรัค จำกัด</strong></span>
+                            <br>
+                            <span class="relative left-5">ที่อยู่ : 705 หมู่11 ต.คลองด่าน อ.บางบ่อ จ.สมุทรปราการ 10550</span>
+                            <br>
+                            <span class="relative left-5">Tel : 0-2707-6199, 02-330-1525  Fax : 02-3301526</span>
+                            <br>
+                            <span class="relative left-5">Email : sppatr.intertruck@gmail.com</span>
+                            <br>
+                            <span class="relative left-5">Line ID : @sp2010</span>
+                        @endif
+                        @if(\Filament\Facades\Filament::auth()->user()->garage == 'SBO')
+                            <img class="object-cover h-12 self-left" src="{{ asset('/assets/images/logo_SBO.png') }}" />
+                        @endif<div class="flex justify-between">
                             <img class="object-cover h-12 self-left" src="{{ asset('/assets/images/spphat-logo-1.png') }}" />
                             <div class="text-end mt-6">
 

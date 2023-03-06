@@ -2,16 +2,22 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\SaveRepairCostItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class SaveRepairCost extends Model
+class SaveRepairCost extends Model implements HasMedia
 {
+    use InteractsWithMedia;
     use HasFactory;
+
+    public $timestamps = false;
+    const UPDATED_AT = false;
+    protected $primaryKey = 'id';
+
     protected $fillable = [
         'id',
         'job_number',
@@ -33,17 +39,19 @@ class SaveRepairCost extends Model
         'tel_number',
         'address'
     ];
-    public $timestamps = false;
+
     public function user():BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
     public function saveRepairCostItems():HasMany
     {
         return $this->hasMany(SaveRepairCostItem::class);
     }
-// turn off only updated_at
-const UPDATED_AT = false;
-protected $primaryKey = 'id';
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('other_files');
+    }
 }

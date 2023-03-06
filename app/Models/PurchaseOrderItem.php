@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class PurchaseOrderItem extends Model
 {
     use HasFactory;
+
+    public $timestamps = false;
+    const UPDATED_AT = false;
+
     protected $fillable = [
         'job_number',
         'parts_list',
@@ -18,7 +22,4 @@ class PurchaseOrderItem extends Model
         'code_c0_c7',
 
     ];
-    public $timestamps = false;
-    // turn off only updated_at
-    const UPDATED_AT = false;
 }

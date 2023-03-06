@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
 use App\Models\CarReceive;
 use Illuminate\Support\Arr;
@@ -28,6 +29,8 @@ class PriceControlBillsResource extends Resource
     protected static ?string $navigationGroup = 'บัญชี';
     protected static ?string $navigationLabel = 'ใบคุมราคา';
     protected static ?string $navigationIcon = 'heroicon-o-receipt-tax';
+    protected static ?string $pluralLabel = 'ใบคุมราคา';
+
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = CarReceive::query()
@@ -92,7 +95,9 @@ class PriceControlBillsResource extends Resource
                 Card::make()->schema(static::getViewData('job_number')),
                 TextInput::make('number_price_control')->label(__('trans.number_price_control.text')),
                 TextInput::make('noti_number')->label(__('trans.noti_number.text'))->required()->disabled(),
-                TextInput::make('number_ab')->label(__('trans.number_ab.text'))->required()->disabled(),
+                TextInput::make('number_ab')
+                    ->label(__('trans.number_ab.text'))
+                    ->required(),
                 TextInput::make('customer')->label(__('trans.customer.text'))->required()->disabled(),
                 TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required()->disabled(),
                 TextInput::make('insu_company_name')->label(__('trans.insu_company_name.text'))->required()->disabled(),
@@ -100,6 +105,11 @@ class PriceControlBillsResource extends Resource
                 TextInput::make('note')->label(__('trans.note.text'))->required(),
                 TextInput::make('courier')->label(__('trans.courier.text'))->required(),
                 TextInput::make('price_dealer')->label(__('trans.price_dealer.text'))->required(),
+                SpatieMediaLibraryFileUpload::make('other_files')
+                    ->multiple()
+                    ->label(__('trans.other_files.text'))
+                    ->image()
+                    ->enableDownload(),
             ]);
     }
 

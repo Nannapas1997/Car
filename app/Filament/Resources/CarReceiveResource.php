@@ -38,6 +38,7 @@ class CarReceiveResource extends Resource
     protected static ?string $navigationGroup = 'งานของฉัน';
     protected static ?string $navigationLabel = 'ใบรับรถ';
     protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $pluralLabel = 'ใบรับรถ';
 
     public static function getViewData(): array
     {
@@ -145,6 +146,7 @@ class CarReceiveResource extends Resource
                 }),
         ];
     }
+
     public static function form(Form $form): Form
     {
         return $form->schema(
@@ -723,7 +725,8 @@ class CarReceiveResource extends Resource
                 TextColumn::make('park_type')
                     ->label(__('trans.park_type.text')),
                 TextColumn::make('car_park')
-                    ->label(__('trans.car_park.text')),
+                    ->label(__('trans.car_park.text'))
+                    ->formatStateUsing(fn (?string $state): string => convertYmdToThaiShort($state)),
                 ImageColumn::make('real_claim')
                     ->label(__('trans.real_claim.text'))->size(150),
                 ImageColumn::make('real_claim')
@@ -764,6 +767,7 @@ class CarReceiveResource extends Resource
                     ->label(__('trans.etc.text'))->size(150),
                 TextColumn::make('updated_at')
                     ->label(__('trans.updated_at.text'))
+                    ->formatStateUsing(fn (?string $state): string => convertYmdHisToThaiShort($state)),
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')
@@ -799,7 +803,7 @@ class CarReceiveResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->disabled(Filament::auth()->user()->email !== 'super@admin.com'),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([]);
     }
@@ -811,11 +815,6 @@ class CarReceiveResource extends Resource
             'create' => Pages\CreateCarReceive::route('/create'),
             'edit' => Pages\EditCarReceive::route('/{record}/edit'),
         ];
-    }
-
-    public static function canDelete(Model $record): bool
-    {
-        return Filament::auth()->user()->email === 'super@admin.com';
     }
 }
 

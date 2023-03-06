@@ -4,10 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class EmployeeHistory extends Model
+class EmployeeHistory extends Model implements HasMedia
 {
+    use InteractsWithMedia;
     use HasFactory;
+
+    const UPDATED_AT = null;
+    const CREATED_AT = null;
+
     protected $fillable = [
         'employee_code',
         'employee_lists',
@@ -30,6 +37,9 @@ class EmployeeHistory extends Model
         'tel_number'
 
     ];
-    const UPDATED_AT = null;
-    const CREATED_AT = null;
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('other_files');
+    }
 }

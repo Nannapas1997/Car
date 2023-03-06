@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use Closure;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
 use App\Models\CarReceive;
 use Illuminate\Support\Arr;
@@ -33,6 +34,8 @@ class EmployeeHistoryResource extends Resource
     protected static ?string $navigationGroup = 'ประวัติ';
     protected static ?string $navigationLabel = 'ประวัติพนักงาน';
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
+    protected static ?string $pluralLabel = 'ประวัติพนักงาน';
+
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = EmployeeHistory::query()
@@ -176,6 +179,11 @@ class EmployeeHistoryResource extends Resource
                 ->label(__('trans.cause.text')),
                 FileUpload::make('resignation_document')
                 ->label(__('trans.resignation_document.text')),
+                SpatieMediaLibraryFileUpload::make('other_files')
+                    ->multiple()
+                    ->label(__('trans.other_files.text'))
+                    ->image()
+                    ->enableDownload(),
             ]);
     }
 

@@ -45,5 +45,5 @@ return [
     'etc.text' => 'ภาพอื่นๆ',
     'date_diff.text' => 'จำนวนวัน',
     'attach_file.text' => 'ไฟล์',
-
+    'other_files.text' => 'แนบไฟล์เอกสาร',
 ];

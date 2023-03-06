@@ -2,11 +2,13 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Traits\JobNumberTrait;
 use Closure;
-use Filament\Forms;
 use App\Models\Bill;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
-use App\Models\CarReceive;
+use Filament\Tables\Filters\Filter;
 use Illuminate\Support\Arr;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
@@ -18,75 +20,24 @@ use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\BillResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\BillResource\RelationManagers;
-use App\Models\Invoice;
+use Illuminate\Support\Facades\Config;
 
 class BillResource extends Resource
 {
+    use JobNumberTrait;
+
     protected static ?string $model = Bill::class;
     protected static ?string $navigationGroup = 'บัญชี';
     protected static ?string $navigationLabel = 'ใบวางบิล';
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    public static function getViewData(): array{
-        $currentGarage =  Filament::auth()->user()->garage;
-        $optionData = CarReceive::query()
-            ->where('choose_garage', $currentGarage)
-            ->orderBy('job_number', 'desc')
-            ->get('job_number')
-            ->pluck('job_number', 'job_number')
-            ->toArray();
-        $optionValue = [];
+    protected static ?string $pluralLabel = 'ใบวางบิล';
 
-        if (!$optionData) {
-            $jobNumberFirst = $currentGarage . now()->format('-y-m-d-') . '0001';
-            $optionValue[$jobNumberFirst] = $jobNumberFirst;
-        } else {
-            $lastValue = Arr::first($optionData);
-
-            if ($lastValue) {
-                $lastValueExplode = explode('-', $lastValue);
-                $lastValue = intval($lastValueExplode[count($lastValueExplode) - 1]);
-                $lastValue += 1;
-                $lastValue = $lastValue < 10 ? "0000{$lastValue}" :
-                    ($lastValue < 100 ? "000{$lastValue}" :
-                        ($lastValue < 1000 ? "00{$lastValue}" :
-                            ($lastValue < 10000 ? "0{$lastValue}" : $lastValue)));
-
-                $lastValue = $currentGarage . now()->format('-y-m-d-') . $lastValue;
-                $optionValue[$lastValue] = $lastValue;
-            }
-
-            foreach ($optionData as $val) {
-                $optionValue[$val] = $val;
-            }
-        }
-
-        return [
-            Select::make('job_number')
-                ->label(' ' . __('trans.job_number.text') . ' ' . __('trans.current_garage.text') . $currentGarage)
-                ->preload()
-                ->required()
-                ->searchable()
-                ->options($optionData)
-                ->reactive()
-                ->afterStateUpdated(function ($set, $state) {
-                    if ($state) {
-                        $name = CarReceive::query()->where('job_number', $state)->first();
-                        if ($name) {
-                            $name = $name->toArray();
-                            $set('vehicle_registration', $name['vehicle_registration']);
-                            $set('customer', $name['customer']);
-                        }
-                    }
-                }),
-        ];
-    }
-    public static function BillData(): array{
+    public static function getBillData(): array
+    {
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = Bill::query()
             ->where('choose_garage', $currentGarage)
@@ -127,29 +78,27 @@ class BillResource extends Resource
                 ->required()
                 ->searchable()
                 ->options($optionValue)
-
         ];
     }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Card::make()->schema(static::getViewData('job_number')),
-                Card::make()->schema(static::BillData('bill_number')),
-                TextInput::make('customer')->label(__('trans.customer.text'))->required()->disabled(),
-                TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required()->disabled(),
-                TextInput::make('invoice_number')->label(__('trans.invoice_number.text'))
-                ->required()
-                ->reactive()
-                ->afterStateUpdated(function ($set, $state) {
-                    if ($state) {
-                        $name = Invoice::query()->where('INV_number', $state)->first();
-                        if ($name) {
-                            $name = $name->toArray();
-                            $set('invoice_number', $name['invoice_number']);
-                        }
-                    }
-                }),
+                Hidden::make('choose_garage'),
+                Card::make()->schema(static::getViewData()),
+                Card::make()->schema(static::getBillData()),
+                TextInput::make('customer')
+                    ->label(__('trans.customer.text'))
+                    ->required()
+                    ->disabled(),
+                TextInput::make('vehicle_registration')
+                    ->label(__('trans.vehicle_registration.text'))
+                    ->required()
+                    ->disabled(),
+                TextInput::make('invoice_number')
+                    ->label(__('trans.invoice_number.text'))
+                    ->required(),
                 TextInput::make('amount')
                     ->label(__('trans.amount.text'))
                     ->numeric()
@@ -160,44 +109,27 @@ class BillResource extends Resource
                     ->label('ระบุตัวเลือกที่ต้องการ')
                     ->reactive()
                     ->required()
-                    ->options([
-                        'vat_include_yes'=>'รวมvat 7%',
-                        'vat_include_no'=>'ไม่รวมvat 7%',
-                ])->default('vat_include_yes'),
+                    ->options(Config::get('static.include-vat-options'))
+                    ->default('vat_include_yes'),
                 TextInput::make('vat_display')
                     ->label(__('trans.vat.text'))
                     ->disabled()
-                    ->placeholder(function (Closure $get) {
-                        $chooseVat = $get('choose_vat_or_not');
-                        $result = 0;
-                        $vat = 0;
-                        $amount = $get('amount') ? $get('amount') : 0;
-
-                        if ($chooseVat == 'vat_include_yes') {
-                            $vat = $amount * (7/100);
-                        }
-
-                        return $vat ? number_format($vat, 2) : '0.00';
-                    }),
+                    ->placeholder(fn (Closure $get) => calVat($get('amount'), $get('choose_vat_or_not'))),
                 TextInput::make('aggregate_display')
                     ->label(__('trans.aggregate.text'))
                     ->disabled()
-                    ->placeholder(function (Closure $get) {
-                        $amount = $get('amount') ? $get('amount') : 0;
-                        $chooseVat = $get('choose_vat_or_not');
-                        $vat = 0;
-                        $total = 0;
-
-                        if ($chooseVat == 'vat_include_yes') {
-                            $vat = $amount * (7/100);
-                        }
-
-                        $total = $amount + $vat;
-
-                        return $total ? number_format($total, 2) : '0.00';
-                    }),
-                TextInput::make('courier_document')->label(__('trans.courier_document.text'))->required(),
-                TextInput::make('recipient_document')->label(__('trans.recipient_document.text'))->required(),
+                    ->placeholder(fn (Closure $get) => calTotal($get('amount'), $get('choose_vat_or_not'))),
+                TextInput::make('courier_document')
+                    ->label(__('trans.courier_document.text'))
+                    ->required(),
+                TextInput::make('recipient_document')
+                    ->label(__('trans.recipient_document.text'))
+                    ->required(),
+                SpatieMediaLibraryFileUpload::make('other_files')
+                    ->multiple()
+                    ->label(__('trans.other_files.text'))
+                    ->image()
+                    ->enableDownload(),
             ]);
     }
 
@@ -206,23 +138,29 @@ class BillResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('job_number')->label(__('trans.job_number.text'))->searchable(),
+                TextColumn::make('bill_number')->label(__('trans.bill_number.text')),
+                TextColumn::make('invoice_number')->label(__('trans.invoice_number.text')),
                 TextColumn::make('customer')->label(__('trans.customer.text')),
                 TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->searchable(),
-                TextColumn::make('invoice_number')->label(__('trans.invoice_number.text')),
-                TextColumn::make('bill_number')->label(__('trans.bill_number.text')),
-                TextColumn::make('amount')->label(__('trans.amount.text')),
-                TextColumn::make('amount')->label(__('trans.amount.text')),
-                TextColumn::make('vat')->label(__('trans.vat.text')),
-                TextColumn::make('aggregate')->label(__('trans.aggregate.text')),
+                TextColumn::make('amount')
+                    ->label(__('trans.amount.text'))
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                TextColumn::make('vat')
+                    ->label(__('trans.vat.text'))
+                    ->alignEnd(),
+                TextColumn::make('aggregate')
+                    ->label(__('trans.aggregate.text'))
+                    ->alignEnd(),
                 TextColumn::make('courier_document')->label(__('trans.courier_document.text')),
                 TextColumn::make('recipient_document')->label(__('trans.recipient_document.text')),
             ])
             ->filters([
-                Tables\Filters\Filter::make('created_at')
+                Filter::make('created_at')
                 ->form([
-                    Forms\Components\DatePicker::make('created_from')
+                    DatePicker::make('created_from')
                         ->placeholder(fn ($state): string => 'Dec 18, ' . now()->subYear()->format('Y')),
-                    Forms\Components\DatePicker::make('created_until')
+                    DatePicker::make('created_until')
                         ->placeholder(fn ($state): string => now()->format('M d, Y')),
                 ])
                 ->query(function (Builder $query, array $data): Builder {
@@ -250,7 +188,7 @@ class BillResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->disabled(Filament::auth()->user()->email !== 'super@admin.com'),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
 
@@ -264,9 +202,5 @@ class BillResource extends Resource
             'create' => Pages\CreateBill::route('/create'),
             'edit' => Pages\EditBill::route('/{record}/edit'),
         ];
-    }
-    public static function canDelete(Model $record): bool
-    {
-        return Filament::auth()->user()->email === 'super@admin.com';
     }
 }

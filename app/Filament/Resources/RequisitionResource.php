@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
 use App\Models\CarReceive;
 use App\Models\Requisition;
@@ -29,6 +30,7 @@ class RequisitionResource extends Resource
     protected static ?string $navigationGroup = 'Account';
     protected static ?string $navigationIcon = 'heroicon-o-receipt-refund';
     protected static bool $shouldRegisterNavigation = false;
+
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = CarReceive::query()
@@ -138,6 +140,11 @@ class RequisitionResource extends Resource
                     TextInput::make('approver')
                     ->label(__('trans.approver.text'))
                     ->required(),
+                SpatieMediaLibraryFileUpload::make('other_files')
+                    ->multiple()
+                    ->label(__('trans.other_files.text'))
+                    ->image()
+                    ->enableDownload(),
             ]);
     }
 
