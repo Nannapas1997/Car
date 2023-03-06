@@ -79,41 +79,20 @@
                                     <br>
                                     <span class="relative">Email : sbo.autotruck@gmail.com</span>
                                 @endif
-
-                                <br>
-                                <br>
-                                <span class="relative"><strong>ลูกต้า</strong></span>
-                                <br>
-                                <span class="relative">-</span>
                             </div>
                             <div class="flex-1 pt-10 ml-20">
                                 <div class="flex justify-center">
-                                    <h1 class="text-4xl">ใบแจ้งหนี้</h1>
+                                    <h1 class="text-4xl">ใบเบิกเงินพนักงาน</h1>
                                 </div>
                                 <div class="flex justify-center pb-1">
                                     <p>ต้นฉบับ</p>
                                 </div>
-                                <div class="flex justify-center border-b pb-2">
-                                    <p class="">เลขผู้เสียภาษี</p>
-                                </div>
                                 <div class="grid grid-cols-5 gap-x-4 mt-2 px-10">
-                                    <div class="col-span-2">
-                                        <p class="font-semibold">เลขที่</p>
-                                    </div>
-                                    <div class="col-span-3">
-                                        <p>{{ data_get($data, 'bill_number', '-') }}</p>
-                                    </div>
                                     <div class="col-span-2">
                                         <p class="font-semibold">วันที่</p>
                                     </div>
                                     <div class="col-span-3">
-                                        <p>{{ convertYmdToThaiNumber(\Carbon\Carbon::now()->format('Y-m-d')) }}</p>
-                                    </div>
-                                    <div class="col-span-2">
-                                        <p class="font-semibold">ครบกำหนด</p>
-                                    </div>
-                                    <div class="col-span-3">
-                                        <p>-</p>
+                                        <p>{{ convertYmdToThaiNumber(data_get($data, 'input', \Carbon\Carbon::now()->format('Y-m-d'))) }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -121,7 +100,62 @@
                     </div>
                 </div>
                 <div class="">
-
+                    <div class="p-9 content">
+                        <div class="flex flex-col mx-0 mt-8">
+                            <table class="w-full border border-collapse border-slate-500">
+                                <thead class="border">
+                                <tr class="text-sm">
+                                    <th scope="col" class="text-center border ">
+                                        ลำดับ
+                                    </th>
+                                    <th scope="col" class="text-center border">
+                                        ชื่อพนักงาน
+                                    </th>
+                                    <th scope="col" class="text-center border">
+                                        ยอดเบิก (บาท)
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach(data_get($data, 'employeerequisitionitems') as $idx => $employee)
+                                    <tr class="gap-2 text-small-f">
+                                        <td class="text-center border p-2">
+                                            {{ $idx + 1 }}
+                                        </td>
+                                        <td class="text-center border p-2">
+                                            {{ data_get($employee, 'employee_lists') ?? '-' }}
+                                        </td>
+                                        <td class="text-center border p-2">
+                                            {{ data_get($employee, 'disbursement_amount') ?? '-' }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-9 content">
+                    <div class="grid grid-cols-2">
+                        <div class="w-full text-center">
+                            <div class="border-b mx-20 mt-10"></div>
+                            <div class="border-b mx-20 flex justify-between mt-4">
+                                <p>(</p>
+                                <p>{{ data_get($data, 'courier_document') }}</p>
+                                <p>)</p>
+                            </div>
+                            <p class="pt-2">ผู้นำส่งเอกสาร</p>
+                        </div>
+                        <div class="w-full text-center">
+                            <div class="border-b mx-20 mt-10"></div>
+                            <div class="border-b mx-20 flex justify-between mt-4">
+                                <p>(</p>
+                                <p>{{ data_get($data, 'recipient_document') }}</p>
+                                <p>)</p>
+                            </div>
+                            <p class="pt-2">ผู้อนุมัติ</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </article>

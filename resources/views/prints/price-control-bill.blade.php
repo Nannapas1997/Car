@@ -88,7 +88,7 @@
                             </div>
                             <div class="flex-1 pt-10 ml-20">
                                 <div class="flex justify-center">
-                                    <h1 class="text-4xl">ใบแจ้งหนี้</h1>
+                                    <h1 class="text-4xl">ใบคุมราคา</h1>
                                 </div>
                                 <div class="flex justify-center pb-1">
                                     <p>ต้นฉบับ</p>

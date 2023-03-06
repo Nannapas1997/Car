@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bill;
+use App\Models\PurchaseOrder;
 use Illuminate\Http\Request;
 
-class BillPrintController extends Controller
+class PurchaseOrderPrintController extends Controller
 {
     public function print(Request $request)
     {
         $id = $request->route('id');
-        $data = Bill::find($id);
+        $data = PurchaseOrder::find($id);
 
         if (!$data) {
             return redirect('/');
@@ -18,6 +18,6 @@ class BillPrintController extends Controller
 
         $data = $data->toArray();
 
-        return view('prints.bill', ['data' => $data]);
+        return view('prints.purchase-order', ['data' => $data]);
     }
 }

@@ -88,7 +88,7 @@
                             </div>
                             <div class="flex-1 pt-10 ml-20">
                                 <div class="flex justify-center">
-                                    <h1 class="text-4xl">ใบแจ้งหนี้</h1>
+                                    <h1 class="text-4xl">ต้นทุนค่าแรง</h1>
                                 </div>
                                 <div class="flex justify-center pb-1">
                                     <p>ต้นฉบับ</p>
@@ -98,22 +98,10 @@
                                 </div>
                                 <div class="grid grid-cols-5 gap-x-4 mt-2 px-10">
                                     <div class="col-span-2">
-                                        <p class="font-semibold">เลขที่</p>
-                                    </div>
-                                    <div class="col-span-3">
-                                        <p>{{ data_get($data, 'bill_number', '-') }}</p>
-                                    </div>
-                                    <div class="col-span-2">
                                         <p class="font-semibold">วันที่</p>
                                     </div>
                                     <div class="col-span-3">
                                         <p>{{ convertYmdToThaiNumber(\Carbon\Carbon::now()->format('Y-m-d')) }}</p>
-                                    </div>
-                                    <div class="col-span-2">
-                                        <p class="font-semibold">ครบกำหนด</p>
-                                    </div>
-                                    <div class="col-span-3">
-                                        <p>-</p>
                                     </div>
                                 </div>
                             </div>

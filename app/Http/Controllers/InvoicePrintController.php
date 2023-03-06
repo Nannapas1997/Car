@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class InvoicePrintController extends Controller
 {
-    public function invoice(Request $request) {
+    public function print(Request $request) {
         $id = $request->route('id');
         $invoice = Invoice::find($id);
 
@@ -17,9 +17,6 @@ class InvoicePrintController extends Controller
         }
 
         $invoice = $invoice->toArray();
-
-        // $carReceive['id']
-        // $carReceive->id
 
         return view('prints.invoice', ['data' => $invoice]);
     }
