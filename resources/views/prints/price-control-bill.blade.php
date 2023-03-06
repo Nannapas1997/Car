@@ -84,7 +84,7 @@
                                 <br>
                                 <span class="relative"><strong>ลูกต้า</strong></span>
                                 <br>
-                                <span class="relative">-</span>
+                                <span class="relative">{{ data_get($data, 'customer') }}</span>
                             </div>
                             <div class="flex-1 pt-10 ml-20">
                                 <div class="flex justify-center">
@@ -101,7 +101,7 @@
                                         <p class="font-semibold">เลขที่</p>
                                     </div>
                                     <div class="col-span-3">
-                                        <p>{{ data_get($data, 'bill_number', '-') }}</p>
+                                        <p>{{ data_get($data, 'number_price_control', '-') }}</p>
                                     </div>
                                     <div class="col-span-2">
                                         <p class="font-semibold">วันที่</p>
@@ -121,7 +121,72 @@
                     </div>
                 </div>
                 <div class="">
+                    <div class="p-9 content">
+                        <div class="flex flex-col mx-0 mt-8">
+                            <table class="w-full border border-collapse border-slate-500">
+                                <thead class="border">
+                                    <tr class="text-sm">
+                                        <th scope="col" class="text-center border w-[20px]">
+                                            ลำดับ
+                                        </th>
+                                        <th scope="col" class="text-center border">
+                                            ยี่ห้อ
+                                        </th>
+                                        <th scope="col" class="text-center border">
+                                            ทะเบียน
+                                        </th>
+                                        <th scope="col" class="text-center border">
+                                            เลขรับแจ้ง
+                                        </th>
+                                        <th scope="col" class="text-center border">
+                                            หมายเหตุ
+                                        </th>
+                                        <th scope="col" class="text-center border">
+                                            JOB
+                                        </th>
+                                        <th scope="col" class="text-center border">
+                                            ชื่อลูกค้า
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-9 content">
+                    <div class="grid grid-cols-2">
+                        <div class="w-full text-center">
+                            <div class="border-b mx-20 mt-10"></div>
+                            <div class="border-b mx-20 flex justify-between mt-4">
+                                <p>(</p>
+                                <p>)</p>
+                            </div>
+                            <div class="border-b mx-20 flex justify-between mt-4">
+                                <p>วันที่</p>
+                                <p>/</p>
+                                <p>/</p>
+                                <p>/</p>
+                            </div>
+                            <p class="pt-2">ผู้ส่ง</p>
+                        </div>
+                        <div class="w-full text-center">
+                            <div class="border-b mx-20 mt-10"></div>
+                            <div class="border-b mx-20 flex justify-between mt-4">
+                                <p>(</p>
+                                <p>)</p>
+                            </div>
+                            <div class="border-b mx-20 flex justify-between mt-4">
+                                <p>วันที่</p>
+                                <p>/</p>
+                                <p>/</p>
+                                <p>/</p>
+                            </div>
+                            <p class="pt-2">ผู้รับ</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </article>

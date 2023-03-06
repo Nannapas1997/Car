@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Traits\JobNumberTrait;
 use App\Models\CarReceive;
+use App\Models\Invoice;
 use Closure;
 use App\Models\Bill;
 use Filament\Forms\Components\DatePicker;
@@ -97,6 +98,12 @@ class BillResource extends Resource
     public static function form(Form $form): Form
     {
         $currentGarage =  Filament::auth()->user()->garage;
+        $invoiceNumberOptions = Invoice::query()
+            ->where('choose_garage', $currentGarage)
+            ->orderBy('invoice_number', 'desc')
+            ->get('invoice_number')
+            ->pluck('invoice_number', 'invoice_number')
+            ->toArray();
 
         return $form
             ->schema([
@@ -123,9 +130,13 @@ class BillResource extends Resource
                     ->label(__('trans.vehicle_registration.text'))
                     ->required()
                     ->disabled(),
-                TextInput::make('invoice_number')
-                    ->label(__('trans.invoice_number.text'))
-                    ->required(),
+                Select::make('invoice_number')
+                    ->label(' ' . __('trans.invoice_number.text'))
+                    ->preload()
+                    ->required()
+                    ->searchable()
+                    ->options($invoiceNumberOptions)
+                    ->reactive(),
                 TextInput::make('amount')
                     ->label(__('trans.amount.text'))
                     ->numeric()
