@@ -63,6 +63,7 @@ class PriceControlBillsResource extends Resource
                 TextInput::make('customer')
                     ->label(__('trans.customer.text'))
                     ->required()
+                    ->disabled()
                     ->disabled(),
                 TextInput::make('vehicle_registration')
                     ->label(__('trans.vehicle_registration.text'))
@@ -72,6 +73,18 @@ class PriceControlBillsResource extends Resource
                     ->label(__('trans.insu_company_name.text'))
                     ->required()
                     ->disabled(),
+                TextInput::make('labor_price')
+                    ->label('ราคาค่าแรงที่เสนอ')
+                    ->required(),
+                TextInput::make('price_offer')
+                    ->label('ราคาค่าอะไหล่ที่เสนอ')
+                    ->required(),
+                TextInput::make('wage_stop')
+                    ->label('ราคาค่าอะไหล่ที่ยุติ')
+                    ->required(),
+                TextInput::make('price_spare_parts')
+                    ->label('ราคาค่าแรงที่ยุติ')
+                    ->required(),
                 TextInput::make('termination_price')
                     ->label(__('trans.termination_price.text'))
                     ->numeric()

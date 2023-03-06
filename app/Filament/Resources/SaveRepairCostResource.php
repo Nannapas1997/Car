@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Placeholder;
 use App\Filament\Resources\SaveRepairCostResource\Pages;
 use App\Filament\Resources\SaveRepairCostResource\RelationManagers;
+use Filament\Forms\Components\ViewField;
 use Illuminate\Support\Facades\Config;
 
 class SaveRepairCostResource extends Resource
@@ -161,6 +162,12 @@ class SaveRepairCostResource extends Resource
                     ->label(__('trans.other_files.text'))
                     ->image()
                     ->enableDownload(),
+                ViewField::make('courier_document')
+                    ->view('filament.resources.forms.components.courier_document')
+                    ->required(),
+                TextInput::make('approver')
+                    ->label(__('trans.approver.text'))
+                    ->required()
             ]);
 
     }
@@ -214,6 +221,7 @@ class SaveRepairCostResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make()->disabled(),
