@@ -78,7 +78,19 @@ class BillResource extends Resource
                 ->preload()
                 ->required()
                 ->searchable()
+                ->reactive()
                 ->options($optionValue)
+                ->afterStateUpdated(function (Closure $set, $state) {
+                    $bill = Bill::query()->where('bill_number', $state)->first();
+
+                    if ($bill) {
+                        $bill = $bill->toArray();
+                        $set('amount', $bill['amount']);
+                        $set('choose_vat_or_not', $bill['choose_vat_or_not']);
+                        $set('invoice_number', $bill['invoice_number']);
+                        $set('aggregate_display', $bill['aggregate']);
+                    }
+                })
         ];
     }
 
