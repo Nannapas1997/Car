@@ -88,7 +88,7 @@
                             </div>
                             <div class="flex-1 pt-10 ml-20">
                                 <div class="flex justify-center">
-                                    <h1 class="text-4xl">ใบวางบิล</h1>
+                                    <h1 class="text-4xl">ใบแจ้งหนี้</h1>
                                 </div>
                                 <div class="flex justify-center pb-1">
                                     <p>ต้นฉบับ</p>
@@ -121,105 +121,7 @@
                     </div>
                 </div>
                 <div class="">
-                    <div class="p-9 content">
-                        <div class="flex flex-col mx-0 mt-8">
-                            <table class="w-full border border-collapse border-slate-500">
-                                <thead class="border">
-                                <tr class="text-sm">
-                                    <th scope="col" class="text-center border w-[8px]">
-                                        ลำดับ
-                                    </th>
-                                    <th scope="col" class="text-center border w-[100px]">
-                                        เลขที่เอกสาร
-                                    </th>
-                                    <th scope="col" class="text-center border w-1">
-                                        ทะเบียน
-                                    </th>
-                                    <th scope="col" class="text-center border w-1">
-                                        ยอดเงิน
-                                    </th>
-                                    <th scope="col" class="text-center border w-1">
-                                        VAT 7%
-                                    </th>
-                                    <th scope="col" class="text-center border w-1">
-                                        ยอดรวม
-                                    </th>
-                                    <th scope="col" class="text-center border w-[100px]">
-                                        JOB
-                                    </th>
-                                    <th scope="col" class="text-center border w-[100px]">
-                                        หมายเหตุ
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="gap-2 text-small-f">
-                                    <td class="text-center border p-2">
-                                        1
-                                    </td>
-                                    <td class="text-center border p-2">
-                                        {{ data_get($data, 'invoice_number', '-') }}
-                                    </td>
-                                    <td class="text-center border p-2">
-                                        {{ data_get($data, 'vehicle_registration', '-') }}
-                                    </td>
-                                    <td class="text-right border p-2">
-                                        {{ number_format(data_get($data, 'amount', '0'), 2) }}
-                                    </td>
-                                    <td class="text-right border p-2">
-                                        {{ data_get($data, 'vat', '-') }}
-                                    </td>
-                                    <td class="text-right border p-2">
-                                        {{ data_get($data, 'aggregate', '-') }}
-                                    </td>
-                                    <td class="text-center border p-2">
-                                        {{ data_get($data, 'job_number', '-') }}
-                                    </td>
-                                    <td class="text-center border p-2">
-                                        &nbsp;
-                                    </td>
-                                </tr>
-                                <tr class="gap-2">
-                                    <td colspan="5" class="flex-col border py-4 px-6">
-                                        <p>หมายเหตุ</p>
-                                        <p>สั่งจ่ายเช็คในนาม บริษัท เอส.พี.ภัทร อินเตอร์ ทรัค จำกัด</p>
-                                        <p>หรือโอนเงินเข้าบัญชี ธ.กสิกรไทย เลขที่บัญชี 388-2-73382-2</p>
-                                        <p>แจ้งหลักฐานการโอนเงินที่ Email: sppatr.intertruck@gmail.com</p>
-                                    </td>
-                                    <td colspan="3" class="flex-col border py-4 px-6">
-                                        <p class="flex justify-between">
-                                            <span>รวม</span>
-                                            <span>{{ data_get($data, 'aggregate', '-') }}</span>
-                                        </p>
-                                        <p class="flex justify-between">
-                                            <span>ส่วนลด</span>
-                                            <span>-</span>
-                                        </p>
-                                        <p class="flex justify-between">
-                                            <span>คงเหลือ</span>
-                                            <span>2</span>
-                                        </p>
-                                        <p class="flex justify-between">
-                                            <span>ภาษีมูลค่าเพิ่ม 7%</span>
-                                            <span>{{ data_get($data, 'vat', '-') }}</span>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr class="gap-2">
-                                    <td colspan="5" class="flex-col border py-4 px-6">
-                                        <p>&nbsp;</p>
-                                    </td>
-                                    <td colspan="3" class="flex-col border py-4 px-6">
-                                        <p class="flex justify-between">
-                                            <span>สุทธิ</span>
-                                            <span>{{ data_get($data, 'aggregate', '-') }}</span>
-                                        </p>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </article>
