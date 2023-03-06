@@ -8,9 +8,10 @@ use Illuminate\Http\Request;
 
 class InvoicePrintController extends Controller
 {
-    public function print(Request $request) {
+    public function print(Request $request)
+    {
         $id = $request->route('id');
-        $invoice = Invoice::find($id);
+        $invoice = Invoice::with('invoiceItems')->find($id);
 
         if (!$invoice) {
             return redirect('/');
