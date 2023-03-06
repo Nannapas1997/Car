@@ -2,11 +2,11 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Traits\JobNumberTrait;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
 use App\Models\CarReceive;
-use Illuminate\Support\Arr;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Facades\Filament;
@@ -14,97 +14,77 @@ use Illuminate\Support\Carbon;
 use Filament\Resources\Resource;
 use App\Models\PriceControlBills;
 use Filament\Forms\Components\Card;
-use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PriceControlBillsResource\Pages;
 use App\Filament\Resources\PriceControlBillsResource\RelationManagers;
 
 class PriceControlBillsResource extends Resource
 {
+    use JobNumberTrait;
+
     protected static ?string $model = PriceControlBills::class;
     protected static ?string $navigationGroup = 'บัญชี';
     protected static ?string $navigationLabel = 'ใบคุมราคา';
     protected static ?string $navigationIcon = 'heroicon-o-receipt-tax';
     protected static ?string $pluralLabel = 'ใบคุมราคา';
 
-    public static function getViewData(): array{
-        $currentGarage =  Filament::auth()->user()->garage;
-        $optionData = CarReceive::query()
-            ->where('choose_garage', $currentGarage)
-            ->orderBy('job_number', 'desc')
-            ->get('job_number')
-            ->pluck('job_number', 'job_number')
-            ->toArray();
-        $optionValue = [];
-
-        if (!$optionData) {
-            $jobNumberFirst = $currentGarage . now()->format('-y-m-d-') . '0001';
-            $optionValue[$jobNumberFirst] = $jobNumberFirst;
-        } else {
-            $lastValue = Arr::first($optionData);
-
-            if ($lastValue) {
-                $lastValueExplode = explode('-', $lastValue);
-                $lastValue = intval($lastValueExplode[count($lastValueExplode) - 1]);
-                $lastValue += 1;
-                $lastValue = $lastValue < 10 ? "0000{$lastValue}" :
-                    ($lastValue < 100 ? "000{$lastValue}" :
-                        ($lastValue < 1000 ? "00{$lastValue}" :
-                            ($lastValue < 10000 ? "0{$lastValue}" : $lastValue)));
-
-                $lastValue = $currentGarage . now()->format('-y-m-d-') . $lastValue;
-                $optionValue[$lastValue] = $lastValue;
-            }
-
-            foreach ($optionData as $val) {
-                $optionValue[$val] = $val;
-            }
-        }
-
-        return [
-            Select::make('job_number_control')
-                ->label(' ' . __('trans.job_number.text') . ' ' . __('trans.current_garage.text') . $currentGarage)
-                ->preload()
-                ->required()
-                ->searchable()
-                ->options($optionData)
-                ->reactive()
-                ->afterStateUpdated(function ($set, $state) {
-                    if ($state) {
-                        $name = CarReceive::query()->where('job_number', $state)->first();
-                        if ($name) {
-                            $name = $name->toArray();
-                            $set('vehicle_registration', $name['vehicle_registration']);
-                            $set('customer', $name['customer']);
-                            $set('insu_company_name', $name['insu_company_name']);
-                            $set('noti_number', $name['noti_number']);
-                            $set('number_ab', $name['number_ab']);
-                        }
-                    }
-                }),
-        ];
-    }
     public static function form(Form $form): Form
     {
+        $currentGarage =  Filament::auth()->user()->garage;
+
         return $form
             ->schema([
-                Card::make()->schema(static::getViewData('job_number')),
-                TextInput::make('number_price_control')->label(__('trans.number_price_control.text')),
-                TextInput::make('noti_number')->label(__('trans.noti_number.text'))->required()->disabled(),
+                Card::make()->schema(
+                    static::getViewData($currentGarage, function ($set, $state) use ($currentGarage) {
+                        if ($state) {
+                            $carReceive = CarReceive::query()->where('job_number', $state)->first();
+                            if ($carReceive) {
+                                $carReceive = $carReceive->toArray();
+                                $set('vehicle_registration', $carReceive['vehicle_registration']);
+                                $set('customer', $carReceive['customer']);
+                                $set('insu_company_name', $carReceive['insu_company_name']);
+                                $set('noti_number', $carReceive['noti_number']);
+                                $set('number_ab', $carReceive['number_ab']);
+                            }
+                        }
+                    })
+                ),
+                TextInput::make('number_price_control')
+                    ->label(__('trans.number_price_control.text')),
+                TextInput::make('noti_number')
+                    ->label(__('trans.noti_number.text'))
+                    ->required()
+                    ->disabled(),
                 TextInput::make('number_ab')
                     ->label(__('trans.number_ab.text'))
                     ->required(),
-                TextInput::make('customer')->label(__('trans.customer.text'))->required()->disabled(),
-                TextInput::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->required()->disabled(),
-                TextInput::make('insu_company_name')->label(__('trans.insu_company_name.text'))->required()->disabled(),
-                TextInput::make('termination_price')->label(__('trans.termination_price.text'))->required(),
-                TextInput::make('note')->label(__('trans.note.text'))->required(),
-                TextInput::make('courier')->label(__('trans.courier.text'))->required(),
-                TextInput::make('price_dealer')->label(__('trans.price_dealer.text'))->required(),
+                TextInput::make('customer')
+                    ->label(__('trans.customer.text'))
+                    ->required()
+                    ->disabled(),
+                TextInput::make('vehicle_registration')
+                    ->label(__('trans.vehicle_registration.text'))
+                    ->required()
+                    ->disabled(),
+                TextInput::make('insu_company_name')
+                    ->label(__('trans.insu_company_name.text'))
+                    ->required()
+                    ->disabled(),
+                TextInput::make('termination_price')
+                    ->label(__('trans.termination_price.text'))
+                    ->numeric()
+                    ->required(),
+                TextInput::make('note')
+                    ->label(__('trans.note.text'))
+                    ->required(),
+                TextInput::make('courier')
+                    ->label(__('trans.courier.text'))
+                    ->required(),
+                TextInput::make('price_dealer')
+                    ->label(__('trans.price_dealer.text'))
+                    ->required(),
                 SpatieMediaLibraryFileUpload::make('other_files')
                     ->multiple()
                     ->label(__('trans.other_files.text'))
@@ -162,7 +142,7 @@ class PriceControlBillsResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->disabled(Filament::auth()->user()->email !== 'super@admin.com'),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
 

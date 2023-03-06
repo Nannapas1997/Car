@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Traits\JobNumberTrait;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\Hidden;
@@ -32,90 +33,49 @@ use Illuminate\Support\Facades\Log;
 
 class QuotationResource extends Resource
 {
+    use JobNumberTrait;
+
     protected static ?string $model = Quotation::class;
     protected static ?string $navigationGroup = 'งานของฉัน';
     protected static ?string $navigationLabel = 'ใบเสนอราคา';
     protected static ?string $navigationIcon = 'heroicon-o-document-search';
     protected static ?string $pluralLabel = 'ใบเสนอราคา';
 
-    public static function getViewData(): array{
-        $currentGarage =  Filament::auth()->user()->garage;
-        $optionData = CarReceive::query()
-            ->where('choose_garage', $currentGarage)
-            ->orderBy('job_number', 'desc')
-            ->get('job_number')
-            ->pluck('job_number', 'job_number')
-            ->toArray();
-        $optionValue = [];
-
-        if (!$optionData) {
-            $jobNumberFirst = $currentGarage . now()->format('-y-m-d-') . '0001';
-            $optionValue[$jobNumberFirst] = $jobNumberFirst;
-        } else {
-            $lastValue = Arr::first($optionData);
-
-            if ($lastValue) {
-                $lastValueExplode = explode('-', $lastValue);
-                $lastValue = intval($lastValueExplode[count($lastValueExplode) - 1]);
-                $lastValue += 1;
-                $lastValue = $lastValue < 10 ? "0000{$lastValue}" :
-                    ($lastValue < 100 ? "000{$lastValue}" :
-                        ($lastValue < 1000 ? "00{$lastValue}" :
-                            ($lastValue < 10000 ? "0{$lastValue}" : $lastValue)));
-
-                $lastValue = $currentGarage . now()->format('-y-m-d-') . $lastValue;
-                $optionValue[$lastValue] = $lastValue;
-            }
-
-            foreach ($optionData as $val) {
-                $optionValue[$val] = $val;
-            }
-        }
-
-        return [
-            Select::make('job_number')
-                ->label(' ' . __('trans.job_number.text') . ' ' . __('trans.current_garage.text') . $currentGarage)
-                ->preload()
-                ->required()
-                ->searchable()
-                ->options($optionData)
-                ->reactive()
-                ->afterStateUpdated(function ($set, $state) {
-                    if ($state) {
-                        $name = CarReceive::query()->where('job_number', $state)->first();
-                        if ($name) {
-                            $name = $name->toArray();
-                            $set('model', $name['model']);
-                            $set('car_year', $name['car_year']);
-                            $set('customer', $name['customer']);
-                            $set('insu_company_name', $name['insu_company_name']);
-                            $set('vehicle_registration', $name['vehicle_registration']);
-                            $set('brand', $name['brand']);
-                            $set('repair_code', $name['repair_code']);
-                            $set('car_type', $name['car_type']);
-                            $set('sum_insured', $name['sum_insured']);
-                            $set('number_ab', $name['number_ab']);
-                            $set('accident_date', $name['accident_date']);
-                            $set('repair_date', $name['repair_date']);
-                            $set('claim_number', $name['claim_number']);
-                        }
-                    }
-                }),
-        ];
-    }
-
     public static function form(Form $form): Form
     {
+        $currentGarage =  Filament::auth()->user()->garage;
+
         return $form
             ->schema([
-                Hidden::make('choose_garage')
-                    ->default(Filament::auth()->user()->garage),
+                Hidden::make('choose_garage')->default($currentGarage),
                 DatePicker::make('creation_date')
                     ->required()
                     ->disabled()
                     ->default(now()->format('Y-m-d'))
                     ->label(__('trans.creation_date.text')),
-                Card::make()->schema(static::getViewData('job_number')),
+                Card::make()->schema(
+                    static::getViewData($currentGarage, function ($set, $state) use ($currentGarage) {
+                        if ($state) {
+                            $carReceive = CarReceive::query()->where('job_number', $state)->first();
+                            if ($carReceive) {
+                                $carReceive = $carReceive->toArray();
+                                $set('model', $carReceive['model']);
+                                $set('car_year', $carReceive['car_year']);
+                                $set('customer', $carReceive['customer']);
+                                $set('insu_company_name', $carReceive['insu_company_name']);
+                                $set('vehicle_registration', $carReceive['vehicle_registration']);
+                                $set('brand', $carReceive['brand']);
+                                $set('repair_code', $carReceive['repair_code']);
+                                $set('car_type', $carReceive['car_type']);
+                                $set('sum_insured', $carReceive['sum_insured']);
+                                $set('number_ab', $carReceive['number_ab']);
+                                $set('accident_date', $carReceive['accident_date']);
+                                $set('repair_date', $carReceive['repair_date']);
+                                $set('claim_number', $carReceive['claim_number']);
+                            }
+                        }
+                    })
+                ),
                 TextInput::make('customer')
                     ->required()
                     ->disabled()
@@ -136,17 +96,7 @@ class QuotationResource extends Resource
                     ->required()
                     ->disabled()
                     ->searchable()
-                    ->options(function () {
-                        $currentYear = intval(now()->format('Y'));
-                        $options = [];
-
-                        while ($currentYear > 1999) {
-                            $options[$currentYear] = $currentYear;
-                            $currentYear--;
-                        }
-                        return $options;
-                    }
-                ),
+                    ->options(helperGetYearList()),
                 TextInput::make('vehicle_registration')
                     ->required()
                     ->disabled()
@@ -259,46 +209,20 @@ class QuotationResource extends Resource
                     ->label(__('trans.wage.text'))
                     ->disabled()
                     ->placeholder(function (Closure $get) {
-                        $items = $get('quotationitems');
-                        $total = 0;
-
-                        foreach ($items as $item) {
-                            if(Arr::get($item, 'price') && Arr::get($item, 'spare_code') == 'C6') {
-                                $total += intval(Arr::get($item, 'price'));
-                            }
-                        }
-
-                        return $total ? number_format($total, 2) : '0.00';
+                        return calTotalWageItems($get('quotationitems'), 'price', 'vat_include_no');
                     }),
                 TextInput::make('including_spare_parts_display')
                     ->label(__('trans.including_spare_parts.text'))
                     ->disabled()
                     ->placeholder(function (Closure $get) {
-                        $items = $get('quotationitems');
-                        $total = 0;
-
-                        foreach ($items as $item) {
-                            $quantity = Arr::get($item, 'quantity', 1);
-
-                            if(
-                                Arr::get($item, 'price') &&
-                                Arr::get($item, 'spare_code') != 'C6'
-                            ) {
-                                $total += Arr::get($item, 'price') * $quantity;
-                            }
-                        }
-
-                        return $total ? number_format($total, 2) : '0.00';
+                        return calTotalExcludeWageItems($get('quotationitems'), 'price', 'vat_include_no');
                     }),
                 Radio::make('choose_vat_or_not_1')
                     ->columnSpanFull()
                     ->label('ระบุตัวเลือกที่ต้องการ')
                     ->reactive()
                     ->required()
-                    ->options([
-                        'vat_include_yes'=>'รวมvat 7%',
-                        'vat_include_no'=>'ไม่รวมvat 7%',
-                    ])
+                    ->options(Config::get('static.include-vat-options'))
                     ->default('vat_include_yes'),
                 TextInput::make('vat_display')
                     ->label(__('trans.vat.text'))
@@ -360,41 +284,42 @@ class QuotationResource extends Resource
                         return $sumTotal ? number_format($sumTotal, 2) : '0.00';
                     }),
                     TextInput::make('sks')
-                    ->required()
-                    ->label(__('trans.sks.text')),
+                        ->required()
+                        ->label(__('trans.sks.text')),
                     TextInput::make('wchp')
-                    ->required()
-                    ->label(__('trans.wchp.text')),
-                    Select::make('price_control_officer')->label(__('trans.price_control_officer.text'))
-                    ->required()
-                    ->preload()
-                    ->options([
-                        'ติณณภพ สุขจิต'=>'ติณณภพ สุขจิต',
-                        'อัจฉรียสา เขษมบุษป์'=>'อัจฉรียสา เขษมบุษป์',
-                        'อัคคัญญ์ กิตติ์จีระภูมิ '=>'อัคคัญญ์ กิตติ์จีระภูมิ',
-                        'ธนพฤทธ์ เถกิงศักดิ์'=>'ธนพฤทธ์ เถกิงศักดิ์',
-                    ]),
+                        ->required()
+                        ->label(__('trans.wchp.text')),
+                    Select::make('price_control_officer')
+                        ->label(__('trans.price_control_officer.text'))
+                        ->required()
+                        ->preload()
+                        ->options([
+                            'ติณณภพ สุขจิต'=>'ติณณภพ สุขจิต',
+                            'อัจฉรียสา เขษมบุษป์'=>'อัจฉรียสา เขษมบุษป์',
+                            'อัคคัญญ์ กิตติ์จีระภูมิ '=>'อัคคัญญ์ กิตติ์จีระภูมิ',
+                            'ธนพฤทธ์ เถกิงศักดิ์'=>'ธนพฤทธ์ เถกิงศักดิ์',
+                        ]),
                     TextInput::make('overall_price')
-                    ->label(__('trans.overall_price.text'))
-                    ->disabled()
-                    ->placeholder(function (Closure $get) {
-                        return count($get('quotationitems')) . ' รายการ';
-                    }),
-                TextInput::make('wage_display_1')
-                    ->label(__('trans.wage.text'))
-                    ->disabled()
-                    ->placeholder(function (Closure $get) {
-                        $items = $get('quotationitems');
-                        $total = 0;
+                        ->label(__('trans.overall_price.text'))
+                        ->disabled()
+                        ->placeholder(function (Closure $get) {
+                            return count($get('quotationitems')) . ' รายการ';
+                        }),
+                    TextInput::make('wage_display_1')
+                        ->label(__('trans.wage.text'))
+                        ->disabled()
+                        ->placeholder(function (Closure $get) {
+                            $items = $get('quotationitems');
+                            $total = 0;
 
-                        foreach ($items as $item) {
-                            if(Arr::get($item, 'price') && Arr::get($item, 'spare_code') == 'C6') {
-                                $total += Arr::get($item, 'price');
+                            foreach ($items as $item) {
+                                if(Arr::get($item, 'price') && Arr::get($item, 'spare_code') == 'C6') {
+                                    $total += Arr::get($item, 'price');
+                                }
                             }
-                        }
 
-                        return $total ? number_format($total, 2) : '0.00';
-                    }),
+                            return $total ? number_format($total, 2) : '0.00';
+                        }),
                     TextInput::make('including_spare_parts_1')
                         ->label(__('trans.including_spare_parts.text'))
                         ->disabled()
@@ -420,10 +345,8 @@ class QuotationResource extends Resource
                         ->label('ระบุตัวเลือกที่ต้องการ')
                         ->reactive()
                         ->required()
-                        ->options([
-                            'vat_include_yes'=>'รวมvat 7%',
-                            'vat_include_no'=>'ไม่รวมvat 7%',
-                        ])->default('vat_include_yes'),
+                        ->options(Config::get('static.include-vat-options'))
+                        ->default('vat_include_yes'),
                     TextInput::make('vat_display_1')
                         ->label(__('trans.vat.text'))
                         ->disabled()
@@ -493,11 +416,11 @@ class QuotationResource extends Resource
                                 'เสร็จสิ้น' => 'เสร็จสิ้น',
                             ])
                         ]),
-                SpatieMediaLibraryFileUpload::make('other_files')
-                    ->multiple()
-                    ->label(__('trans.other_files.text'))
-                    ->image()
-                    ->enableDownload(),
+                    SpatieMediaLibraryFileUpload::make('other_files')
+                        ->multiple()
+                        ->label(__('trans.other_files.text'))
+                        ->image()
+                        ->enableDownload(),
 
             ]);
     }
@@ -515,13 +438,23 @@ class QuotationResource extends Resource
                 TextColumn::make('repair_code')->label(__('trans.repair_code.text')),
                 TextColumn::make('car_type')->label(__('trans.car_type.text')),
                 TextColumn::make('sum_insured')->label(__('trans.sum_insured.text')),
-                TextColumn::make('creation_date')->label(__('trans.creation_date.text'))->searchable(),
+                TextColumn::make('creation_date')
+                    ->label(__('trans.creation_date.text'))
+                    ->searchable()
+                    ->formatStateUsing(fn (?string $state): string => convertYmdToThaiShort($state)),
                 TextColumn::make('claim_number')->label(__('trans.claim_number.text')),
                 TextColumn::make('accident_number')->label(__('trans.accident_number.text')),
                 TextColumn::make('insu_company_name')->label(__('trans.insu_company_name.text')),
-                TextColumn::make('accident_date')->label(__('trans.accident_date.text')),
-                TextColumn::make('repair_date')->label(__('trans.repair_date.text')),
-                TextColumn::make('quotation_date')->label(__('trans.quotation_date.text'))->searchable(),
+                TextColumn::make('accident_date')
+                    ->label(__('trans.accident_date.text'))
+                    ->formatStateUsing(fn (?string $state): string => convertYmdToThaiShort($state)),
+                TextColumn::make('repair_date')
+                    ->label(__('trans.repair_date.text'))
+                    ->formatStateUsing(fn (?string $state): string => convertYmdToThaiShort($state)),
+                TextColumn::make('quotation_date')
+                    ->label(__('trans.quotation_date.text'))
+                    ->searchable()
+                    ->formatStateUsing(fn (?string $state): string => convertYmdToThaiShort($state)),
                 TextColumn::make('wage')
                     ->label(__('trans.wage.text'))
                     ->alignEnd()

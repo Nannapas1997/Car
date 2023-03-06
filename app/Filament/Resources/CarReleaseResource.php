@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Traits\JobNumberTrait;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables;
 use App\Models\CarReceive;
@@ -23,47 +24,16 @@ use Illuminate\Support\Facades\Config;
 
 class CarReleaseResource extends Resource
 {
+    use JobNumberTrait;
+
     protected static ?string $model = CarRelease::class;
     protected static ?string $navigationGroup = 'บัญชี';
     protected static ?string $navigationLabel = 'ใบปล่อยรถ';
     protected static ?string $navigationIcon = 'heroicon-o-arrows-expand';
     protected static ?string $pluralLabel = 'ใบปล่อยรถ';
 
-    public static function getViewData(): array
+    public static function OCData(): array
     {
-        $currentGarage =  Filament::auth()->user()->garage;
-        $optionData = CarReceive::query()
-            ->where('choose_garage', $currentGarage)
-            ->orderBy('job_number', 'desc')
-            ->get('job_number')
-            ->pluck('job_number', 'job_number')
-            ->toArray();
-
-        return [
-            Select::make('job_number')
-                ->label(' ' . __('trans.job_number.text') . ' ' . __('trans.current_garage.text') . $currentGarage)
-                ->preload()
-                ->required()
-                ->searchable()
-                ->options($optionData)
-                ->reactive()
-                ->afterStateUpdated(function ($set, $state) {
-                    if ($state) {
-                        $name = CarReceive::query()->where('job_number', $state)->first();
-                        if ($name) {
-                            $name = $name->toArray();
-                            $set('choose_garage', $name['choose_garage']);
-                            $set('policy_number', $name['policy_number']);
-                            $set('vehicle_registration', $name['vehicle_registration']);
-                            $set('insu_company_name', $name['insu_company_name']);
-                            $set('claim_number', $name['claim_number']);
-                            $set('brand', $name['brand']);
-                        }
-                    }
-                }),
-        ];
-    }
-    public static function OCData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = CarRelease::query()
             ->where('choose_garage', $currentGarage)
@@ -108,48 +78,51 @@ class CarReleaseResource extends Resource
     }
     public static function form(Form $form): Form
     {
+        $currentGarage =  Filament::auth()->user()->garage;
+
         return $form
             ->schema([
-                Card::make()->schema(static::getViewData('job_number')),
-                Card::make()->schema(static::OCData('oc_number')),
-                TextInput::make('staff_name')->label('ชื่อ (ข้าพเจ้า)'),
-                TextInput::make('staff_position')->label('ตำแหน่งที่เกี่ยวข้องกับ บจ./หจก.'),
+                Card::make()->schema(
+                    static::getViewData($currentGarage, function ($set, $state) use ($currentGarage) {
+                        if ($state) {
+                            $carReceive = CarReceive::query()->where('job_number', $state)->first();
+                            if ($carReceive) {
+                                $carReceive = $carReceive->toArray();
+                                $set('choose_garage', $carReceive['choose_garage']);
+                                $set('policy_number', $carReceive['policy_number']);
+                                $set('vehicle_registration', $carReceive['vehicle_registration']);
+                                $set('insu_company_name', $carReceive['insu_company_name']);
+                                $set('claim_number', $carReceive['claim_number']);
+                                $set('brand', $carReceive['brand']);
+                            }
+                        }
+                    })
+                ),
+                Card::make()->schema(static::OCData()),
+                TextInput::make('staff_name')
+                    ->label('ชื่อ (ข้าพเจ้า)'),
+                TextInput::make('staff_position')
+                    ->label('ตำแหน่งที่เกี่ยวข้องกับ บจ./หจก.'),
                 Select::make('brand')
-                    ->label(__('trans.brand.text'))->required()->disabled()
-                    ->options(Config::get('static.car-brand'))->columns(65),
-                TextInput::make('vehicle_registration')->label('เลขทะเบียนรถ')->disabled(),
+                    ->label(__('trans.brand.text'))
+                    ->required()
+                    ->disabled()
+                    ->options(Config::get('static.car-brand'))
+                    ->columns(65),
+                TextInput::make('vehicle_registration')
+                    ->label('เลขทะเบียนรถ')
+                    ->disabled(),
                 Select::make('insu_company_name')
-                ->label(__('trans.insu_company_name.text'))
-                ->preload()
-                ->disabled()
-                ->options([
-                    'กรุงเทพประกันภัย' => 'กรุงเทพประกันภัย',
-                    'กรุงไทยพานิชประกันภัย' => 'กรุงไทยพานิชประกันภัย',
-                    'คุ้มภัยโตเกียวมารีน' => 'คุ้มภัยโตเกียวมารีน',
-                    'เคเอสเค ประกันภัย' => 'เคเอสเค ประกันภัย',
-                    'เจมาร์ท ประกันภัย' => 'เจมาร์ท ประกันภัย',
-                    'ชับบ์สามัคคีประกันภัย' => 'ชับบ์สามัคคีประกันภัย',
-                    'ทิพยประกันภัย' => 'ทิพยประกันภัย',
-                    'เทเวศประกันภัย' => 'เทเวศประกันภัย',
-                    'ไทยไพบูลย์' => 'ไทยไพบูลย์',
-                    'ไทยวิวัฒน์' => 'ไทยวิวัฒน์',
-                    'ไทยศรี' => 'ไทยศรี',
-                    'ไทยเศรษฐฯ' => 'ไทยเศรษฐฯ',
-                    'นวกิจประกันภัย' => 'นวกิจประกันภัย',
-                    'บริษัทกลางฯ' => 'บริษัทกลางฯ',
-                    'แปซิฟิค ครอส' => 'แปซิฟิค ครอส',
-                    'เมืองไทยประกันภัย' => 'เมืองไทยประกันภัย',
-                    'วิริยะประกันภัย' => 'วิริยะประกันภัย',
-                    'สินมั่นคง' => 'สินมั่นคง',
-                    'อลิอันซ์ อยุธยา' => 'อลิอันซ์ อยุธยา',
-                    'อินทรประกันภัย' => 'อินทรประกันภัย',
-                    'เอ็ทน่า' => 'เอ็ทน่า',
-                    'เอ็มเอสไอจี' => 'เอ็มเอสไอจี',
-                    'แอกซ่าประกันภัย' => 'แอกซ่าประกันภัย',
-                    'แอลเอ็มจี ประกันภัย' => 'แอลเอ็มจี ประกันภัย',
-                ]),
-                TextInput::make('policy_number')->label('เลขกรมธรรม์')->disabled(),
-                TextInput::make('claim_number')->label('เลขเคลม / เลขรับแจ้งที่')->disabled(),
+                    ->label(__('trans.insu_company_name.text'))
+                    ->preload()
+                    ->disabled()
+                    ->options(Config::get('static.insu-company')),
+                TextInput::make('policy_number')
+                    ->label('เลขกรมธรรม์')
+                    ->disabled(),
+                TextInput::make('claim_number')
+                    ->label('เลขเคลม / เลขรับแจ้งที่')
+                    ->disabled(),
             ]);
     }
 
@@ -157,11 +130,15 @@ class CarReleaseResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('job_number')->label(__('trans.job_number.text'))->searchable(),
+                TextColumn::make('job_number')
+                    ->label(__('trans.job_number.text'))
+                    ->searchable(),
                 TextColumn::make('oc_number')->label(__('trans.oc_number.text')),
                 TextColumn::make('staff_name')->label(__('ชื่อ (ข้าพเจ้า)')),
                 TextColumn::make('staff_position')->label(__('ตำแหน่งที่เกี่ยวข้องกับ บจ./หจก.')),
-                TextColumn::make('vehicle_registration')->label(__('trans.vehicle_registration.text'))->searchable(),
+                TextColumn::make('vehicle_registration')
+                    ->label(__('trans.vehicle_registration.text'))
+                    ->searchable(),
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')
@@ -199,7 +176,7 @@ class CarReleaseResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-//
+                //
             ]);
     }
 

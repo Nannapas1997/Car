@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 
 if (! function_exists('convertYmdToThai')) {
     function convertYmdToThai($date): string
@@ -211,8 +212,8 @@ if (! function_exists('calVat')) {
     }
 }
 
-if (! function_exists('calTotal')) {
-    function calTotal($num, $chooseVat = 'vat_include_yes'): string
+if (! function_exists('calTotalIncludeVat')) {
+    function calTotalIncludeVat($num, $chooseVat = 'vat_include_yes'): string
     {
         $total = 0;
 
@@ -220,6 +221,116 @@ if (! function_exists('calTotal')) {
             $vat = $num * (7/100);
             $total = $num + $vat;
         }
+
+        return $total ? number_format($total, 2) : '0.00';
+    }
+}
+
+if (! function_exists('calVatItems')) {
+    function calVatItems($items, $key, $chooseVat = 'vat_include_yes', $qty = 1): string
+    {
+        $total = 0;
+        $vat = 0;
+
+        if (!$items) {
+            return '0.00';
+        }
+
+        foreach ($items as $item) {
+            if(Arr::get($item, $key)) {
+                $total += (Arr::get($item, $key) * $qty);
+            }
+        }
+
+        if ($chooseVat == 'vat_include_yes') {
+            $vat = $total * (7/100);
+        }
+
+        return $vat ? number_format($vat, 2) : '0.00';
+    }
+}
+
+if (! function_exists('calTotalItems')) {
+    function calTotalItems($items, $key, $chooseVat = 'vat_include_yes', $qty = 1): string
+    {
+        $total = 0;
+        $vat = 0;
+
+        if (!$items) {
+            return '0.00';
+        }
+
+        foreach ($items as $item) {
+            if(Arr::get($item, $key)) {
+                $total += (Arr::get($item, $key) * $qty);
+            }
+        }
+
+        if ($chooseVat == 'vat_include_yes') {
+            $vat = $total * (7/100);
+        }
+
+        $total = $total + $vat;
+
+
+        return $total ? number_format($total, 2) : '0.00';
+    }
+}
+
+if (! function_exists('calTotalWageItems')) {
+    function calTotalWageItems($items, $key, $chooseVat = 'vat_include_yes', $qty = 1): string
+    {
+        $total = 0;
+        $vat = 0;
+
+        if (!$items) {
+            return '0.00';
+        }
+
+        foreach ($items as $item) {
+            if (Arr::get($item, $key) && Arr::get($item, 'spare_code') == 'C6') {
+                $total += (Arr::get($item, $key) * $qty);
+            }
+        }
+
+        if ($chooseVat == 'vat_include_yes') {
+            $vat = $total * (7/100);
+        }
+
+        $total = $total + $vat;
+
+
+        return $total ? number_format($total, 2) : '0.00';
+    }
+}
+
+if (! function_exists('calTotalExcludeWageItems')) {
+    function calTotalExcludeWageItems($items, $key, $chooseVat = 'vat_include_yes', $qty = 1): string
+    {
+        $total = 0;
+        $vat = 0;
+
+        if (!$items) {
+            return '0.00';
+        }
+
+        foreach ($items as $item) {
+            $quantity = Arr::get($item, 'quantity', $qty);
+
+            if(
+                Arr::get($item, $key) &&
+                Arr::get($item, 'spare_code') != 'C6'
+            ) {
+                $total += Arr::get($item, $key) * $quantity;
+            }
+        }
+
+        if ($chooseVat == 'vat_include_yes') {
+            $vat = $total * (7/100);
+        }
+
+        $total = $total + $vat;
+
 
         return $total ? number_format($total, 2) : '0.00';
     }

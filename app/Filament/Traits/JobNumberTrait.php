@@ -3,14 +3,14 @@
 namespace App\Filament\Traits;
 
 use App\Models\CarReceive;
-use Filament\Facades\Filament;
+use Closure;
 use Filament\Forms\Components\Select;
 use Illuminate\Support\Arr;
 
 trait JobNumberTrait
 {
-    public static function getViewData(): array{
-        $currentGarage =  Filament::auth()->user()->garage;
+    public static function getViewData($currentGarage, Closure $closure): array
+    {
         $optionData = CarReceive::query()
             ->where('choose_garage', $currentGarage)
             ->orderBy('job_number', 'desc')
@@ -19,7 +19,6 @@ trait JobNumberTrait
             ->toArray();
 
         $optionValue = [];
-
         $lastValue = Arr::first($optionData);
 
         if ($lastValue) {
@@ -47,17 +46,7 @@ trait JobNumberTrait
                 ->searchable()
                 ->options($optionData)
                 ->reactive()
-                ->afterStateUpdated(function ($set, $state) use ($currentGarage) {
-                    if ($state) {
-                        $name = CarReceive::query()->where('job_number', $state)->first();
-                        if ($name) {
-                            $name = $name->toArray();
-                            $set('vehicle_registration', $name['vehicle_registration']);
-                            $set('customer', $name['customer']);
-                            $set('choose_garage', $currentGarage);
-                        }
-                    }
-                }),
+                ->afterStateUpdated($closure),
         ];
     }
 }
