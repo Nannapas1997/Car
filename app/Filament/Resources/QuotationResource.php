@@ -457,24 +457,19 @@ class QuotationResource extends Resource
                     ->formatStateUsing(fn (?string $state): string => convertYmdToThaiShort($state)),
                 TextColumn::make('wage')
                     ->label(__('trans.wage.text'))
-                    ->alignEnd()
-                    ->formatStateUsing(fn (?string $state): string => number_format(is_numeric($state) ? $state : 0, 2)),
+                    ->alignEnd(),
                 TextColumn::make('including_spare_parts')
                     ->label(__('trans.including_spare_parts.text'))
-                    ->alignEnd()
-                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                    ->alignEnd(),
                 TextColumn::make('total_wage')
                     ->label(__('trans.total_wage.text'))
-                    ->alignEnd()
-                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                    ->alignEnd(),
                 TextColumn::make('vat')
                     ->label(__('trans.vat.text'))
-                    ->alignEnd()
-                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                    ->alignEnd(),
                 TextColumn::make('overall')
                     ->label(__('trans.overall.text'))
-                    ->alignEnd()
-                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                    ->alignEnd(),
                 BadgeColumn::make('status')
                     ->label(__('trans.status.text'))
                     ->colors([
