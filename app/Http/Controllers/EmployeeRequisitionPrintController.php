@@ -10,7 +10,7 @@ class EmployeeRequisitionPrintController extends Controller
     public function print(Request $request)
     {
         $id = $request->route('id');
-        $data = EmployeeRequisition::find($id);
+        $data = EmployeeRequisition::with('employeerequisitionitems')->find($id);
 
         if (!$data) {
             return redirect('/');
