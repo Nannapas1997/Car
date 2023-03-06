@@ -186,7 +186,7 @@ class SaveRepairCostResource extends Resource
                 TextColumn::make('total')
                     ->label(__('trans.total.text'))
                     ->alignEnd()
-                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                    ->formatStateUsing(fn (?string $state): string => number_format(str_replace(',', '', $state), 2)),
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')

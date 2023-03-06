@@ -22,7 +22,7 @@ class CreateSaveRepairCost extends CreateRecord
             }
         }
 
-        Arr::set($data, 'total', number_format($total, 2));
+        Arr::set($data, 'total', number_format(str_replace(',', '', $total), 2));
         Arr::set($data, 'spare_cost', '0.00');
         Arr::set($data, 'wage', '0.00');
         Arr::set($data, 'expense_not_receipt', '0.00');

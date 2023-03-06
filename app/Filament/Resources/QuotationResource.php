@@ -251,7 +251,7 @@ class QuotationResource extends Resource
                             $vatTotal = $total * (7/100);
                         }
 
-                        return $vatTotal ? number_format($vatTotal, 2) : '0.00';
+                        return $vatTotal ? number_format(str_replace(',', '', $vatTotal), 2) : '0.00';
                     }),
                 TextInput::make('overall_display')
                     ->label(__('trans.overall.text'))
@@ -281,7 +281,7 @@ class QuotationResource extends Resource
                         }
                         $sumTotal = $vatTotal + $total;
 
-                        return $sumTotal ? number_format($sumTotal, 2) : '0.00';
+                        return $sumTotal ? number_format(str_replace(',', '', $sumTotal), 2) : '0.00';
                     }),
                     TextInput::make('sks')
                         ->required()
@@ -318,7 +318,7 @@ class QuotationResource extends Resource
                                 }
                             }
 
-                            return $total ? number_format($total, 2) : '0.00';
+                            return $total ? number_format(str_replace(',', '', $total), 2) : '0.00';
                         }),
                     TextInput::make('including_spare_parts_1')
                         ->label(__('trans.including_spare_parts.text'))
@@ -338,7 +338,7 @@ class QuotationResource extends Resource
                                 }
                             }
 
-                            return $total ? number_format($total, 2) : '0.00';
+                            return $total ? number_format(str_replace(',', '', $total), 2) : '0.00';
                         }),
                     Radio::make('choose_vat_or_not')
                         ->columnSpanFull()
@@ -373,7 +373,7 @@ class QuotationResource extends Resource
                             }
 
 
-                            return $vatTotal ? number_format($vatTotal, 2) : '0.00';
+                            return $vatTotal ? number_format(str_replace(',', '', $vatTotal), 2) : '0.00';
                         }),
                     TextInput::make('overall_1')
                         ->label(__('trans.overall.text'))
@@ -403,7 +403,7 @@ class QuotationResource extends Resource
 
                             $sumTotal = $vatTotal + $total;
 
-                            return $sumTotal ? number_format($sumTotal, 2) : '0.00';
+                            return $sumTotal ? number_format(str_replace(',', '', $sumTotal), 2) : '0.00';
                         }),
                     Fieldset::make('สถานะการจัดการใบเสนอราคา')
                         ->schema([

@@ -172,7 +172,7 @@ class BillResource extends Resource
                 TextColumn::make('amount')
                     ->label(__('trans.amount.text'))
                     ->alignEnd()
-                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                    ->formatStateUsing(fn (?string $state): string => number_format(str_replace(',', '', $state), 2)),
                 TextColumn::make('vat')
                     ->label(__('trans.vat.text'))
                     ->alignEnd(),

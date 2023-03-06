@@ -24,8 +24,8 @@ class EditBill extends EditRecord
 
         $total = $amount + $vat;
 
-        Arr::set($data, 'aggregate', number_format($total, 2));
-        Arr::set($data, 'vat', number_format($vat, 2));
+        Arr::set($data, 'aggregate', number_format(str_replace(',', '', $total), 2));
+        Arr::set($data, 'vat', number_format(str_replace(',', '', $vat), 2));
 
         return $data;
     }

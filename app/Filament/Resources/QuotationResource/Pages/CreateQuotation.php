@@ -49,13 +49,13 @@ class CreateQuotation extends CreateRecord
         $vatTotal = $total * $vat;
         $sumTotal = $vatTotal + $total;
 
-        Arr::set($data, 'overall_price', number_format($overAllPrice, 0));
-        Arr::set($data, 'total_wage', number_format($wageTotal, 2));
-        Arr::set($data, 'wage', number_format($wageTotal, 2));
-        Arr::set($data, 'including_spare_parts', number_format($includingSpareParts, 2));
-        Arr::set($data, 'vat', number_format($vatTotal, 2));
-        Arr::set($data, 'overall', number_format($sumTotal, 2));
-        Arr::set($data, 'spare_value', number_format($total, 2));
+        Arr::set($data, 'overall_price', number_format(str_replace(',', '', $overAllPrice), 2));
+        Arr::set($data, 'total_wage', number_format(str_replace(',', '', $wageTotal), 2));
+        Arr::set($data, 'wage', number_format(str_replace(',', '', $wageTotal), 2));
+        Arr::set($data, 'including_spare_parts', number_format(str_replace(',', '', $wageTotal), 2));
+        Arr::set($data, 'vat', number_format(str_replace(',', '', $vatTotal), 2));
+        Arr::set($data, 'overall', number_format(str_replace(',', '', $sumTotal), 2));
+        Arr::set($data, 'spare_value', number_format(str_replace(',', '', $total), 2));
 
         return $data;
     }

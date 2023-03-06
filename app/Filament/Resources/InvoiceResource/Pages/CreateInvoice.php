@@ -26,9 +26,9 @@ class CreateInvoice extends CreateRecord
             $vatTotal = $total * (7/100);
         }
 
-        Arr::set($data, 'amount', number_format($total, 2));
-        Arr::set($data, 'vat', number_format($vatTotal, 2));
-        Arr::set($data, 'aggregate', number_format($total + $vatTotal, 2));
+        Arr::set($data, 'amount', number_format(str_replace(',', '', $total), 2));
+        Arr::set($data, 'vat', number_format(str_replace(',', '', $vatTotal), 2));
+        Arr::set($data, 'aggregate', number_format(str_replace(',', '', $total) + str_replace(',', '', $vatTotal), 2));
         Arr::set($data, 'choose_vat_or_not', $this->data['choose_vat_or_not']);
 
         return $data;

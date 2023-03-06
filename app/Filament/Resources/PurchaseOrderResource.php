@@ -128,7 +128,7 @@ class PurchaseOrderResource extends Resource
                                                 $price = $get('price') ? $get('price') : 0;
                                                 $total = $price * $quantity;
                                                 $totalVat = $total * (7/100);
-                                                $result = $totalVat ? number_format($totalVat, 2) : '0.00';
+                                                $result = $totalVat ? number_format(str_replace(',', '', $totalVat), 2) : '0.00';
                                                 $set('vat', $result);
 
                                                 return $result;
@@ -182,11 +182,11 @@ class PurchaseOrderResource extends Resource
                 TextColumn::make('vat')
                     ->label(__('trans.vat.text'))
                     ->alignEnd()
-                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                    ->formatStateUsing(fn (?string $state): string => number_format(floatval(str_replace(',', '', $state)), 2)),
                 TextColumn::make('aggregate_price')
                     ->label(__('trans.aggregate_price.text'))
                     ->alignEnd()
-                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                    ->formatStateUsing(fn (?string $state): string => number_format(floatval(str_replace(',', '', $state)), 2)),
                 TextColumn::make('note')->label(__('trans.note.text')),
                 TextColumn::make('buyer')->label(__('ผู้สั่งซื้อ')),
                 TextColumn::make('approver')->label('ผู้อนุมัติ'),

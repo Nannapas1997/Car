@@ -224,7 +224,7 @@ if (! function_exists('calVat')) {
             $vat = $num * (7/100);
         }
 
-        return $vat ? number_format($vat, 2) : '0.00';
+        return $vat ? number_format(str_replace(',', '', $vat), 2) : '0.00';
     }
 }
 
@@ -238,7 +238,7 @@ if (! function_exists('calTotalIncludeVat')) {
             $total = $num + $vat;
         }
 
-        return $total ? number_format($total, 2) : '0.00';
+        return $total ? number_format(str_replace(',', '', $total), 2) : '0.00';
     }
 }
 
@@ -262,7 +262,7 @@ if (! function_exists('calVatItems')) {
             $vat = $total * (7/100);
         }
 
-        return $vat ? number_format($vat, 2) : '0.00';
+        return $vat ? number_format(str_replace(',', '', $vat), 2) : '0.00';
     }
 }
 
@@ -289,7 +289,7 @@ if (! function_exists('calTotalItems')) {
         $total = $total + $vat;
 
 
-        return $total ? number_format($total, 2) : '0.00';
+        return $total ? number_format(str_replace(',', '', $total), 2) : '0.00';
     }
 }
 
@@ -316,7 +316,7 @@ if (! function_exists('calTotalWageItems')) {
         $total = $total + $vat;
 
 
-        return $total ? number_format($total, 2) : '0.00';
+        return $total ? number_format(str_replace(',', '', $total), 2) : '0.00';
     }
 }
 
@@ -348,6 +348,6 @@ if (! function_exists('calTotalExcludeWageItems')) {
         $total = $total + $vat;
 
 
-        return $total ? number_format($total, 2) : '0.00';
+        return $total ? number_format(str_replace(',', '', $total), 2) : '0.00';
     }
 }
