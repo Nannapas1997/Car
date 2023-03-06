@@ -49,7 +49,9 @@
                         <div class="container mx-auto flex justify-between">
                             <div class="flex-1">
                                 @if(\Filament\Facades\Filament::auth()->user()->garage == 'SP')
-                                    <img class="h-150 self-left float-left" src="{{ asset('/assets/images/logo_SP.png') }}" width="150" />
+                                    <div class="h-14 w-full">
+                                        <img class="object-cover h-full" src="{{ asset('/assets/images/logo_SP.png') }}" />
+                                    </div>
                                     <span class="relative"><strong>บริษัท เอส.พี.ภัทร อินเตอร์ทรัค จำกัด</strong></span>
                                     <br>
                                     <span class="relative">ที่อยู่ : 705 หมู่11 ต.คลองด่าน อ.บางบ่อ จ.สมุทรปราการ 10550</span>
@@ -63,7 +65,10 @@
                                     <span class="relative">Line ID : @sp2010</span>
                                 @endif
                                 @if(\Filament\Facades\Filament::auth()->user()->garage == 'SBO')
-                                    <img class="object-cover h-12 self-left" src="{{ asset('/assets/images/logo_SBO.png') }}" />
+                                        <div class="h-14 w-full">
+                                            <img class="object-cover h-full" src="{{ asset('/assets/images/logo_SBO.png') }}" />
+                                        </div>
+
                                         <span class="relative"><strong>บริษัท สมาร์ท บิวด์ ออโต้ ทรัค จำกัด</strong></span>
                                         <br>
                                         <span class="relative">ที่อยู่ : 337 หมู่ 5 ต.คลองด่าน อ.บางบ่อ จ.สมุทรปราการ 10550</span>
