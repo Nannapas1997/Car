@@ -458,7 +458,7 @@ class QuotationResource extends Resource
                 TextColumn::make('wage')
                     ->label(__('trans.wage.text'))
                     ->alignEnd()
-                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
+                    ->formatStateUsing(fn (?string $state): string => number_format(is_numeric($state) ? $state : 0, 2)),
                 TextColumn::make('including_spare_parts')
                     ->label(__('trans.including_spare_parts.text'))
                     ->alignEnd()
