@@ -16,34 +16,46 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="">
+
 <body class="">
     <section class="bg-white">
-        <div class="max-w-5xl mx-auto">
+        <div class="max-w-6xl mx-auto">
             <article class="overflow-hidden">
                 <div class="bg-[white] rounded-b-md">
-                    <div class="p-9">
-                        <div class="space-y-6 text-slate-700">
+                    <div class="pb-9">
+                        <div class="space-y text-slate-700">
                             <div class="container mx-auto">
                                 @if(\Filament\Facades\Filament::auth()->user()->garage == 'SP')
-                                    <img class=" h-150 self-left float-left" src="{{ asset('/assets/images/logo_SP.png') }}" width="150" />
-                                    <span class="relative left-5"><strong>บริษัท เอส.พี.ภัทร อินเตอร์ทรัค จำกัด</strong></span>
+                                    <img class="self-left" src="{{ asset('/assets/images/logo_SP.png') }}" width="100" height="100" />
+                                    <span class="relative  text-base left-2"><strong>บริษัท เอส.พี.ภัทร อินเตอร์ทรัค จำกัด</strong></span>
                                     <br>
-                                    <span class="relative left-5">ที่อยู่ : 705 หมู่11 ต.คลองด่าน อ.บางบ่อ จ.สมุทรปราการ 10550</span>
+                                    <span class="relative text-sm left-2">ที่อยู่ : 705 หมู่11 ต.คลองด่าน อ.บางบ่อ จ.สมุทรปราการ 10550</span>
                                     <br>
-                                    <span class="relative left-5">Tel : 0-2707-6199, 02-330-1525  Fax : 02-3301526</span>
+                                    <span class="relative text-sm left-2">Tel : 0-2707-6199, 02-330-1525  Fax : 02-3301526</span>
                                     <br>
-                                    <span class="relative left-5">Email : sppatr.intertruck@gmail.com</span>
+                                    <span class="relative text-sm left-2">Email : sppatr.intertruck@gmail.com</span>
                                     <br>
-                                    <span class="relative left-5">Line ID : @sp2010</span>
+                                    <span class="relative text-sm left-2">Line ID : @sp2010</span>
                                 @endif
-                                    @if(\Filament\Facades\Filament::auth()->user()->garage == 'SBO')
-                                        <img class="object-cover h-12 self-left" src="{{ asset('/assets/images/logo_SBO.png') }}" />
-                                    @endif
+                                @if(\Filament\Facades\Filament::auth()->user()->garage == 'SBO')
+                                    <img class="object-cover self-left" src="{{ asset('/assets/images/logo_SBO.png') }}" width="100" height="100"  />
+                                    <span class="relative text-base left-2"><strong>บริษัท สมาร์ท บิวด์ ออโต้ ทรัค จำกัด</strong></span>
+                                    <br>
+                                    <span class="relative text-sm left-2">ที่ตั้ง : 337 หมู่ 5 ต.คลองด่าน อ.บางบ่อ จ.สมุทรปราการ 10550</span>
+                                    <br>
+                                    <span class="relative text-sm left-2">Tel : 0-2707-6199, 02-330-1525  Fax : 02-330-1526</span>
+                                    <br>
+                                    <span class="relative text-sm left-2">Email : sbo.autotruck@gmail.com</span>
+                                @endif
 
                             </div>
+                            <div class="flex self-end text-end inline-block">
+                                <p>
+                                    ใบรับรถ
+                                </p>
+                            </div>
 
-                            <div class="flex text-start justify-between">
+                            <div class="flex text-start justify-between self-right">
                                     <p>
                                         เลขที่ {{ data_get($data, 'job_number', 'NULL') }}
                                     </p>
