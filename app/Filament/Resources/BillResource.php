@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Traits\JobNumberTrait;
+use App\Models\CarReceive;
 use Closure;
 use App\Models\Bill;
 use Filament\Forms\Components\DatePicker;
@@ -83,10 +84,22 @@ class BillResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $currentGarage =  Filament::auth()->user()->garage;
+
         return $form
             ->schema([
                 Hidden::make('choose_garage'),
-                Card::make()->schema(static::getViewData()),
+                Card::make()->schema(static::getViewData($currentGarage, function ($set, $state) use ($currentGarage) {
+                    if ($state) {
+                        $carReceive = CarReceive::query()->where('job_number', $state)->first();
+                        if ($carReceive) {
+                            $carReceive = $carReceive->toArray();
+                            $set('vehicle_registration', $carReceive['vehicle_registration']);
+                            $set('customer', $carReceive['customer']);
+                            $set('choose_garage', $currentGarage);
+                        }
+                    }
+                })),
                 Card::make()->schema(static::getBillData()),
                 TextInput::make('customer')
                     ->label(__('trans.customer.text'))

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Traits\JobNumberTrait;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -99,7 +100,7 @@ class SaveRepairCostResource extends Resource
         return $form
 
             ->schema([
-                Card::make()->schema(static::getViewData('job_number')),
+                Card::make()->schema(static::getViewData()),
                 Fieldset::make('ข้อมูลเจ้าของรถ')
                 ->schema([
                     TextInput::make('customer')->label(__('trans.customer.text'))->required()->disabled(),

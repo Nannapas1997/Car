@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Traits\JobNumberTrait;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables;
 use App\Models\CarReceive;
