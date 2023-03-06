@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bill;
+use App\Models\CashReceipt;
 use Illuminate\Http\Request;
 
-class BillPrintController extends Controller
+class CashReceiptPrintController extends Controller
 {
     public function print(Request $request)
     {
         $id = $request->route('id');
-        $data = Bill::find($id);
+        $data = CashReceipt::find($id);
 
         if (!$data) {
             return redirect('/');
@@ -18,6 +18,6 @@ class BillPrintController extends Controller
 
         $data = $data->toArray();
 
-        return view('prints.bill', ['data' => $data]);
+        return view('prints.cash-receipt', ['data' => $data]);
     }
 }

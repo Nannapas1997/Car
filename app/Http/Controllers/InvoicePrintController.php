@@ -18,9 +18,6 @@ class InvoicePrintController extends Controller
 
         $invoice = $invoice->toArray();
 
-        // $carReceive['id']
-        // $carReceive->id
-
         return view('prints.invoice', ['data' => $invoice]);
     }
 }

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bill;
+use App\Models\EmployeeRequisition;
 use Illuminate\Http\Request;
 
-class BillPrintController extends Controller
+class EmployeeRequisitionPrintController extends Controller
 {
     public function print(Request $request)
     {
         $id = $request->route('id');
-        $data = Bill::find($id);
+        $data = EmployeeRequisition::find($id);
 
         if (!$data) {
             return redirect('/');
@@ -18,6 +18,6 @@ class BillPrintController extends Controller
 
         $data = $data->toArray();
 
-        return view('prints.bill', ['data' => $data]);
+        return view('prints.employee-requisition', ['data' => $data]);
     }
 }

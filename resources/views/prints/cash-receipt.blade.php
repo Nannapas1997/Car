@@ -79,41 +79,20 @@
                                     <br>
                                     <span class="relative">Email : sbo.autotruck@gmail.com</span>
                                 @endif
-
-                                <br>
-                                <br>
-                                <span class="relative"><strong>ลูกต้า</strong></span>
-                                <br>
-                                <span class="relative">-</span>
                             </div>
                             <div class="flex-1 pt-10 ml-20">
                                 <div class="flex justify-center">
-                                    <h1 class="text-4xl">ใบวางบิล</h1>
+                                    <h1 class="text-4xl">ใบเบิกเงินสด</h1>
                                 </div>
                                 <div class="flex justify-center pb-1">
                                     <p>ต้นฉบับ</p>
                                 </div>
-                                <div class="flex justify-center border-b pb-2">
-                                    <p class="">เลขผู้เสียภาษี</p>
-                                </div>
                                 <div class="grid grid-cols-5 gap-x-4 mt-2 px-10">
-                                    <div class="col-span-2">
-                                        <p class="font-semibold">เลขที่</p>
-                                    </div>
-                                    <div class="col-span-3">
-                                        <p>{{ data_get($data, 'bill_number', '-') }}</p>
-                                    </div>
                                     <div class="col-span-2">
                                         <p class="font-semibold">วันที่</p>
                                     </div>
                                     <div class="col-span-3">
-                                        <p>{{ convertYmdToThaiNumber(\Carbon\Carbon::now()->format('Y-m-d')) }}</p>
-                                    </div>
-                                    <div class="col-span-2">
-                                        <p class="font-semibold">ครบกำหนด</p>
-                                    </div>
-                                    <div class="col-span-3">
-                                        <p>-</p>
+                                        <p>{{ convertYmdToThaiNumber(data_get($data, 'date', \Carbon\Carbon::now()->format('Y-m-d'))) }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -126,28 +105,13 @@
                             <table class="w-full border border-collapse border-slate-500">
                                 <thead class="border">
                                 <tr class="text-sm">
-                                    <th scope="col" class="text-center border w-[8px]">
-                                        ลำดับ
+                                    <th scope="col" class="text-center border ">
+                                        รายการ
                                     </th>
-                                    <th scope="col" class="text-center border w-[100px]">
-                                        เลขที่เอกสาร
+                                    <th scope="col" class="text-center border">
+                                        เลือก
                                     </th>
-                                    <th scope="col" class="text-center border w-1">
-                                        ทะเบียน
-                                    </th>
-                                    <th scope="col" class="text-center border w-1">
-                                        ยอดเงิน
-                                    </th>
-                                    <th scope="col" class="text-center border w-1">
-                                        VAT 7%
-                                    </th>
-                                    <th scope="col" class="text-center border w-1">
-                                        ยอดรวม
-                                    </th>
-                                    <th scope="col" class="text-center border w-[100px]">
-                                        JOB
-                                    </th>
-                                    <th scope="col" class="text-center border w-[100px]">
+                                    <th scope="col" class="text-center border">
                                         หมายเหตุ
                                     </th>
                                 </tr>
@@ -155,69 +119,134 @@
                                 <tbody>
                                 <tr class="gap-2 text-small-f">
                                     <td class="text-center border p-2">
-                                        1
+                                        ซื้อวัสดุสิ้นเปลือง
                                     </td>
                                     <td class="text-center border p-2">
-                                        {{ data_get($data, 'invoice_number', '-') }}
+                                        {{ data_get($data, 'buy_consumables') ?? '-' }}
                                     </td>
                                     <td class="text-center border p-2">
-                                        {{ data_get($data, 'vehicle_registration', '-') }}
+                                        &nbsp;
                                     </td>
-                                    <td class="text-right border p-2">
-                                        {{ number_format(data_get($data, 'amount', '0'), 2) }}
-                                    </td>
-                                    <td class="text-right border p-2">
-                                        {{ data_get($data, 'vat', '-') }}
-                                    </td>
-                                    <td class="text-right border p-2">
-                                        {{ data_get($data, 'aggregate', '-') }}
+                                </tr>
+                                <tr class="gap-2 text-small-f">
+                                    <td class="text-center border p-2">
+                                        ซื้ออะไหล่
                                     </td>
                                     <td class="text-center border p-2">
-                                        {{ data_get($data, 'job_number', '-') }}
+                                        {{ data_get($data, 'buy_spare') ?? '-' }}
+                                    </td>
+                                    <td class="text-center border p-2">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr class="gap-2 text-small-f">
+                                    <td class="text-center border p-2">
+                                        น้ำมัน
+                                    </td>
+                                    <td class="text-center border p-2">
+                                        {{ data_get($data, 'oil') ?? '-' }}
+                                    </td>
+                                    <td class="text-center border p-2">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr class="gap-2 text-small-f">
+                                    <td class="text-center border p-2">
+                                        ค่าใช้จ่ายส่วนกลาง
+                                    </td>
+                                    <td class="text-center border p-2">
+                                        {{ data_get($data, 'common_expenses') ?? '-' }}
+                                    </td>
+                                    <td class="text-center border p-2">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr class="gap-2 text-small-f">
+                                    <td class="text-center border p-2">
+                                        ค่างานขนส่ง
+                                    </td>
+                                    <td class="text-center border p-2">
+                                        {{ data_get($data, 'transportation_cost') ?? '-' }}
+                                    </td>
+                                    <td class="text-center border p-2">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr class="gap-2 text-small-f">
+                                    <td class="text-center border p-2">
+                                        ค่ารับรองลูกค้า
+                                    </td>
+                                    <td class="text-center border p-2">
+                                        {{ data_get($data, 'customer_testimonials') ?? '-' }}
+                                    </td>
+                                    <td class="text-center border p-2">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr class="gap-2 text-small-f">
+                                    <td class="text-center border p-2">
+                                        ค่ารับรองประกัน
+                                    </td>
+                                    <td class="text-center border p-2">
+                                        {{ data_get($data, 'insurance_certification') ?? '-' }}
+                                    </td>
+                                    <td class="text-center border p-2">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr class="gap-2 text-small-f">
+                                    <td class="text-center border p-2">
+                                        ค่ารับรองภายใน
+                                    </td>
+                                    <td class="text-center border p-2">
+                                        {{ data_get($data, 'internal_certification_fee') ?? '-' }}
                                     </td>
                                     <td class="text-center border p-2">
                                         &nbsp;
                                     </td>
                                 </tr>
                                 <tr class="gap-2">
-                                    <td colspan="5" class="flex-col border py-4 px-6">
-                                        <p>หมายเหตุ</p>
-                                        <p>สั่งจ่ายเช็คในนาม บริษัท เอส.พี.ภัทร อินเตอร์ ทรัค จำกัด</p>
-                                        <p>หรือโอนเงินเข้าบัญชี ธ.กสิกรไทย เลขที่บัญชี 388-2-73382-2</p>
-                                        <p>แจ้งหลักฐานการโอนเงินที่ Email: sppatr.intertruck@gmail.com</p>
-                                    </td>
                                     <td colspan="3" class="flex-col border py-4 px-6">
                                         <p class="flex justify-between">
-                                            <span>รวม</span>
-                                            <span>{{ data_get($data, 'aggregate', '-') }}</span>
-                                        </p>
-                                        <p class="flex justify-between">
-                                            <span>ส่วนลด</span>
-                                            <span>-</span>
-                                        </p>
-                                        <p class="flex justify-between">
-                                            <span>คงเหลือ</span>
-                                            <span>2</span>
-                                        </p>
-                                        <p class="flex justify-between">
-                                            <span>ภาษีมูลค่าเพิ่ม 7%</span>
-                                            <span>{{ data_get($data, 'vat', '-') }}</span>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr class="gap-2">
-                                    <td colspan="5" class="flex-col border py-4 px-6">
-                                        <p>&nbsp;</p>
-                                    </td>
-                                    <td colspan="3" class="flex-col border py-4 px-6">
-                                        <p class="flex justify-between">
-                                            <span>สุทธิ</span>
-                                            <span>{{ data_get($data, 'aggregate', '-') }}</span>
+                                            <span>ยอดเบิก</span>
+                                            <span>{{ number_format(data_get($data, 'disbursement_amount', '0.00'), 2) }} บาท</span>
                                         </p>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-9 content">
+                    <div class="grid grid-cols-2">
+                        <div class="w-full text-center">
+                            <div class="border-b mx-20 mt-10"></div>
+                            <div class="border-b mx-20 flex justify-between mt-4">
+                                <p>(</p>
+                                <p>)</p>
+                            </div>
+                            <div class="border-b mx-20 flex justify-between mt-4">
+                                <p>วันที่</p>
+                                <p>/</p>
+                                <p>/</p>
+                                <p>/</p>
+                            </div>
+                            <p class="pt-2">ผู้เบิก</p>
+                        </div>
+                        <div class="w-full text-center">
+                            <div class="border-b mx-20 mt-10"></div>
+                            <div class="border-b mx-20 flex justify-between mt-4">
+                                <p>(</p>
+                                <p>)</p>
+                            </div>
+                            <div class="border-b mx-20 flex justify-between mt-4">
+                                <p>วันที่</p>
+                                <p>/</p>
+                                <p>/</p>
+                                <p>/</p>
+                            </div>
+                            <p class="pt-2">บัญชี</p>
                         </div>
                     </div>
                 </div>

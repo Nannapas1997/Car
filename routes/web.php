@@ -33,3 +33,44 @@ Route::get(
     '/bill-prints/{id}',
     [\App\Http\Controllers\BillPrintController::class, 'print']
 )->middleware(\App\Http\Middleware\Authenticate::class);
+
+Route::get(
+    '/cash-receipt-prints/{id}',
+    [\App\Http\Controllers\CashReceiptPrintController::class, 'print']
+)->middleware(\App\Http\Middleware\Authenticate::class);
+
+Route::get(
+    '/employee-requisition-prints/{id}',
+    [\App\Http\Controllers\EmployeeRequisitionPrintController::class, 'print']
+)->middleware(\App\Http\Middleware\Authenticate::class);
+
+Route::get(
+    '/invoice-prints/{id}',
+    [\App\Http\Controllers\InvoicePrintController::class, 'print']
+)->middleware(\App\Http\Middleware\Authenticate::class);
+
+Route::get(
+    '/price-control-bill-prints/{id}',
+    [\App\Http\Controllers\PriceControlBillPrintController::class, 'print']
+)->middleware(\App\Http\Middleware\Authenticate::class);
+
+Route::get(
+    '/purchase-order-prints/{id}',
+    [\App\Http\Controllers\PurchaseOrderPrintController::class, 'print']
+)->middleware(\App\Http\Middleware\Authenticate::class);
+
+Route::get(
+    '/quotation-prints/{id}',
+    [\App\Http\Controllers\QuotationPrintController::class, 'print']
+)->middleware(\App\Http\Middleware\Authenticate::class);
+
+Route::get(
+    '/requisition-prints/{id}',
+    [\App\Http\Controllers\RequisitionPrintController::class, 'print']
+)->middleware(\App\Http\Middleware\Authenticate::class);
+
+Route::get(
+    '/save-repair-cost-prints/{id}',
+    [\App\Http\Controllers\SaveRepairCostPrintController::class, 'print']
+)->middleware(\App\Http\Middleware\Authenticate::class);
+

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\SaveRepairCostResource\Pages;
 
 use App\Filament\Resources\SaveRepairCostResource;
 use Filament\Pages\Actions;
+use Filament\Pages\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Arr;
 
@@ -33,7 +34,12 @@ class EditSaveRepairCost extends EditRecord
     protected function getActions(): array
     {
         return [
-            Actions\DeleteAction::make()->disabled(),
+            Actions\DeleteAction::make(),
+            Action::make('print')
+                ->label('พริ้น')
+                ->openUrlInNewTab()
+                ->viewData(['id' => $this->data['id']])
+                ->view('prints.save-repair-cost-link'),
         ];
     }
 }

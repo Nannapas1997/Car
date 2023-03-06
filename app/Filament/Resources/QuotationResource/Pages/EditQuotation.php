@@ -4,6 +4,7 @@ namespace App\Filament\Resources\QuotationResource\Pages;
 
 use App\Filament\Resources\QuotationResource;
 use Filament\Pages\Actions;
+use Filament\Pages\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
@@ -60,5 +61,16 @@ class EditQuotation extends EditRecord
         return $data;
     }
 
+    protected function getActions(): array
+    {
+        return [
+            Actions\DeleteAction::make(),
+            Action::make('print')
+                ->label('พริ้น')
+                ->openUrlInNewTab()
+                ->viewData(['id' => $this->data['id']])
+                ->view('prints.quotation-link'),
+        ];
+    }
 
 }

@@ -16,7 +16,7 @@
 </head>
 <body>
 <button class="print-button text-white">
-    <a href="/invoice-prints/{{$id}}" class="font-semibold" target="_blank">Print</a>
+    <a href="/price-control-bill-prints/{{$id}}" class="font-semibold" target="_blank">Print</a>
 </button>
 </body>
 </html>
