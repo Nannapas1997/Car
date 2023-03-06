@@ -37,7 +37,7 @@ class EditBill extends EditRecord
                 ->label('print')
                 ->openUrlInNewTab()
                 ->viewData(['id' => $this->data['id']])
-                ->view('prints.car-receive-link'),
+                ->view('prints.bill-link'),
         ];
     }
 }

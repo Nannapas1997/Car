@@ -59,6 +59,22 @@ if (! function_exists('convertYmdToThai')) {
     }
 }
 
+if (! function_exists('convertYmdToThaiNumber')) {
+    function convertYmdToThaiNumber($date): string
+    {
+        if ($date) {
+            $day = Carbon::createFromFormat('Y-m-d', $date)->format('d');
+            $year = Carbon::createFromFormat('Y-m-d', $date)->format('Y');
+            $year = intval($year) + 543;
+            $monthStr = Carbon::createFromFormat('Y-m-d', $date)->format('m');
+
+            return "{$day}/{$monthStr}/{$year}";
+        }
+
+        return '-';
+    }
+}
+
 if (! function_exists('convertYmdToThaiShort')) {
     function convertYmdToThaiShort($date): string
     {

@@ -27,4 +27,9 @@ Route::get(
 Route::get(
     '/car-release-prints/{id}',
     [\App\Http\Controllers\CarReleasePrintController::class, 'print']
-);
+)->middleware(\App\Http\Middleware\Authenticate::class);
+
+Route::get(
+    '/bill-prints/{id}',
+    [\App\Http\Controllers\BillPrintController::class, 'print']
+)->middleware(\App\Http\Middleware\Authenticate::class);
