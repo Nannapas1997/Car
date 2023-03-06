@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Traits\JobNumberTrait;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\Hidden;
@@ -30,68 +31,13 @@ use App\Filament\Resources\InvoiceResource\RelationManagers;
 
 class InvoiceResource extends Resource
 {
+    use JobNumberTrait;
+
     protected static ?string $model = Invoice::class;
     protected static ?string $navigationGroup = 'บัญชี';
     protected static ?string $navigationLabel = 'ใบแจ้งหนี้';
     protected static ?string $navigationIcon = 'heroicon-o-document-add';
     protected static ?string $pluralLabel = 'ใบแจ้งหนี้';
-
-    public static function getViewData(): array{
-        $currentGarage =  Filament::auth()->user()->garage;
-        $optionData = CarReceive::query()
-            ->where('choose_garage', $currentGarage)
-            ->orderBy('job_number', 'desc')
-            ->get('job_number')
-            ->pluck('job_number', 'job_number')
-            ->toArray();
-        $optionValue = [];
-
-        if (!$optionData) {
-            $jobNumberFirst = $currentGarage . now()->format('-y-m-d-') . '0001';
-            $optionValue[$jobNumberFirst] = $jobNumberFirst;
-        } else {
-            $lastValue = Arr::first($optionData);
-
-            if ($lastValue) {
-                $lastValueExplode = explode('-', $lastValue);
-                $lastValue = intval($lastValueExplode[count($lastValueExplode) - 1]);
-                $lastValue += 1;
-                $lastValue = $lastValue < 10 ? "0000{$lastValue}" :
-                    ($lastValue < 100 ? "000{$lastValue}" :
-                        ($lastValue < 1000 ? "00{$lastValue}" :
-                            ($lastValue < 10000 ? "0{$lastValue}" : $lastValue)));
-
-                $lastValue = $currentGarage . now()->format('-y-m-d-') . $lastValue;
-                $optionValue[$lastValue] = $lastValue;
-            }
-
-            foreach ($optionData as $val) {
-                $optionValue[$val] = $val;
-            }
-        }
-
-        return [
-            Select::make('job_number')
-                ->label(' ' . __('trans.job_number.text') . ' ' . __('trans.current_garage.text') . $currentGarage)
-                ->preload()
-                ->required()
-                ->searchable()
-                ->options($optionData)
-                ->reactive()
-                ->afterStateUpdated(function ($set, $state) {
-                    if ($state) {
-                        $name = CarReceive::query()->where('job_number', $state)->first();
-                        if ($name) {
-                            $name = $name->toArray();
-                            $set('vehicle_registration', $name['vehicle_registration']);
-                            $set('customer', $name['customer']);
-                            $set('brand', $name['brand']);
-                            $set('insu_company_name', $name['insu_company_name']);
-                        }
-                    }
-                }),
-        ];
-    }
 
     public static function getINVdata(): array
     {
@@ -146,11 +92,27 @@ class InvoiceResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $currentGarage =  Filament::auth()->user()->garage;
+
         return $form
             ->schema([
                 Hidden::make('choose_garage'),
-                Card::make()->schema(static::getViewData('job_number')),
-                Card::make()->schema(static::getINVdata('invoice_number')),
+                Card::make()->schema(
+                    static::getViewData($currentGarage, function ($set, $state) use ($currentGarage) {
+                        if ($state) {
+                            $carReceive = CarReceive::query()->where('job_number', $state)->first();
+
+                            if ($carReceive) {
+                                $carReceive = $carReceive->toArray();
+                                $set('vehicle_registration', $carReceive['vehicle_registration']);
+                                $set('customer', $carReceive['customer']);
+                                $set('brand', $carReceive['brand']);
+                                $set('insu_company_name', $carReceive['insu_company_name']);
+                            }
+                        }
+                    })
+                ),
+                Card::make()->schema(static::getINVdata()),
                 TextInput::make('customer')
                     ->label(__('trans.customer.text'))
                     ->required()
@@ -167,49 +129,42 @@ class InvoiceResource extends Resource
                     ->required()
                     ->disabled(),
                 Card::make()
-                    ->schema([
-                        Placeholder::make('รายการค่าใช้จ่าย'),
-                        Repeater::make('invoiceItems')
-                            ->reactive()
-                            ->relationship()
-                            ->schema(
-                                [
-                                    Hidden::make('job_number'),
-                                    Hidden::make('code_c0_c7'),
-                                    TextInput::make('spare_code')
-                                        ->label(__('trans.items.text'))
-                                        ->columnSpan([
-                                            'md' => 5,
-                                        ])
-                                        ->required(),
-                                    TextInput::make('price')
-                                        ->label(__('trans.amount.text'))
-                                        ->numeric()
-                                        ->columnSpan([
-                                            'md' => 3,
-                                        ])
-                                        ->required(),
-                                ]
-                            )
-                            ->defaultItems(count: 1)
-                            ->columns(['md' => 8,])
-                            ->createItemButtonLabel('เพิ่มรายการค่าใช้จ่าย'),
-                        ])
-                    ->columnSpan('full'),
+                    ->columnSpan('full')
+                    ->schema(
+                        [
+                            Placeholder::make('รายการค่าใช้จ่าย'),
+                            Repeater::make('invoiceItems')
+                                ->reactive()
+                                ->relationship()
+                                ->defaultItems(count: 1)
+                                ->columns(['md' => 8,])
+                                ->createItemButtonLabel('เพิ่มรายการค่าใช้จ่าย')
+                                ->schema(
+                                    [
+                                        Hidden::make('job_number'),
+                                        Hidden::make('code_c0_c7'),
+                                        TextInput::make('spare_code')
+                                            ->label(__('trans.items.text'))
+                                            ->columnSpan([ 'md' => 5 ])
+                                            ->required(),
+                                        TextInput::make('price')
+                                            ->label(__('trans.amount.text'))
+                                            ->numeric()
+                                            ->columnSpan([ 'md' => 3 ])
+                                            ->required(),
+                                    ]
+                                ),
+                        ]
+                    ),
                 TextInput::make('amount_display')
                     ->label(__('trans.amount.text'))
                     ->disabled()
                     ->placeholder(function (Closure $get) {
-                        $invoiceItems = $get('invoiceItems');
-                        $total = 0;
-
-                        foreach ($invoiceItems as $item) {
-                            if(Arr::get($item, 'price')) {
-                                $total += Arr::get($item, 'price');
-                            }
-                        }
-
-                        return $total ? number_format($total, 2) : '0.00';
+                        return calTotalItems(
+                            $get('invoiceItems'),
+                            'price',
+                            'vat_include_no'
+                        );
                     }),
                 Radio::make('choose_vat_or_not')
                     ->columnSpanFull()
@@ -222,46 +177,30 @@ class InvoiceResource extends Resource
                     ->label(__('trans.vat.text'))
                     ->disabled()
                     ->placeholder(function (Closure $get) {
-                        $invoiceItems = $get('invoiceItems');
-                        $chooseVat = $get('choose_vat_or_not');
-                        $vat = 0;
-                        $total = 0;
-
-                        foreach ($invoiceItems as $item) {
-                            if(Arr::get($item, 'price')) {
-                                $total += Arr::get($item, 'price');
-                            }
-                        }
-
-                        if ($chooseVat == 'vat_include_yes') {
-                            $vat = $total * (7/100);
-                        }
-                        return $vat ? number_format($vat, 2) : '0.00';
+                        return calVatItems(
+                            $get('invoiceItems'),
+                            'price',
+                            $get('choose_vat_or_not')
+                        );
                     }),
                 TextInput::make('aggregate_display')
                     ->label(__('trans.aggregate.text'))
                     ->disabled()
                     ->placeholder(function (Closure $get) {
-                        $invoiceItems = $get('invoiceItems');
-                        $total = 0;
-                        $vatTotal = 0;
-                        $aggregate = 0;
-
-                        foreach ($invoiceItems as $item) {
-                            if(Arr::get($item, 'price')) {
-                                $total += Arr::get($item, 'price');
-                            }
-                        }
-
-                        if ($get('choose_vat_or_not') == 'vat_include_yes') {
-                            $vatTotal = $total * (7/100);
-                        }
-
-                        return $vatTotal+ $total;
+                        return calTotalItems(
+                            $get('invoiceItems'),
+                            'price',
+                            $get('choose_vat_or_not')
+                        );
                     }),
-                ViewField::make('courier_document_display')->view('filament.resources.forms.components.sender-document'),
-                TextInput::make('biller')->label('ผู้วางบิล')->required(),
-                TextInput::make('bill_payer')->label('ผู้รับวางบิล(ลูกค้า)')->required(),
+                ViewField::make('courier_document_display')
+                    ->view('filament.resources.forms.components.sender-document'),
+                TextInput::make('biller')
+                    ->label('ผู้วางบิล')
+                    ->required(),
+                TextInput::make('bill_payer')
+                    ->label('ผู้รับวางบิล(ลูกค้า)')
+                    ->required(),
                 Hidden::make('recipient_document'),
                 Hidden::make('courier_document'),
                 SpatieMediaLibraryFileUpload::make('other_files')
@@ -279,8 +218,10 @@ class InvoiceResource extends Resource
                 TextColumn::make('job_number')
                     ->label(__('trans.job_number.text'))
                     ->searchable(),
-                TextColumn::make('invoice_number')->label(__('trans.invoice_number.text')),
-                TextColumn::make('customer')->label(__('trans.customer.text')),
+                TextColumn::make('invoice_number')
+                    ->label(__('trans.invoice_number.text')),
+                TextColumn::make('customer')
+                    ->label(__('trans.customer.text')),
                 TextColumn::make('vehicle_registration')
                     ->label(__('trans.vehicle_registration.text'))
                     ->searchable(),
@@ -290,10 +231,12 @@ class InvoiceResource extends Resource
                     ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
                 TextColumn::make('vat')
                     ->label(__('trans.vat.text'))
-                    ->alignEnd(),
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
                 TextColumn::make('aggregate')
                     ->label(__('trans.aggregate.text'))
-                    ->alignEnd(),
+                    ->alignEnd()
+                    ->formatStateUsing(fn (?string $state): string => number_format($state, 2)),
                 TextColumn::make('courier_document')->label(__('trans.courier_document.text')),
                 TextColumn::make('recipient_document')->label(__('trans.recipient_document.text')),
             ])

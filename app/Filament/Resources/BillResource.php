@@ -101,17 +101,19 @@ class BillResource extends Resource
         return $form
             ->schema([
                 Hidden::make('choose_garage'),
-                Card::make()->schema(static::getViewData($currentGarage, function ($set, $state) use ($currentGarage) {
-                    if ($state) {
-                        $carReceive = CarReceive::query()->where('job_number', $state)->first();
-                        if ($carReceive) {
-                            $carReceive = $carReceive->toArray();
-                            $set('vehicle_registration', $carReceive['vehicle_registration']);
-                            $set('customer', $carReceive['customer']);
-                            $set('choose_garage', $currentGarage);
+                Card::make()->schema(
+                    static::getViewData($currentGarage, function ($set, $state) use ($currentGarage) {
+                        if ($state) {
+                            $carReceive = CarReceive::query()->where('job_number', $state)->first();
+                            if ($carReceive) {
+                                $carReceive = $carReceive->toArray();
+                                $set('vehicle_registration', $carReceive['vehicle_registration']);
+                                $set('customer', $carReceive['customer']);
+                                $set('choose_garage', $currentGarage);
+                            }
                         }
-                    }
-                })),
+                    })
+                ),
                 Card::make()->schema(static::getBillData()),
                 TextInput::make('customer')
                     ->label(__('trans.customer.text'))
@@ -143,7 +145,7 @@ class BillResource extends Resource
                 TextInput::make('aggregate_display')
                     ->label(__('trans.aggregate.text'))
                     ->disabled()
-                    ->placeholder(fn (Closure $get) => calTotal($get('amount'), $get('choose_vat_or_not'))),
+                    ->placeholder(fn (Closure $get) => calTotalIncludeVat($get('amount'), $get('choose_vat_or_not'))),
                 TextInput::make('courier_document')
                     ->label(__('trans.courier_document.text'))
                     ->required(),
