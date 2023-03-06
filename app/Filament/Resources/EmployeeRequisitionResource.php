@@ -2,7 +2,11 @@
 
 namespace App\Filament\Resources;
 
+use App\Models\CarReceive;
+use App\Models\EmployeeHistory;
+use App\Models\Invoice;
 use Filament\Forms;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
 use Filament\Resources\Form;
@@ -32,6 +36,12 @@ class EmployeeRequisitionResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $employeeList = EmployeeHistory::query()
+            ->orderBy('name_surname', 'desc')
+            ->get('name_surname')
+            ->pluck('name_surname', 'name_surname')
+            ->toArray();
+
         return $form
             ->schema([
                 DatePicker::make('input')
@@ -45,15 +55,31 @@ class EmployeeRequisitionResource extends Resource
                     ->relationship()
                     ->schema(
                         [
-                            TextInput::make('order')->label(__('trans.order.text'))
-                            ->columnSpan([
-                                'md' => 2,
-                            ])
-                            ->required(),
-                            TextInput::make('employee_lists')->label(__('trans.employee_lists.text'))
-                            ->columnSpan([
-                                'md' => 4,
-                            ])->required(),
+                            TextInput::make('order')
+                                ->label(__('trans.employee_code.text'))
+                                ->columnSpan([
+                                    'md' => 2,
+                                ])
+                                ->disabled(),
+                            Select::make('employee_lists')
+                                ->label(' ' . __('trans.employee_lists.text'))
+                                ->preload()
+                                ->required()
+                                ->searchable()
+                                ->options($employeeList)
+                                ->reactive()
+                                ->columnSpan([
+                                    'md' => 4,
+                                ])
+                                ->afterStateUpdated(function ($set, $state) {
+                                    if ($state) {
+                                        $employee = EmployeeHistory::query()->where('name_surname', $state)->first();
+                                        if ($employee) {
+                                            $employee = $employee->toArray();
+                                            $set('order', $employee['employee_code']);
+                                        }
+                                    }
+                                }),
                             TextInput::make('disbursement_amount')->label(__('trans.disbursement_amount.text'))
                             ->columnSpan([
                                 'md' => 3,
