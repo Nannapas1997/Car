@@ -21,52 +21,77 @@
     <section class="bg-white">
         <div class="max-w-6xl mx-auto">
             <article class="overflow-hidden">
-                <div class="bg-[white] rounded-b-md">
-                    <div class="pb-9">
-                        <div class="space-y text-slate-700">
-                            <div class="container mx-auto">
-                                @if(\Filament\Facades\Filament::auth()->user()->garage == 'SP')
-                                    <img class="self-left" src="{{ asset('/assets/images/logo_SP.png') }}" width="100" height="100" />
-                                    <span class="relative  text-base left-2"><strong>บริษัท เอส.พี.ภัทร อินเตอร์ทรัค จำกัด</strong></span>
-                                    <br>
-                                    <span class="relative text-sm left-2">ที่อยู่ : 705 หมู่11 ต.คลองด่าน อ.บางบ่อ จ.สมุทรปราการ 10550</span>
-                                    <br>
-                                    <span class="relative text-sm left-2">Tel : 0-2707-6199, 02-330-1525  Fax : 02-3301526</span>
-                                    <br>
-                                    <span class="relative text-sm left-2">Email : sppatr.intertruck@gmail.com</span>
-                                    <br>
-                                    <span class="relative text-sm left-2">Line ID : @sp2010</span>
-                                @endif
-                                @if(\Filament\Facades\Filament::auth()->user()->garage == 'SBO')
-                                    <img class="object-cover self-left" src="{{ asset('/assets/images/logo_SBO.png') }}" width="100" height="100"  />
-                                    <span class="relative text-base left-2"><strong>บริษัท สมาร์ท บิวด์ ออโต้ ทรัค จำกัด</strong></span>
-                                    <br>
-                                    <span class="relative text-sm left-2">ที่ตั้ง : 337 หมู่ 5 ต.คลองด่าน อ.บางบ่อ จ.สมุทรปราการ 10550</span>
-                                    <br>
-                                    <span class="relative text-sm left-2">Tel : 0-2707-6199, 02-330-1525  Fax : 02-330-1526</span>
-                                    <br>
-                                    <span class="relative text-sm left-2">Email : sbo.autotruck@gmail.com</span>
-                                @endif
+                <div class="bg-[white]">
+                    <div class="p-4">
+                        <div class="space-y-6">
+                            <div class="container mx-auto flex justify-between">
+                                <div class="flex-1">
+                                    @if(\Filament\Facades\Filament::auth()->user()->garage == 'SP')
+                                        <div class="h-14 w-full">
+                                            <img class="object-cover h-full" src="{{ asset('/assets/images/logo_SP.png') }}" />
+                                        </div>
+                                        <span class="relative"><strong>บริษัท เอส.พี.ภัทร อินเตอร์ทรัค จำกัด</strong></span>
+                                        <br>
+                                        <span class="relative">ที่อยู่ : 705 หมู่11 ต.คลองด่าน อ.บางบ่อ จ.สมุทรปราการ 10550</span>
+                                        <br>
+                                        <span class="relative">Tel : 0-2707-6199, 02-330-1525</span>
+                                        <br>
+                                        <span class="relative">Fax : 02-3301526</span>
+                                        <br>
+                                        <span class="relative">Email : sppatr.intertruck@gmail.com</span>
+                                        <br>
+                                        <span class="relative">Line ID : @sp2010</span>
+                                    @endif
+                                    @if(\Filament\Facades\Filament::auth()->user()->garage == 'SBO')
+                                        <div class="h-14 w-full">
+                                            <img class="object-cover h-full" src="{{ asset('/assets/images/logo_SBO.png') }}" />
+                                        </div>
 
-                            </div>
-                            <div class="flex self-end text-end inline-block">
-                                <p>
-                                    ใบรับรถ
-                                </p>
-                            </div>
-
-                            <div class="flex text-start justify-between self-right">
-                                    <p>
-                                        เลขที่ {{ data_get($data, 'job_number', 'NULL') }}
-                                    </p>
-                                    <p>
-
-                                    </p>
-                                    <p>วันที่รับเรื่อง {{ data_get($data, 'receive_date', 'NULL') }} &nbsp;&nbsp;เวลา {{ data_get($data, 'timex', 'NULL') }} น.</p>
+                                        <span class="relative"><strong>บริษัท สมาร์ท บิวด์ ออโต้ ทรัค จำกัด</strong></span>
+                                        <br>
+                                        <span class="relative">ที่อยู่ : 337 หมู่ 5 ต.คลองด่าน อ.บางบ่อ จ.สมุทรปราการ 10550</span>
+                                        <br>
+                                        <span class="relative">Tel : 02-707-6199, 02-330-1525</span>
+                                        <br>
+                                        <span class="relative">Fax : 02-330-1526</span>
+                                        <br>
+                                        <span class="relative">Email : sbo.autotruck@gmail.com</span>
+                                    @endif
+                                </div>
+                                <div class="flex-1 pt-10 ml-20">
+                                    <div class="flex justify-center">
+                                        <h1 class="text-4xl">ใบรับรถ สั่งซ่อม</h1>
+                                    </div>
+                                    <div class="flex justify-center pb-1">
+                                        <p>ต้นฉบับ</p>
+                                    </div>
+                                    <div class="flex justify-center border-b pb-2">
+                                        <p class="">เลขผู้เสียภาษี</p>
+                                    </div>
+                                    <div class="grid grid-cols-5 gap-x-4 mt-2 px-10">
+                                        <div class="col-span-2">
+                                            <p class="font-semibold">เลขที่</p>
+                                        </div>
+                                        <div class="col-span-3">
+                                            <p>{{ data_get($data, 'job_number', '-') }}</p>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <p class="font-semibold">วันที่</p>
+                                        </div>
+                                        <div class="col-span-3">
+                                            <p>{{ convertYmdToThaiNumber(data_get($data, 'pickup_date')) }}</p>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <p class="font-semibold">ครบกำหนด</p>
+                                        </div>
+                                        <div class="col-span-3">
+                                            <p>-</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <h1 class="title-car-receive relative bottom-5">ใบรับรถ สั่งซ่อม</h1>
                     <div class="px-9">
                         <div class="w-full">
                             <div class="">
@@ -97,36 +122,40 @@
                                 <p class="font-normal text-slate-700 relative top-2">ประเภทรถ : {{ data_get($data, 'car_type', NULL) }}</p>
                             </div>
                         </div>
-                        <div class="w-full">
-                            <div class="flex">
-                                <p class="relative top-3">รถประกัน</p>
-
-                                <input type="radio" class="relative top-4 left-4 insurance" id="name" name="insurance" value="{{ data_get($data, 'options', NULL) }}" class="font-normal text-slate-700 relative top-6" disabled checked>
-                                <label for="name" class="relative top-3 left-6">เคลมประกันบริษัท : {{ data_get($data, 'insu_company_name', NULL) }}</label>
-                                <?php  $value = data_get($data, 'insu_company_name', NULL)   ?>
-                                @if($value === NULL)
-                                <input type="radio" class="relative top-4 left-9 insurance" id="cash" name="insurance" value="{{ data_get($data, 'options', NULL) }}" class="font-normal text-slate-700 relative top-6" disabled checked>
-                                <label for="cash" class="relative top-3 left-11">เงินสด</label>
-                                @else
-                                <input type="radio" class="relative top-4 left-9 insurance" id="cash" name="insurance" value="{{ data_get($data, 'options', NULL) }}" class="font-normal text-slate-700 relative top-6" disabled>
-                                <label for="cash" class="relative top-3 left-11">เงินสด</label>
-                                @endif
+                        <div class="w-full mt-4">
+                            <div class="w-full">
+                                <div class="flex space-x-2">
+                                    <p class="">รถประกัน</p>
+                                    <input type="radio" class="relative" id="name" name="insurance" value="{{ data_get($data, 'options', NULL) }}" disabled checked>
+                                    <label for="name" class="relative">เคลมประกันบริษัท : {{ data_get($data, 'insu_company_name', NULL) }}</label>
+                                    <div class="flex space-x-2">
+                                        <?php  $value = data_get($data, 'insu_company_name', NULL)   ?>
+                                        @if($value === NULL)
+                                            <input type="radio" class="relative" id="cash" name="insurance" value="{{ data_get($data, 'options', NULL) }}" disabled checked>
+                                            <label for="cash" class="relative">เงินสด</label>
+                                        @else
+                                            <input type="radio" class="relative" id="cash" name="insurance" value="{{ data_get($data, 'options', NULL) }}" disabled>
+                                            <label for="cash" class="relative">เงินสด</label>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="w-full">
-                            <div class="flex">
-                                <p class="relative top-4">จอดซ่อม</p>
-                                <input type="radio" id="park" name="park" value="{{ data_get($data, 'park_type', NULL) }}" class="font-normal text-slate-700 relative" disabled checked>
-                                <label for="park" class="relative top-4 left-6">จอดซ่อม</label>
-                                <?php  $value = data_get($data, 'park_type', NULL)   ?>
-                                @if($value === NULL)
-                                <input type="radio" id="park-type" name="park" value="{{ data_get($data, 'park_type', NULL) }}" class="font-normal text-slate-700 relative car-park" disabled checked>
-                                <label for="park-type" class="relative left-11 car-park">ไม่จอดซ่อม</label>
-                                @else
-                                <input type="radio" id="park-type" name="park" value="{{ data_get($data, 'park_type', NULL) }}" class="font-normal text-slate-700 relative car-park" disabled>
-                                <label for="park-type" class="relative left-11 car-park">ไม่จอดซ่อม</label>
-                                @endif
-                                <p class="text-end self-left mile">เลขไมล์ : {{ data_get($data, 'mile_number', NULL) }}</p>
+
+                            <div class="w-full mt-1">
+                                <div class="flex space-x-2">
+                                    <p class="">จอดซ่อม</p>
+                                    <input type="radio" id="park" name="park" value="{{ data_get($data, 'park_type', NULL) }}" disabled checked>
+                                    <label for="park" class="">จอดซ่อม</label>
+                                    <?php  $value = data_get($data, 'park_type', NULL)   ?>
+                                    @if($value === NULL)
+                                        <input type="radio" id="park-type" name="park" value="{{ data_get($data, 'park_type', NULL) }}" disabled checked>
+                                        <label for="park-type" class="">ไม่จอดซ่อม</label>
+                                    @else
+                                        <input type="radio" id="park-type" name="park" value="{{ data_get($data, 'park_type', NULL) }}" disabled>
+                                        <label for="park-type" class="">ไม่จอดซ่อม</label>
+                                    @endif
+                                    <p class="text-end">เลขไมล์ : {{ data_get($data, 'mile_number', NULL) }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -163,105 +192,106 @@
                                             $spining_wheel = data_get($data, 'spining_wheel', NULL);
                                             $other = data_get($data, 'other', NULL);
                                         ?>
-                                        <div class="float-left">
-                                            @if($spare_tire !== NULL && $spare_tire === 1)
-                                            <input type="checkbox" id="spare_tire" name="spare_tire" class="relative left-10" value="" disabled checked>
-                                            <label for="spare_tire" class="relative bottom-1 left-10">ยางอะไหล่</label><br>
-                                            @else
-                                            <input type="checkbox" id="jack_handle" name="jack_handle" value="" disabled>
-                                            <label for="jack_handle" class="relative bottom-1">ยางอะไหล่</label><br>
-                                            @endif
-                                        </div>
-                                        <div class="float-left">
-                                            @if($jack_handle !== NULL && $jack_handle === 1)
-                                            <input type="checkbox" id="jack_handle" name="jack_handle" value="" class="relative left-14 " disabled checked>
-                                            <label for="jack_handle" class="relative bottom-1 left-14">แม่แรง+ด้าม</label><br>
-                                            @else
-                                            <input type="checkbox" id="jack_handle" name="jack_handle" value="" class="relative left-14 " disabled>
-                                            <label for="jack_handle" class="relative bottom-1 left-14">แม่แรง+ด้าม</label><br>
-                                            @endif
-                                        </div>
-                                        <div class="float-none">
-                                            @if($boxset !== NULL && $boxset === 1)
-                                            <input type="checkbox" id="boxset" name="boxset" value="" class="relative top-6" disabled checked>
-                                            <label for="boxset" class="relative bottom-1 boxset">ชุดเครื่องมือ คีม, ประแจ, ไขควง</label><br>
-                                            @else
-                                            <input type="checkbox" id="boxset" name="boxset" value="" class="relative top-6" disabled>
-                                            <label for="boxset" class="relative bottom-1 boxset">ชุดเครื่องมือ คีม, ประแจ, ไขควง</label><br>
-                                            @endif
-                                        </div>
-                                        <div class="float-left">
-                                            @if($batteries !== NULL && $batteries === 1)
-                                            <input type="checkbox" id="batteries" name="batteries" value="" class="relative left-10" disabled checked>
-                                            <label for="batteries" class="relative bottom-1 left-11">แบตเตอรี่</label><br>
-                                            @else
-                                            <input type="checkbox" id="batteries" name="batteries" value="" class="relative left-10" disabled>
-                                            <label for="batteries" class="relative bottom-1 left-11">แบตเตอรี่</label><br>
-                                            @endif
-                                        </div>
-                                        <div class="float-none">
-                                            @if($cigarette_lighter !== NULL && $cigarette_lighter === 1)
-                                            <input type="checkbox" id="cigarette_lighter" name="cigarette_lighter" value="" class="relative" disabled checked>
-                                            <label for="cigarette_lighter" class="relative bottom-1 cigarette_lighter">ที่จุดบุหรี่</label><br>
-                                            @else
-                                            <input type="checkbox" id="cigarette_lighter" name="cigarette_lighter" value="" class="relative" disabled>
-                                            <label for="cigarette_lighter" class="relative bottom-1 cigarette_lighter">ที่จุดบุหรี่</label><br>
-                                            @endif
-                                        </div>
-                                        <div class="float-left">
-                                            @if($radio !== NULL && $radio === 1)
-                                            <input type="checkbox" id="radio" name="radio" value="" class="relative" disabled checked>
-                                            <label for="radio" class="relative bottom-1 radio">วิทยุ/CD</label><br>
-                                            @else
-                                            <input type="checkbox" id="radio" name="radio" value="" class="relative" disabled>
-                                            <label for="radio" class="relative bottom-1 radio">วิทยุ/CD</label><br>
-                                            @endif
-                                        </div>
-                                        <div class="float-none">
-                                            @if($floor_mat !== NULL && $floor_mat === 1)
-                                            <input type="checkbox" id="floor_mat" name="floor_mat" value="" class="relative" disabled checked>
-                                            <label for="floor_mat" class="relative bottom-1 floor_mat">ผ้ายางปูพื้น</label><br>
-                                            @else
-                                            <input type="checkbox" id="floor_mat" name="floor_mat" value="" class="relative" disabled>
-                                            <label for="floor_mat" class="relative bottom-1 floor_mat">ผ้ายางปูพื้น</label><br>
-                                            @endif
-                                        </div>
-                                        <div class="float-none">
-                                            @if($spare_removal !== NULL && $spare_removal === 1)
-                                            <input type="checkbox" id="spare_removal" name="floor_mat" value="" class="relative" disabled checked>
-                                            <label for="spare_removal" class="relative bottom-1 spare_removal">ชุดถอดยางอะไหล่</label><br>
-                                            @else
-                                            <input type="checkbox" id="spare_removal" name="spare_removal" value="" class="relative" disabled>
-                                            <label for="spare_removal" class="relative bottom-1 spare_removal">ชุดถอดยางอะไหล่</label><br>
-                                            @endif
-                                        </div>
-                                        <div class="float-left">
-                                            @if($fire_extinguisher !== NULL && $fire_extinguisher === 1)
-                                            <input type="checkbox" id="fire_extinguisher" name="fire_extinguisher" value="" class="relative" disabled checked>
-                                            <label for="fire_extinguisher" class="relative bottom-1 fire_extinguisher">ถังดับเพลิง</label><br>
-                                            @else
-                                            <input type="checkbox" id="fire_extinguisher" name="fire_extinguisher" value="" class="relative" disabled>
-                                            <label for="fire_extinguisher" class="relative bottom-1 fire_extinguisher">ถังดับเพลิง</label><br>
-                                            @endif
-                                        </div>
-                                        <div class="float-none">
-                                            @if($spining_wheel !== NULL && $spining_wheel === 1)
-                                            <input type="checkbox" id="spining_wheel" name="spining_wheel" value="" class="relative" disabled checked>
-                                            <label for="spining_wheel" class="relative bottom-1 spining_wheel">ไม้หมุนล้อ</label><br>
-                                            @else
-                                            <input type="checkbox" id="spining_wheel" name="spining_wheel" value="" class="relative" disabled>
-                                            <label for="spining_wheel" class="relative bottom-1 spining_wheel">ไม้หมุนล้อ</label><br>
-                                            @endif
-                                        </div>
-                                        <div class="float-none">
-                                            @if($other !== NULL && $other === 1)
-                                            <input type="checkbox" id="other" name="other" value="" class="relative" disabled checked>
-                                            <label for="other" class="relative bottom-1 other">อื่น ๆ</label><br>
-                                            <input type="text">
-                                            @else
-                                            <input type="checkbox" id="other" name="other" value="" class="relative" disabled>
-                                            <label for="other" class="relative bottom-1 other">อื่น ๆ</label><br>
-                                            @endif
+                                        <div class="grid grid-cols-3">
+                                            <div class="flex space-x-2">
+                                                @if($spare_tire !== NULL && $spare_tire === 1)
+                                                    <input type="checkbox" id="spare_tire" name="spare_tire" class="relativ" value="" disabled checked>
+                                                    <label for="spare_tire" class="relative">ยางอะไหล่</label><br>
+                                                @else
+                                                    <input type="checkbox" id="jack_handle" name="jack_handle" value="" disabled>
+                                                    <label for="jack_handle" class="relative">ยางอะไหล่</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                @if($jack_handle !== NULL && $jack_handle === 1)
+                                                    <input type="checkbox" id="jack_handle" name="jack_handle" value="" class="relative" disabled checked>
+                                                    <label for="jack_handle" class="relative">แม่แรง+ด้าม</label><br>
+                                                @else
+                                                    <input type="checkbox" id="jack_handle" name="jack_handle" value="" class="relative" disabled>
+                                                    <label for="jack_handle" class="relative">แม่แรง+ด้าม</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                @if($boxset !== NULL && $boxset === 1)
+                                                    <input type="checkbox" id="boxset" name="boxset" value="" class="relative" disabled checked>
+                                                    <label for="boxset" class="relative">ชุดเครื่องมือ คีม, ประแจ, ไขควง</label><br>
+                                                @else
+                                                    <input type="checkbox" id="boxset" name="boxset" value="" class="relative" disabled>
+                                                    <label for="boxset" class="relative">ชุดเครื่องมือ คีม, ประแจ, ไขควง</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                @if($batteries !== NULL && $batteries === 1)
+                                                    <input type="checkbox" id="batteries" name="batteries" value="" class="relative" disabled checked>
+                                                    <label for="batteries" class="relative">แบตเตอรี่</label><br>
+                                                @else
+                                                    <input type="checkbox" id="batteries" name="batteries" value="" class="relative" disabled>
+                                                    <label for="batteries" class="relative">แบตเตอรี่</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                @if($cigarette_lighter !== NULL && $cigarette_lighter === 1)
+                                                    <input type="checkbox" id="cigarette_lighter" name="cigarette_lighter" value="" class="relative" disabled checked>
+                                                    <label for="cigarette_lighter" class="relative">ที่จุดบุหรี่</label><br>
+                                                @else
+                                                    <input type="checkbox" id="cigarette_lighter" name="cigarette_lighter" value="" class="relative" disabled>
+                                                    <label for="cigarette_lighter" class="relative">ที่จุดบุหรี่</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                @if($radio !== NULL && $radio === 1)
+                                                    <input type="checkbox" id="radio" name="radio" value="" class="relative" disabled checked>
+                                                    <label for="radio" class="relative">วิทยุ/CD</label><br>
+                                                @else
+                                                    <input type="checkbox" id="radio" name="radio" value="" class="relative" disabled>
+                                                    <label for="radio" class="relative">วิทยุ/CD</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                @if($floor_mat !== NULL && $floor_mat === 1)
+                                                    <input type="checkbox" id="floor_mat" name="floor_mat" value="" class="relative" disabled checked>
+                                                    <label for="floor_mat" class="relative">ผ้ายางปูพื้น</label><br>
+                                                @else
+                                                    <input type="checkbox" id="floor_mat" name="floor_mat" value="" class="relative" disabled>
+                                                    <label for="floor_mat" class="relative">ผ้ายางปูพื้น</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                @if($spare_removal !== NULL && $spare_removal === 1)
+                                                    <input type="checkbox" id="spare_removal" name="floor_mat" value="" class="relative" disabled checked>
+                                                    <label for="spare_removal" class="relative">ชุดถอดยางอะไหล่</label><br>
+                                                @else
+                                                    <input type="checkbox" id="spare_removal" name="spare_removal" value="" class="relative" disabled>
+                                                    <label for="spare_removal" class="relative">ชุดถอดยางอะไหล่</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                @if($fire_extinguisher !== NULL && $fire_extinguisher === 1)
+                                                    <input type="checkbox" id="fire_extinguisher" name="fire_extinguisher" value="" class="relative" disabled checked>
+                                                    <label for="fire_extinguisher" class="relative">ถังดับเพลิง</label><br>
+                                                @else
+                                                    <input type="checkbox" id="fire_extinguisher" name="fire_extinguisher" value="" class="relative" disabled>
+                                                    <label for="fire_extinguisher" class="relative">ถังดับเพลิง</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                @if($spining_wheel !== NULL && $spining_wheel === 1)
+                                                    <input type="checkbox" id="spining_wheel" name="spining_wheel" value="" class="relative" disabled checked>
+                                                    <label for="spining_wheel" class="relative">ไม้หมุนล้อ</label><br>
+                                                @else
+                                                    <input type="checkbox" id="spining_wheel" name="spining_wheel" value="" class="relative" disabled>
+                                                    <label for="spining_wheel" class="relative">ไม้หมุนล้อ</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                @if($other !== NULL && $other === 1)
+                                                    <input type="checkbox" id="other" name="other" value="" class="relative" disabled checked>
+                                                    <label for="other" class="relative">อื่น ๆ</label><br>
+                                                @else
+                                                    <input type="checkbox" id="other" name="other" value="" class="relative" disabled>
+                                                    <label for="other" class="relative">อื่น ๆ</label><br>
+                                                @endif
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -291,59 +321,60 @@
                                             $atm_card_document = data_get($data, 'atm_card_document', NULL);
                                             $other_document = data_get($data, 'other_document', NULL);
                                         ?>
-                                        <div class="font-normal text-slate-700">
-                                            <div class="float-left">
+
+                                        <div class="grid grid-cols-3">
+                                            <div class="flex space-x-2">
                                                 @if($real_claim_document !== NULL && $real_claim_document === 1)
                                                 <input type="checkbox" id="real_claim_document" name="real_claim_document" value="" class="relative" disabled checked>
-                                                <label for="real_claim_document" class="relative bottom-1 real_claim_document">ใบเคลมฉบับจริง</label><br>
+                                                <label for="real_claim_document" class="relative">ใบเคลมฉบับจริง</label><br>
                                                 @else
                                                 <input type="checkbox" id="real_claim_document" name="real_claim_document" value="" class="relative" disabled>
-                                                <label for="real_claim_document" class="relative bottom-1 real_claim_document">ใบเคลมฉบับจริง</label><br>
+                                                <label for="real_claim_document" class="relative">ใบเคลมฉบับจริง</label><br>
                                                 @endif
                                             </div>
-                                            <div class="float-none">
+                                            <div class="flex space-x-2">
                                                 @if($copy_policy_document !== NULL && $copy_policy_document === 1)
                                                 <input type="checkbox" id="copy_policy_document" name="copy_policy_document" value="" class="relative" disabled checked>
-                                                <label for="copy_policy_document" class="relative bottom-1 copy_policy_document">สำเนากรมธรรม์</label><br>
+                                                <label for="copy_policy_document" class="relative">สำเนากรมธรรม์</label><br>
                                                 @else
                                                 <input type="checkbox" id="copy_policy_document" name="copy_policy_document" value="" class="relative" disabled>
-                                                <label for="copy_policy_document" class="relative bottom-1 copy_policy_document">สำเนากรมธรรม์</label><br>
+                                                <label for="copy_policy_document" class="relative">สำเนากรมธรรม์</label><br>
                                                 @endif
                                             </div>
-                                            <div class="float-left">
+                                            <div class="flex space-x-2">
                                                 @if($copy_claim_document !== NULL && $copy_claim_document === 1)
                                                 <input type="checkbox" id="copy_claim_document" name="copy_claim_document" value="" class="relative" disabled checked>
-                                                <label for="copy_claim_document" class="relative bottom-1 copy_claim_document">สำเนาใบเคลม</label><br>
+                                                <label for="copy_claim_document" class="relative">สำเนาใบเคลม</label><br>
                                                 @else
                                                 <input type="checkbox" id="copy_policy_document" name="copy_policy_document" value="" class="relative" disabled>
-                                                <label for="copy_policy_document" class="relative bottom-1 copy_policy_document">สำเนาใบเคลม</label><br>
+                                                <label for="copy_policy_document" class="relative">สำเนาใบเคลม</label><br>
                                                 @endif
                                             </div>
-                                            <div class="float-none">
+                                            <div class="flex space-x-2">
                                                 @if($power_of_attorney_document !== NULL && $power_of_attorney_document === 1)
                                                 <input type="checkbox" id="power_of_attorney_document" name="power_of_attorney_document" value="" class="relative" disabled checked>
-                                                <label for="power_of_attorney_document" class="relative bottom-1 power_of_attorney_document">หนังสือมอบอำนาจ</label><br>
+                                                <label for="power_of_attorney_document" class="relative">หนังสือมอบอำนาจ</label><br>
                                                 @else
                                                 <input type="checkbox" id="power_of_attorney_document" name="power_of_attorney_document" value="" class="relative" disabled>
-                                                <label for="power_of_attorney_document" class="relative bottom-1 power_of_attorney_document">หนังสือมอบอำนาจ</label><br>
+                                                <label for="power_of_attorney_document" class="relative">หนังสือมอบอำนาจ</label><br>
                                                 @endif
                                             </div>
-                                            <div class="float-left">
+                                            <div class="flex space-x-2">
                                                 @if($copy_driver_license_document !== NULL && $copy_driver_license_document === 1)
                                                 <input type="checkbox" id="copy_driver_license_document" name="copy_driver_license_document" value="" class="relative" disabled checked>
-                                                <label for="copy_driver_license_document" class="relative bottom-1 copy_driver_license_document">สำเนาใบเคลม</label><br>
+                                                <label for="copy_driver_license_document" class="relative">สำเนาใบเคลม</label><br>
                                                 @else
                                                 <input type="checkbox" id="copy_driver_license_document" name="copy_driver_license_document" value="" class="relative" disabled>
-                                                <label for="copy_driver_license_document" class="relative bottom-1 copy_driver_license_document">สำเนาใบเคลม</label><br>
+                                                <label for="copy_driver_license_document" class="relative">สำเนาใบเคลม</label><br>
                                                 @endif
                                             </div>
-                                            <div class="float-none">
+                                            <div class="flex space-x-2">
                                                 @if($copy_of_director_id_card_document !== NULL && $copy_of_director_id_card_document === 1)
                                                 <input type="checkbox" id="power_of_attorney_document" name="power_of_attorney_document" value="" class="relative" disabled checked>
-                                                <label for="power_of_attorney_document" class="relative bottom-1 power_of_attorney_document">หนังสือมอบอำนาจ</label><br>
+                                                <label for="power_of_attorney_document" class="relative">หนังสือมอบอำนาจ</label><br>
                                                 @else
                                                 <input type="checkbox" id="power_of_attorney_document" name="power_of_attorney_document" value="" class="relative" disabled>
-                                                <label for="power_of_attorney_document" class="relative bottom-1 power_of_attorney_document">หนังสือมอบอำนาจ</label><br>
+                                                <label for="power_of_attorney_document" class="relative">หนังสือมอบอำนาจ</label><br>
                                                 @endif
                                             </div>
                                         </div>

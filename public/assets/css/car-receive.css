@@ -61,14 +61,6 @@ input[type="radio"] {
     width: 18px;
     height: 18px;
 }
-input#park {
-    top: 1.3rem;
-    left: 1.2rem;
-}
-input#park-type {
-    top: 1.3rem;
-    left: 2.4rem;
-}
 label.relative.left-11.car-park {
     top: 1rem;
 }
@@ -89,17 +81,8 @@ td.px-3.py-4.text-slate-700.sm\:table-cell {
 .boxset {
     left: 4rem;
 }
-input#boxset {
-    right:9.1rem;
-}
 .cigarette_lighter {
     left: 4rem;
-}
-input#cigarette_lighter {
-    left: 3.7rem;
-}
-input#radio {
-    left: 2.5rem;
 }
 label.relative.bottom-1.radio {
     left: 2.8rem;
@@ -107,41 +90,21 @@ label.relative.bottom-1.radio {
 label.relative.bottom-1.floor_mat {
     left: 4.5rem;
 }
-input#floor_mat
- {
-    left: 4.1rem;
- }
  label.relative.bottom-1.spare_removal
 {
     left: 2.8rem;
 }
-input#spare_removal
- {
-    left: 2.5rem;
- }
  label.relative.bottom-1.fire_extinguisher
  {
     left: 2.8rem;
- }
- input#fire_extinguisher
- {
-    left: 2.5rem;
  }
  label.relative.bottom-1.spining_wheel
 {
     left: 3.3rem;
 }
-input#spining_wheel
-{
-    left: 2.9rem;
-}
 label.relative.bottom-1.other
 {
     left:2.8rem;
-}
-input#other
-{
-    left: 2.5rem;
 }
 .p-9.content {
     position: relative;
@@ -154,14 +117,7 @@ td.content-1 {
 label.relative.bottom-1.copy_policy_document{
     left: 1rem;
 }
-input#copy_policy_document
- {
-    left: 1rem;
- }
  label.relative.bottom-1.power_of_attorney_document
 {
     left: 2.1rem;
-}
-input#power_of_attorney_document {
-    left: 2rem;
 }
