@@ -18,6 +18,7 @@
     },
     "dependencies": {
         "bcmath": "^2.3.5",
+        "chart.js": "^4.2.1",
         "moment": "^2.29.4",
         "pikaday": "^1.8.2"
     }

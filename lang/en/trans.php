@@ -171,4 +171,5 @@ return [
     'policy_expiration_date.text' => 'วันหมดอายุกรมธรรม์',
     'INV_number.text' => 'เลขที่ใบแจ้งหนี้',
     'other_files.text' => 'แนบไฟล์เอกสาร',
+    'cassie_number.text' => 'เลขคัชชี'
 ];

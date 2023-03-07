@@ -41,6 +41,11 @@ class EmployeeRequisitionResource extends Resource
             ->get('name_surname')
             ->pluck('name_surname', 'name_surname')
             ->toArray();
+        $employeeCode = EmployeeHistory::query()
+        ->orderBy('employee_code', 'desc')
+        ->get('employee_code')
+        ->pluck('employee_code', 'employee_code')
+        ->toArray();
 
         return $form
             ->schema([
@@ -55,12 +60,7 @@ class EmployeeRequisitionResource extends Resource
                     ->relationship()
                     ->schema(
                         [
-                            TextInput::make('order')
-                                ->label(__('trans.employee_code.text'))
-                                ->columnSpan([
-                                    'md' => 2,
-                                ])
-                                ->disabled(),
+
                             Select::make('employee_lists')
                                 ->label(' ' . __('trans.employee_lists.text'))
                                 ->preload()
@@ -87,7 +87,7 @@ class EmployeeRequisitionResource extends Resource
                         ])
                     ->defaultItems(count: 1)
                     ->columns([
-                        'md' => 9,
+                        'md' => 7,
                     ]) ->createItemButtonLabel('เพิ่มรายการเบิกเงินพนักงาน'),
 
                 ])->columnSpan('full'),
@@ -111,7 +111,7 @@ class EmployeeRequisitionResource extends Resource
             ->columns([
                 TextColumn::make('input')->label(__('trans.input.text'))->searchable(),
                 TextColumn::make('courier_document')->label(__('trans.courier_document.text')),
-                TextColumn::make('recipient_document')->label(__('trans.recipient_document.text')),
+                TextColumn::make('approver')->label(__('trans.approver.text')),
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')

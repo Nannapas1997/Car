@@ -24,7 +24,7 @@ class EmployeeRequisition extends Model implements HasMedia
         'input',
         'financial',
         'courier_document',
-        'recipient_document'
+        'approver',
     ];
 
     public function user():BelongsTo

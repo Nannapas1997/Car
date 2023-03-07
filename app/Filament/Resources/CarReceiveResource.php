@@ -421,6 +421,10 @@ class CarReceiveResource extends Resource
                                 ->label(__('trans.atm_card.text'))
                                 ->image()
                                 ->enableDownload(),
+                            SpatieMediaLibraryFileUpload::make('cassie_number')
+                                ->label(__('trans.cassie_number.text'))
+                                ->image()
+                                ->enableDownload(),
                         ]
                     ),
                 Fieldset::make('เอกสารที่ลูกค้านำมาวันรับรถ')
@@ -436,8 +440,8 @@ class CarReceiveResource extends Resource
                             Checkbox::make('copy_of_person_document')->label(__('trans.copy_of_person.text')),
                             Checkbox::make('account_book_document')->label(__('trans.account_book.text')),
                             Checkbox::make('atm_card_document')->label(__('trans.atm_card.text')),
-                            Checkbox::make('cassie_number')->label(__('เลขคัชชี')),
-                            Checkbox::make('other_document')->label(__('trans.other.text'))->columnSpanFull(),
+                            Checkbox::make('cassie_number_document')->label(__('trans.cassie_number.text')),
+                            Checkbox::make('other_document')->label(__('trans.other.text')),
                             MarkdownEditor::make('content_document')
                                 ->label(__('trans.content_document.text'))
                                 ->toolbarButtons(Config::get('static.editor-tools')),

@@ -114,6 +114,7 @@ class CarReceive extends Model implements HasMedia
         'repair_date',
         'number_ab',
         'choose_garage',
+        'cassie_number_document'
     ];
 
     protected static function booted()

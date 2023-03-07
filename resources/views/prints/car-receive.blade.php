@@ -18,7 +18,7 @@
 
 
 <body class="">
-    <section class="bg-white">
+    <section class="bg-white " size="A4">
         <div class="max-w-6xl mx-auto">
             <article class="overflow-hidden">
                 <div class="bg-[white]">
@@ -79,13 +79,13 @@
                                             <p class="font-semibold">วันที่</p>
                                         </div>
                                         <div class="col-span-3">
-                                            <p>{{ convertYmdToThaiNumber(data_get($data, 'pickup_date')) }}</p>
+                                            <p>{{ convertYmdToThaiNumber(data_get($data, 'receive_date')) }}</p>
                                         </div>
                                         <div class="col-span-2">
                                             <p class="font-semibold">ครบกำหนด</p>
                                         </div>
                                         <div class="col-span-3">
-                                            <p>-</p>
+                                            <p>{{ convertYmdToThaiNumber(data_get($data, 'pickup_date')) }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -154,6 +154,7 @@
                                         <input type="radio" id="park-type" name="park" value="{{ data_get($data, 'park_type', NULL) }}" disabled>
                                         <label for="park-type" class="">ไม่จอดซ่อม</label>
                                     @endif
+                                    <p></p>
                                     <p class="text-end">เลขไมล์ : {{ data_get($data, 'mile_number', NULL) }}</p>
                                 </div>
                             </div>
@@ -161,21 +162,21 @@
                     </div>
 
                     <div class="p-9 content">
-                        <div class="flex flex-col mx-0 mt-8">
+                        <div class="flex flex-col mx-0 ">
                             <table class="w-full divide-y divide-slate-500">
                                 <thead>
                                 <tr>
-                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left font-normal text-slate-700 sm:pl-6 md:pl-0">
+                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left font-sm text-slate-500 sm:pl-6 md:pl-0">
                                         บันทึกรายการความเสียหาย
                                     </th>
-                                    <th scope="col" class="py-3.5 px-3 text-right  font-normal text-slate-700 sm:table-cell">
+                                    <th scope="col" class="py-3.5 px-3 text-right  font-sm text-slate-500 sm:table-cell">
                                         สภาพรถและอุปกรณ์
                                     </th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr class="">
-                                    <td class="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0 content-1">
+                                    <td class="py-9 pl-4 pr-3 text-sm sm:pl-6 md:pl-0 content-1">
                                     {{ data_get($data, 'content', NULL) }}
                                     </td>
                                     <td class="px-3 py-4 text-slate-700 sm:table-cell">
@@ -297,20 +298,20 @@
                                 </tr>
                                 <thead>
                                     <tr class="document">
-                                        <th scope="col" class="py-1.5 pl-4 pr-3 text-left font-normal text-slate-700 sm:pl-6 md:pl-0">
+                                        <th scope="col" class="py-1.5 pl-4 pr-3 text-left font-sm text-slate-700  md:pl-0">
                                             เอกสารที่รับจากลูกค้าวันเข้าซ่อม
                                         </th>
-                                        <th scope="col" class="py-1.5 px-3 text-right  font-normal text-slate-700 sm:table-cell">
+                                        <th scope="col" class="py-1.5 px-3 text-right  font-sm text-slate-700 sm:table-cell">
                                             เอกสารที่ลูกค้านำมาวันรับรถ
                                         </th>
                                     </tr>
                                 </thead>
 
                                 <tr class="border-b border-slate-700">
-                                    <td class="py-4 pl-4 pr-3  sm:pl-6 md:pl-0" colspan="2">
+                                    <td class="py-4 pl-2 pr-3  sm:pl-6 md:pl-0" colspan="2">
                                         <?php
-                                            $real_claim_document = data_get($data, 'real_claim_document', NULL);
-                                            $copy_policy_document = data_get($data, 'copy_policy_document', NULL);
+                                            $real_claim_document = data_get($data, 'real_claim_document', NULL); //ใบเคลมฉบับจริง
+                                            $copy_policy_document = data_get($data, 'copy_policy_document', NULL); //
                                             $copy_claim_document = data_get($data, 'copy_claim_document', NULL);
                                             $power_of_attorney_document = data_get($data, 'power_of_attorney_document', NULL);
                                             $copy_driver_license_document = data_get($data, 'copy_driver_license_document', NULL);
@@ -320,6 +321,7 @@
                                             $account_book_document = data_get($data, 'account_book_document', NULL);
                                             $atm_card_document = data_get($data, 'atm_card_document', NULL);
                                             $other_document = data_get($data, 'other_document', NULL);
+                                            $cassie_number_document = data_get($data, 'cassie_number_document', NULL);
                                         ?>
 
                                         <div class="grid grid-cols-3">
@@ -342,15 +344,6 @@
                                                 @endif
                                             </div>
                                             <div class="flex space-x-2">
-                                                @if($copy_claim_document !== NULL && $copy_claim_document === 1)
-                                                <input type="checkbox" id="copy_claim_document" name="copy_claim_document" value="" class="relative" disabled checked>
-                                                <label for="copy_claim_document" class="relative">สำเนาใบเคลม</label><br>
-                                                @else
-                                                <input type="checkbox" id="copy_policy_document" name="copy_policy_document" value="" class="relative" disabled>
-                                                <label for="copy_policy_document" class="relative">สำเนาใบเคลม</label><br>
-                                                @endif
-                                            </div>
-                                            <div class="flex space-x-2">
                                                 @if($power_of_attorney_document !== NULL && $power_of_attorney_document === 1)
                                                 <input type="checkbox" id="power_of_attorney_document" name="power_of_attorney_document" value="" class="relative" disabled checked>
                                                 <label for="power_of_attorney_document" class="relative">หนังสือมอบอำนาจ</label><br>
@@ -370,21 +363,62 @@
                                             </div>
                                             <div class="flex space-x-2">
                                                 @if($copy_of_director_id_card_document !== NULL && $copy_of_director_id_card_document === 1)
-                                                <input type="checkbox" id="power_of_attorney_document" name="power_of_attorney_document" value="" class="relative" disabled checked>
-                                                <label for="power_of_attorney_document" class="relative">หนังสือมอบอำนาจ</label><br>
+                                                <input type="checkbox" id="copy_of_director_id_card_document" name="copy_of_director_id_card_document" value="" class="relative" disabled checked>
+                                                <label for="copy_of_director_id_card_document" class="relative">หนังสือมอบอำนาจ</label><br>
                                                 @else
-                                                <input type="checkbox" id="power_of_attorney_document" name="power_of_attorney_document" value="" class="relative" disabled>
-                                                <label for="power_of_attorney_document" class="relative">หนังสือมอบอำนาจ</label><br>
+                                                <input type="checkbox" id="copy_of_director_id_card_document" name="copy_of_director_id_card_document" value="" class="relative" disabled>
+                                                <label for="copy_of_director_id_card_document" class="relative">หนังสือมอบอำนาจ</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                @if($copy_vehicle_regis_document !== NULL && $copy_vehicle_regis_document === 1)
+                                                <input type="checkbox" id="copy_vehicle_regis_document" name="copy_vehicle_regis_document" value="" class="relative" disabled checked>
+                                                <label for="copy_vehicle_regis_document" class="relative">สำเนาทะเบียนรถ</label><br>
+                                                @else
+                                                <input type="checkbox" id="copy_vehicle_regis_document" name="copy_vehicle_regis_document" value="" class="relative" disabled>
+                                                <label for="copy_vehicle_regis_document" class="relative">สำเนาทะเบียนรถ</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                @if($copy_of_person_document !== NULL && $copy_of_person_document === 1)
+                                                <input type="checkbox" id="copy_of_person_document" name="copy_of_person_document" value="" class="relative" disabled checked>
+                                                <label for="copy_of_person_document" class="relative">สำเนาหนังสือรับรองนิติบุคคล(ยังไม่หมดอายุ)</label><br>
+                                                @else
+                                                <input type="checkbox" id="copy_of_person_document" name="copy_of_person_document" value="" class="relative" disabled>
+                                                <label for="copy_of_person_document" class="relative">สำเนาหนังสือรับรองนิติบุคคล(ยังไม่หมดอายุ)</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                @if($account_book_document !== NULL && $account_book_document === 1)
+                                                <input type="checkbox" id="account_book_document" name="copy_of_person_document" value="" class="relative" disabled checked>
+                                                <label for="account_book_document" class="relative">หน้าสมุดบัญชีธนาคาร</label><br>
+                                                @else
+                                                <input type="checkbox" id="account_book_document" name="account_book_document" value="" class="relative" disabled>
+                                                <label for="account_book_document" class="relative">หน้าสมุดบัญชีธนาคาร</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                @if($atm_card_document !== NULL && $atm_card_document === 1)
+                                                <input type="checkbox" id="atm_card_document" name="atm_card_document" value="" class="relative" disabled checked>
+                                                <label for="atm_card_document" class="relative">บัตรATM</label><br>
+                                                @else
+                                                <input type="checkbox" id="atm_card_document" name="atm_card_document" value="" class="relative" disabled>
+                                                <label for="atm_card_document" class="relative">บัตรATM</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                @if($cassie_number_document !== NULL && $cassie_number_document === 1)
+                                                <input type="checkbox" id="cassie_number_document" name="cassie_number_document" value="" class="relative" disabled checked>
+                                                <label for="cassie_number_document" class="relative">เลขคัชชี</label><br>
+                                                @else
+                                                <input type="checkbox" id="cassie_number_document" name="cassie_number_document" value="" class="relative" disabled>
+                                                <label for="cassie_number_document" class="relative">เลขคัชชี</label><br>
                                                 @endif
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-3 py-4 text-right text-slate-700 sm:table-cell">
 
-                                    </td>
                                 </tr>
-
-                                <!-- Here you can write more products/tasks that you want to charge for-->
                                 </tbody>
                             </table>
                         </div>

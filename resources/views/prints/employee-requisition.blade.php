@@ -150,7 +150,7 @@
                             <div class="border-b mx-20 mt-10"></div>
                             <div class="border-b mx-20 flex justify-between mt-4">
                                 <p>(</p>
-                                <p>{{ data_get($data, 'recipient_document') }}</p>
+                                <p>{{ data_get($data, 'approver') }}</p>
                                 <p>)</p>
                             </div>
                             <p class="pt-2">ผู้อนุมัติ</p>

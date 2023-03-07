@@ -39,7 +39,6 @@ class EmployeeHistoryResource extends Resource
     public static function getViewData(): array{
         $currentGarage =  Filament::auth()->user()->garage;
         $optionData = EmployeeHistory::query()
-            ->where('choose_garage', $currentGarage)
             ->orderBy('employee_code', 'desc')
             ->get('employee_code')
             ->pluck('employee_code', 'employee_code')
@@ -54,7 +53,7 @@ class EmployeeHistoryResource extends Resource
 
             if ($lastValue) {
                 $lastValueExplode = explode('-', $lastValue);
-                $lastValue = intval($lastValueExplode[count($lastValueExplode) - 1]);
+                $lastValue = intval($lastValueExplode[count($lastValueExplode)-1]);
                 $lastValue += 1;
                 $lastValue = $lastValue < 10 ? "0000{$lastValue}" :
                     ($lastValue < 100 ? "000{$lastValue}" :
@@ -77,6 +76,12 @@ class EmployeeHistoryResource extends Resource
                 ->required()
                 ->searchable()
                 ->options($optionValue)
+                ->afterStateUpdated(function (Closure $set, $state) {
+                    $bill = EmployeeHistory::query()->where('employee_code', $state)->first();
+                    if ($bill) {
+                        $bill = $bill->toArray();
+                    }
+                }),
         ];
     }
     public static function form(Form $form): Form
