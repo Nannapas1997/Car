@@ -107,12 +107,12 @@
                     let spDate = currentDate.split('-')
                     this.month = +spDate[1] - 1;
                     this.year = +spDate[0];
-                    this.datepickerValue = new Date(this.year, this.month, +spDate[2]).toDateString();
+                    // this.datepickerValue = new Date(this.year, this.month, +spDate[2]).toDateString();
                 } else {
                     let today = new Date();
                     this.month = today.getMonth();
                     this.year = today.getFullYear();
-                    this.datepickerValue = new Date(this.year, this.month, today.getDate()).toDateString();
+                    // this.datepickerValue = new Date(this.year, this.month, today.getDate()).toDateString();
                 }
             },
             isToday(date) {
@@ -130,7 +130,7 @@
             },
             getDateValue(date) {
                 let selectedDate = new Date(this.year, +this.month, date);
-                this.datepickerValue = selectedDate.toDateString();
+                // this.datepickerValue = selectedDate.toDateString();
                 this.$refs.date.value = selectedDate.getFullYear() +"-"+ ('0'+ selectedDate.getMonth()).slice(-2) +"-"+ ('0' + selectedDate.getDate()).slice(-2);
 
                 let params = (new URL(document.location)).searchParams;
