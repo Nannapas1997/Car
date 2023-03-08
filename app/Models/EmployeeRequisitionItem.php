@@ -16,6 +16,7 @@ class EmployeeRequisitionItem extends Model implements HasMedia
     public $timestamps = false;
 
     protected $fillable = [
+        'id',
         'order',
         'employee_lists',
         'disbursement_amount',
