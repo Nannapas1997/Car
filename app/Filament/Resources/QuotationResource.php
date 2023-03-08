@@ -57,8 +57,10 @@ class QuotationResource extends Resource
                     static::getViewData($currentGarage, function ($set, $state) use ($currentGarage) {
                         if ($state) {
                             $carReceive = CarReceive::query()->where('job_number', $state)->first();
+
                             if ($carReceive) {
                                 $carReceive = $carReceive->toArray();
+                                dd($carReceive);
                                 $set('model', $carReceive['model']);
                                 $set('car_year', $carReceive['car_year']);
                                 $set('customer', $carReceive['customer']);

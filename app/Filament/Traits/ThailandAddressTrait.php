@@ -13,10 +13,9 @@ trait ThailandAddressTrait
     public static function searchAddressOptions(Closure $get): array
     {
         $displayAddress = [];
-        $address = ThailandAddress::where('zipcode', 'like', '%' . $get('postal_code') . '%')
+        $address = ThailandAddress::where('zipcode', 'like', '%' . $get('zipcode') . '%')
             ->get()
             ->toArray();
-
         if ($address) {
             foreach ($address as $val) {
                 $displayAddress[Arr::get($val, 'id')] = Arr::get($val, 'zipcode')
@@ -37,6 +36,7 @@ trait ThailandAddressTrait
         if ($state) {
             $address = ThailandAddress::find($state)->toArray();
             if ($address) {
+                $set('zipcode', $address['zipcode']);
                 $set('district', $address['district']);
                 $set('amphoe', $address['amphoe']);
                 $set('province', $address['province']);

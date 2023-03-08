@@ -59,7 +59,8 @@ class PriceControlBillsResource extends Resource
                     ->disabled(),
                 TextInput::make('number_ab')
                     ->label(__('trans.number_ab.text'))
-                    ->required(),
+                    ->required()
+                    ->disabled(),
                 TextInput::make('customer')
                     ->label(__('trans.customer.text'))
                     ->required()

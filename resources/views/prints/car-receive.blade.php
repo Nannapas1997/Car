@@ -14,11 +14,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('assets/css/car-receive.css')}}">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: rgb(204,204,204);
+            font-size: small;
+        }
+        section[size="A4"] {
+            background: white;
+            width: 21cm;
+            height: 29.7cm;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 0.5cm;
+            box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+        }
+        .text-small-f {
+            font-size: x-small !important;
+        }
+        @media print {
+            body, section[size="A4"] {
+                background: white;
+            }
+        }
+    </style>
 </head>
 
 
 <body class="">
-    <section class="bg-white " size="A4">
+    <section class="bg-white" size="A4">
         <div class="max-w-6xl mx-auto">
             <article class="overflow-hidden">
                 <div class="bg-[white]">
@@ -98,6 +121,9 @@
                                 <div class=" flex justify-between ">
                                     <p class="font-normal text-slate-700 float-left">
                                         เจ้าของรถ : {{ data_get($data, 'customer', NULL) }}
+                                        <br>
+                                        ที่อยู่ : {{ data_get($data, 'address', NULL) }} ตำบล{{ data_get($data, 'district', NULL) }}
+                                       อำเภอ{{ data_get($data, 'amphoe', NULL) }} จังหวัด{{ data_get($data, 'province', NULL) }} <br> รหัสไปรษณีย์{{ data_get($data, 'zipcode', NULL) }}
                                     </p>
                                     <p></p>
                                     <p class="font-normal text-slate-700 relative ">
@@ -166,16 +192,16 @@
                             <table class="w-full divide-y divide-slate-500">
                                 <thead>
                                 <tr>
-                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left font-sm text-slate-500 sm:pl-6 md:pl-0">
+                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left font-normal text-slate-700 sm:pl-6 md:pl-0">
                                         บันทึกรายการความเสียหาย
                                     </th>
-                                    <th scope="col" class="py-3.5 px-3 text-right  font-sm text-slate-500 sm:table-cell">
+                                    <th scope="col" class="py-3.5 px-3 text-right  font-normal text-slate-700 sm:table-cell">
                                         สภาพรถและอุปกรณ์
                                     </th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="">
+                                <tr class="document">
                                     <td class="py-9 pl-4 pr-3 text-sm sm:pl-6 md:pl-0 content-1">
                                     {{ data_get($data, 'content', NULL) }}
                                     </td>
@@ -193,7 +219,7 @@
                                             $spining_wheel = data_get($data, 'spining_wheel', NULL);
                                             $other = data_get($data, 'other', NULL);
                                         ?>
-                                        <div class="grid grid-cols-3">
+                                        <div class="grid grid-cols-2">
                                             <div class="flex space-x-2">
                                                 @if($spare_tire !== NULL && $spare_tire === 1)
                                                     <input type="checkbox" id="spare_tire" name="spare_tire" class="relativ" value="" disabled checked>
@@ -298,17 +324,17 @@
                                 </tr>
                                 <thead>
                                     <tr class="document">
-                                        <th scope="col" class="py-1.5 pl-4 pr-3 text-left font-sm text-slate-700  md:pl-0">
+                                        <th scope="col" class="py-1.5 pl-4 pr-3 text-left font-normal text-slate-700 sm:pl-6 md:pl-0">
                                             เอกสารที่รับจากลูกค้าวันเข้าซ่อม
                                         </th>
-                                        <th scope="col" class="py-1.5 px-3 text-right  font-sm text-slate-700 sm:table-cell">
+                                        <th scope="col" class="py-1.5 px-3 text-right  font-normal text-slate-700 sm:table-cell">
                                             เอกสารที่ลูกค้านำมาวันรับรถ
                                         </th>
                                     </tr>
                                 </thead>
 
                                 <tr class="border-b border-slate-700">
-                                    <td class="py-4 pl-2 pr-3  sm:pl-6 md:pl-0" colspan="2">
+                                    <td class="py-4 pl-4 pr-3  sm:pl-6 md:pl-0" colspan="2">
                                         <?php
                                             $real_claim_document = data_get($data, 'real_claim_document', NULL); //ใบเคลมฉบับจริง
                                             $copy_policy_document = data_get($data, 'copy_policy_document', NULL); //
@@ -343,7 +369,8 @@
                                                 <label for="copy_policy_document" class="relative">สำเนากรมธรรม์</label><br>
                                                 @endif
                                             </div>
-                                            <div class="flex space-x-2">
+                                            <br>
+                                            <div class="">
                                                 @if($power_of_attorney_document !== NULL && $power_of_attorney_document === 1)
                                                 <input type="checkbox" id="power_of_attorney_document" name="power_of_attorney_document" value="" class="relative" disabled checked>
                                                 <label for="power_of_attorney_document" class="relative">หนังสือมอบอำนาจ</label><br>
@@ -361,13 +388,14 @@
                                                 <label for="copy_driver_license_document" class="relative">สำเนาใบเคลม</label><br>
                                                 @endif
                                             </div>
+                                            <br>
                                             <div class="flex space-x-2">
                                                 @if($copy_of_director_id_card_document !== NULL && $copy_of_director_id_card_document === 1)
                                                 <input type="checkbox" id="copy_of_director_id_card_document" name="copy_of_director_id_card_document" value="" class="relative" disabled checked>
-                                                <label for="copy_of_director_id_card_document" class="relative">หนังสือมอบอำนาจ</label><br>
+                                                <label for="copy_of_director_id_card_document" class="relative">สำเนาบัตรประชาชนกรรมการ</label><br>
                                                 @else
                                                 <input type="checkbox" id="copy_of_director_id_card_document" name="copy_of_director_id_card_document" value="" class="relative" disabled>
-                                                <label for="copy_of_director_id_card_document" class="relative">หนังสือมอบอำนาจ</label><br>
+                                                <label for="copy_of_director_id_card_document" class="relative">สำเนาบัตรประชาชนกรรมการ</label><br>
                                                 @endif
                                             </div>
                                             <div class="flex space-x-2">
@@ -378,8 +406,8 @@
                                                 <input type="checkbox" id="copy_vehicle_regis_document" name="copy_vehicle_regis_document" value="" class="relative" disabled>
                                                 <label for="copy_vehicle_regis_document" class="relative">สำเนาทะเบียนรถ</label><br>
                                                 @endif
-                                            </div>
-                                            <div class="flex space-x-2">
+                                            </div><br>
+                                            <div class="">
                                                 @if($copy_of_person_document !== NULL && $copy_of_person_document === 1)
                                                 <input type="checkbox" id="copy_of_person_document" name="copy_of_person_document" value="" class="relative" disabled checked>
                                                 <label for="copy_of_person_document" class="relative">สำเนาหนังสือรับรองนิติบุคคล(ยังไม่หมดอายุ)</label><br>
@@ -388,6 +416,7 @@
                                                 <label for="copy_of_person_document" class="relative">สำเนาหนังสือรับรองนิติบุคคล(ยังไม่หมดอายุ)</label><br>
                                                 @endif
                                             </div>
+
                                             <div class="flex space-x-2">
                                                 @if($account_book_document !== NULL && $account_book_document === 1)
                                                 <input type="checkbox" id="account_book_document" name="copy_of_person_document" value="" class="relative" disabled checked>
@@ -396,8 +425,8 @@
                                                 <input type="checkbox" id="account_book_document" name="account_book_document" value="" class="relative" disabled>
                                                 <label for="account_book_document" class="relative">หน้าสมุดบัญชีธนาคาร</label><br>
                                                 @endif
-                                            </div>
-                                            <div class="flex space-x-2">
+                                            </div><br>
+                                            <div class="">
                                                 @if($atm_card_document !== NULL && $atm_card_document === 1)
                                                 <input type="checkbox" id="atm_card_document" name="atm_card_document" value="" class="relative" disabled checked>
                                                 <label for="atm_card_document" class="relative">บัตรATM</label><br>
@@ -417,8 +446,12 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td class="px-3 py-4 text-right text-slate-700 sm:table-cell">
 
+                                    </td>
                                 </tr>
+
+                                <!-- Here you can write more products/tasks that you want to charge for-->
                                 </tbody>
                             </table>
                         </div>

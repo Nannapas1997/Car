@@ -212,7 +212,6 @@ class CarReceiveResource extends Resource
                    ->label(__('trans.prefix.text'))->nullable()
                    ->searchable()
                    ->preload()
-                   ->reactive()
                    ->options(Config::get('static.customer-prefix')),
                TextInput::make('customer')
                    ->label(__('trans.customer.text'))
@@ -227,8 +226,8 @@ class CarReceiveResource extends Resource
                                 ->label(__('trans.address.text'))
                                 ->required()
                                 ->columnSpanFull(),
-                            Select::make('postal_code')
-                                ->label(__('trans.postal_code.text'))
+                            Select::make('search')
+                                ->label(__('ค้นหา (สามารถค้นหาได้จาก รหัสไปรษณีย์ ตำบล อำเภอ และจังหวัด)'))
                                 ->required()
                                 ->preload()
                                 ->searchable()
@@ -237,6 +236,9 @@ class CarReceiveResource extends Resource
                                 ->afterStateUpdated(
                                     fn ($set, $state) => static::setValueThailandAddress($set, $state)
                                 ),
+                            TextInput::make('zipcode')
+                                ->label(__('trans.postal_code.text'))
+                                ->required(),
                             TextInput::make('district')
                                 ->label(__('trans.district.text'))
                                 ->required(),
@@ -510,11 +512,9 @@ class CarReceiveResource extends Resource
                     ->label(__('trans.updated_at.text'))
                     ->disabled()
                     ->afterStateHydrated(function ($set, $state) {
-                        if ($state) {
-                            $set('updated_at', $state);
-                        } else {
-                            $set('updated_at', now()->format('Y-m-d H:i:s'));
-                        }
+
+                        $set('updated_at', now()->format('Y-m-d H:i:s'));
+
 
                         $set('addressee', Filament::auth()->user()->name);
                     }),

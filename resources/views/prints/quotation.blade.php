@@ -82,7 +82,7 @@
 
                                 <br>
                                 <br>
-                                <span class="relative"><strong>ลูกต้า</strong></span>
+                                <span class="relative"><strong>ลูกค้า</strong></span>
                                 <br>
                                 <span class="relative">-</span>
                             </div>

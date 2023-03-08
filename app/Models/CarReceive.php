@@ -95,7 +95,7 @@ class CarReceive extends Model implements HasMedia
         'car_accident_choose',
         'driver_name',
         'address',
-        'postal_code',
+        'zipcode',
         'district',
         'amphoe',
         'province',
@@ -114,7 +114,9 @@ class CarReceive extends Model implements HasMedia
         'repair_date',
         'number_ab',
         'choose_garage',
-        'cassie_number_document'
+        'cassie_number_document',
+        'prefix',
+        'insu_company_address',
     ];
 
     protected static function booted()

@@ -70,8 +70,8 @@ label.relative.left-11.car-park {
     left: 10rem;
 }
 input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
+    width: 18px !important;
+    height: 18px !important;
 }
 
 td.px-3.py-4.text-slate-700.sm\:table-cell {
