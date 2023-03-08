@@ -82,9 +82,9 @@
 
                                 <br>
                                 <br>
-                                <span class="relative"><strong>ลูกค้า</strong></span>
+                                <span class="relative"><strong>ลูกค้า: </strong><span class="font-normal">{{ data_get($data, 'customer') }}</span></span>
                                 <br>
-                                <span class="relative">-</span>
+                                <span class="relative"><span class="font-semibold">ที่อยู่: {{ data_get($car_receive, 'address') }}</span></span>
                             </div>
                             <div class="flex-1 pt-10 ml-20">
                                 <div class="flex justify-center">
@@ -99,12 +99,6 @@
                                     </div>
                                     <div class="col-span-6">
                                         <p class="font-semibold">วันที่: <span class="font-normal">{{ convertYmdToThaiNumber(\Carbon\Carbon::now()->format('Y-m-d')) }}</span></p>
-                                    </div>
-                                    <div class="col-span-6">
-                                        <p class="font-semibold">ครบกำหนด</p>
-                                    </div>
-                                    <div class="col-span-3">
-                                        <p>-</p>
                                     </div>
                                 </div>
                             </div>
