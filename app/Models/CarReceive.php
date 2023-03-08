@@ -117,6 +117,7 @@ class CarReceive extends Model implements HasMedia
         'cassie_number_document',
         'prefix',
         'insu_company_address',
+        'search'
     ];
 
     protected static function booted()

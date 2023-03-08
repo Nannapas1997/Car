@@ -93,23 +93,14 @@
                                 <div class="flex justify-center pb-1">
                                     <p>ต้นฉบับ</p>
                                 </div>
-                                <div class="flex justify-center border-b pb-2">
-                                    <p class="">เลขผู้เสียภาษี</p>
-                                </div>
                                 <div class="grid grid-cols-5 gap-x-4 mt-2 px-10">
-                                    <div class="col-span-2">
-                                        <p class="font-semibold">เลขที่</p>
+                                    <div class="col-span-6">
+                                        <p class="font-semibold">เลขที่: <span class="font-normal">{{ data_get($data, 'job_number') }}</span></p>
                                     </div>
-                                    <div class="col-span-3">
-                                        <p>{{ data_get($data, 'bill_number', '-') }}</p>
+                                    <div class="col-span-6">
+                                        <p class="font-semibold">วันที่: <span class="font-normal">{{ convertYmdToThaiNumber(\Carbon\Carbon::now()->format('Y-m-d')) }}</span></p>
                                     </div>
-                                    <div class="col-span-2">
-                                        <p class="font-semibold">วันที่</p>
-                                    </div>
-                                    <div class="col-span-3">
-                                        <p>{{ convertYmdToThaiNumber(\Carbon\Carbon::now()->format('Y-m-d')) }}</p>
-                                    </div>
-                                    <div class="col-span-2">
+                                    <div class="col-span-6">
                                         <p class="font-semibold">ครบกำหนด</p>
                                     </div>
                                     <div class="col-span-3">

@@ -60,7 +60,6 @@ class QuotationResource extends Resource
 
                             if ($carReceive) {
                                 $carReceive = $carReceive->toArray();
-                                dd($carReceive);
                                 $set('model', $carReceive['model']);
                                 $set('car_year', $carReceive['car_year']);
                                 $set('customer', $carReceive['customer']);
@@ -107,7 +106,7 @@ class QuotationResource extends Resource
                     ->label(__('trans.repair_code.text'))
                     ->required()
                     ->disabled()
-                    ->options(Config::get('static.editor-tools'))
+                    ->options(Config::get('static.repair-code'))
                     ->columns(5),
                 Select::make('car_type')
                     ->label(__('trans.car_type.text'))
@@ -117,13 +116,15 @@ class QuotationResource extends Resource
                     ->disabled(),
                 TextInput::make('sum_insured')
                     ->required()
-                    ->label(__('trans.sum_insured.text')),
+                    ->label(__('trans.sum_insured.text'))
+                    ->disabled(),
                 TextInput::make('claim_number')
                     ->required()
                     ->disabled()
                     ->label(__('trans.claim_number.text')),
                 TextInput::make('number_ab')
                     ->required()
+                    ->disabled()
                     ->label(__('trans.number_ab.text')),
                 Select::make('insu_company_name')
                     ->label(__('trans.insu_company_name.text'))
