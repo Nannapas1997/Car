@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\EmployeeRequisitionResource\Widgets\EmployeeRequisitionChart;
+use App\Filament\Widgets\Order00TypeByDate;
 use App\Models\CarReceive;
 use App\Models\EmployeeHistory;
 use App\Models\Invoice;
@@ -166,6 +168,13 @@ class EmployeeRequisitionResource extends Resource
             'index' => Pages\ListEmployeeRequisitions::route('/'),
             'create' => Pages\CreateEmployeeRequisition::route('/create'),
             'edit' => Pages\EditEmployeeRequisition::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            EmployeeRequisitionChart::class
         ];
     }
 }
