@@ -26,6 +26,7 @@ class Order00TypeByDate extends BaseWidget
         // 2023-02-13
 
         $dateArr = explode('-', $dateSelect);
+        $month = $dateArr[1] < 10 ? '0' . $dateArr[1] : $dateArr[1];
 
         $year = CarReceive::query()->where('receive_date', 'like', $dateArr[0] . '-%')->get();
         $yearA = $year->where('repair_code', 'A')->count();
@@ -34,7 +35,7 @@ class Order00TypeByDate extends BaseWidget
         $yearD = $year->where('repair_code', 'D')->count();
         $yearTotal = $year->count();
 
-        $month = CarReceive::query()->where('receive_date', 'like', $dateArr[0] . '-' . $dateArr[1] . '-%')->get();
+        $month = CarReceive::query()->where('receive_date', 'like', $dateArr[0] . '-' . $month . '-%')->get();
         $monthA = $month->where('repair_code', 'A')->count();
         $monthB = $month->where('repair_code', 'B')->count();
         $monthC = $month->where('repair_code', 'C')->count();
