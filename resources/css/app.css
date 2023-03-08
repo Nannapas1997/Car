@@ -1,4 +1,6 @@
 @import '../../vendor/filament/forms/dist/module.esm.css';
 @import 'pikaday/css/pikaday.css';
 
-
+.bg-current-date {
+    background-color: #1d4ed8 !important;
+}

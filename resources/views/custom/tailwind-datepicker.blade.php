@@ -10,7 +10,7 @@
                     @click="showDatepicker = !showDatepicker"
                     @keydown.escape="showDatepicker = false"
                     class="w-3/4 pl-10 pr-10 py-3 leading-none rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"
-                    placeholder="เลือกวันที่">
+                    placeholder="{{ $currentDate ? $currentDate : 'เลือกวันที่' }}">
 
                 <div class="absolute top-0 left-0 px-3 py-2">
                     <svg class="h-6 w-6 text-gray-400"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -73,8 +73,7 @@
                                 <div
                                     @click="getDateValue(date)"
                                     x-text="date"
-                                    class="cursor-pointer text-center text-sm leading-none rounded-full leading-loose transition ease-in-out duration-100"
-                                    :class="{'bg-blue-500 text-white': isToday(date) == true, 'text-gray-700 hover:bg-blue-200': isToday(date) == false }"
+                                    class="cursor-pointer text-center"
                                 ></div>
                             </div>
                         </template>
@@ -106,7 +105,9 @@
 
                 if (currentDate) {
                     let spDate = currentDate.split('-')
-                    this.datepickerValue = new Date(+spDate[0], +spDate[1], +spDate[2]).toDateString();
+                    this.month = +spDate[1] - 1;
+                    this.year = +spDate[0];
+                    this.datepickerValue = new Date(this.year, this.month, +spDate[2]).toDateString();
                 } else {
                     let today = new Date();
                     this.month = today.getMonth();
@@ -115,25 +116,38 @@
                 }
             },
             isToday(date) {
-                const today = new Date();
-                const d = new Date(this.year, this.month, date);
+                let today = new Date();
+                let params = (new URL(document.location)).searchParams;
+                let currentDate = params.get("date");
 
-                return today.toDateString() === d.toDateString() ? true : false;
+                if (currentDate) {
+                    let spDate = currentDate.split('-')
+                    today = new Date(+spDate[0], +spDate[1] - 1, +spDate[2])
+                }
+
+                const d = new Date(+this.year, +this.month, date);
+                return today.toDateString() === d.toDateString();
             },
             getDateValue(date) {
-                let selectedDate = new Date(this.year, parseInt(this.month) + 1, date);
+                let selectedDate = new Date(this.year, +this.month, date);
                 this.datepickerValue = selectedDate.toDateString();
                 this.$refs.date.value = selectedDate.getFullYear() +"-"+ ('0'+ selectedDate.getMonth()).slice(-2) +"-"+ ('0' + selectedDate.getDate()).slice(-2);
 
-                console.log(window.location.href + '?date=' + this.$refs.date.value);
+                let params = (new URL(document.location)).searchParams;
+                let currentDate = params.get("date");
 
-                window.location.assign(window.location.href.split('?')[0] + '?date=' + this.$refs.date.value);
+                if (currentDate) {
+                    const domainUrl = window.location.href.split('?')[0]
+                    window.location.assign(domainUrl + '?date=' + this.year + '-' + (parseInt(this.month) + 1) + '-' + selectedDate.getDate());
+                } else {
+                    window.location.assign(window.location.href.split('?')[0] + '?date=' + this.year + '-' + (parseInt(this.month) + 1) + '-' + selectedDate.getDate());
+                }
 
                 this.showDatepicker = false;
             },
 
             getNoOfDays() {
-                let daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
+                let daysInMonth = new Date(this.year, +this.month + 1, 0).getDate();
 
                 // find where to start calendar day of week
                 let dayOfWeek = new Date(this.year, this.month).getDay();
