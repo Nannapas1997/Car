@@ -105,19 +105,12 @@ class SaveRepairCostResource extends Resource
                                 ->preload()
                                 ->reactive()
                                 ->options(
-                                    $store
-                                ) ->afterStateUpdated(function ($set, $state) {
-
-                                    if ($state) {
-
-                                        $store =Customer::query()->where('store', $state)->first();
-
-                                        if ($store) {
-                                            $store = $store->toArray();
-                                            $set('store', $store['store']);
-                                        }
-                                    }
-                                }),
+                                [
+                                    "ร้าน A" => "ร้าน A",
+                                    "ร้าน B" => "ร้าน B",
+                                    "ร้าน C" => "ร้าน C",
+                                    "ร้าน D" => "ร้าน D"
+                                ]),
                             TextInput::make('address')
                                 ->label(__('trans.address.text'))
                                 ->required(),
