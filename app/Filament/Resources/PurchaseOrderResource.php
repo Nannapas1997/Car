@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Traits\JobNumberTrait;
+use App\Models\Customer;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -70,15 +71,17 @@ class PurchaseOrderResource extends Resource
                     ->required()
                     ->disabled()
                     ->label(__('trans.car_year.text')),
-                Select::make('store')->label(__('trans.store.text'))
+                Select::make('store')
+                    ->label(__('trans.store.text'))
                     ->required()
                     ->preload()
-                    ->options([
-                        'ร้านA'=>'ร้านA',
-                        'ร้านB'=>'ร้านB',
-                        'ร้านC'=>'ร้านC',
-                        'ร้านD'=>'ร้านD',
-                    ]),
+                    ->searchable()
+                    ->options(function () {
+                        return Customer::query()
+                            ->get('store')
+                            ->pluck('store', 'store')
+                            ->toArray();
+                    }),
                 TextInput::make('parts_list_total')
                     ->required()
                     ->label(__('trans.parts_list_total.text')),
