@@ -2,31 +2,33 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\EmployeeRequisitionResource\Widgets\EmployeeRequisitionChart;
-use App\Filament\Widgets\Order00TypeByDate;
-use App\Models\CarReceive;
-use App\Models\EmployeeHistory;
-use App\Models\Invoice;
 use Filament\Forms;
-use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
+use App\Models\Invoice;
+use App\Models\CarReceive;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Illuminate\Support\Carbon;
+use App\Models\EmployeeHistory;
 use Filament\Resources\Resource;
 use App\Models\EmployeeRequisition;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use App\Models\EmployeeRequisitionItem;
 use Filament\Forms\Components\Repeater;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Placeholder;
+use App\Filament\Widgets\Order00TypeByDate;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Resources\EmployeeRequisitionResource\Pages;
 use App\Filament\Resources\EmployeeRequisitionResource\RelationManagers;
-use Filament\Forms\Components\DatePicker;
-use Filament\Tables\Columns\TextColumn;
+use App\Filament\Resources\EmployeeRequisitionResource\Widgets\EmployeeRequisitionChart;
 
 class EmployeeRequisitionResource extends Resource
 {
@@ -148,7 +150,11 @@ class EmployeeRequisitionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
+                Tables\Actions\DeleteAction::make()->after(function (DeleteAction $action) {
+                    EmployeeRequisitionItem::query()
+                        ->where('employee_requisition_id', $action->getRecord()->getQueueableId())
+                        ->delete();
+                })
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

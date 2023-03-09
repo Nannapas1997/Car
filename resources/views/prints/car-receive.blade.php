@@ -350,7 +350,7 @@
                                             $cassie_number_document = data_get($data, 'cassie_number_document', NULL);
                                         ?>
 
-                                        <div class="grid grid-cols-3">
+                                        <div class="grid grid-cols-3 ">
                                             <div class="flex space-x-2">
                                                 @if($real_claim_document !== NULL && $real_claim_document === 1)
                                                 <input type="checkbox" id="real_claim_document" name="real_claim_document" value="" class="relative" disabled checked>
@@ -382,10 +382,10 @@
                                             <div class="flex space-x-2">
                                                 @if($copy_driver_license_document !== NULL && $copy_driver_license_document === 1)
                                                 <input type="checkbox" id="copy_driver_license_document" name="copy_driver_license_document" value="" class="relative" disabled checked>
-                                                <label for="copy_driver_license_document" class="relative">สำเนาใบเคลม</label><br>
+                                                <label for="copy_driver_license_document" class="relative">สำเนาใบขับขี่</label><br>
                                                 @else
                                                 <input type="checkbox" id="copy_driver_license_document" name="copy_driver_license_document" value="" class="relative" disabled>
-                                                <label for="copy_driver_license_document" class="relative">สำเนาใบเคลม</label><br>
+                                                <label for="copy_driver_license_document" class="relative">สำเนาใบขับขี่</label><br>
                                                 @endif
                                             </div>
                                             <br>
@@ -433,6 +433,15 @@
                                                 @else
                                                 <input type="checkbox" id="atm_card_document" name="atm_card_document" value="" class="relative" disabled>
                                                 <label for="atm_card_document" class="relative">บัตรATM</label><br>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                @if($cassie_number_document !== NULL && $cassie_number_document === 1)
+                                                <input type="checkbox" id="cassie_number_document" name="cassie_number_document" value="" class="relative" disabled checked>
+                                                <label for="cassie_number_document" class="relative">เลขคัชชี</label><br>
+                                                @else
+                                                <input type="checkbox" id="cassie_number_document" name="cassie_number_document" value="" class="relative" disabled>
+                                                <label for="cassie_number_document" class="relative">เลขคัชชี</label><br>
                                                 @endif
                                             </div>
                                             <div class="flex space-x-2">

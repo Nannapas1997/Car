@@ -446,7 +446,7 @@ class QuotationResource extends Resource
                     ->searchable()
                     ->formatStateUsing(fn (?string $state): string => convertYmdToThaiShort($state)),
                 TextColumn::make('claim_number')->label(__('trans.claim_number.text')),
-                TextColumn::make('accident_number')->label(__('trans.accident_number.text')),
+                TextColumn::make('number_ab')->label(__('trans.number_ab.text')),
                 TextColumn::make('insu_company_name')->label(__('trans.insu_company_name.text')),
                 TextColumn::make('accident_date')
                     ->label(__('trans.accident_date.text'))
@@ -458,21 +458,8 @@ class QuotationResource extends Resource
                     ->label(__('trans.quotation_date.text'))
                     ->searchable()
                     ->formatStateUsing(fn (?string $state): string => convertYmdToThaiShort($state)),
-                TextColumn::make('wage')
-                    ->label(__('trans.wage.text'))
-                    ->alignEnd(),
-                TextColumn::make('including_spare_parts')
-                    ->label(__('trans.including_spare_parts.text'))
-                    ->alignEnd(),
-                TextColumn::make('total_wage')
-                    ->label(__('trans.total_wage.text'))
-                    ->alignEnd(),
-                TextColumn::make('vat')
-                    ->label(__('trans.vat.text'))
-                    ->alignEnd(),
-                TextColumn::make('overall')
-                    ->label(__('trans.overall.text'))
-                    ->alignEnd(),
+
+
                 BadgeColumn::make('status')
                     ->label(__('trans.status.text'))
                     ->colors([

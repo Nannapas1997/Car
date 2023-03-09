@@ -2,11 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Traits\JobNumberTrait;
 use Closure;
 use Filament\Forms;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables;
+use App\Models\Customer;
 use App\Models\CarReceive;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
@@ -16,16 +15,18 @@ use Illuminate\Support\Carbon;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
+use Illuminate\Support\Facades\Config;
+use App\Filament\Traits\JobNumberTrait;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ViewField;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Placeholder;
 use App\Filament\Resources\SaveRepairCostResource\Pages;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Resources\SaveRepairCostResource\RelationManagers;
-use Filament\Forms\Components\ViewField;
-use Illuminate\Support\Facades\Config;
 
 class SaveRepairCostResource extends Resource
 {
@@ -37,9 +38,15 @@ class SaveRepairCostResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
     protected static ?string $pluralLabel = 'ต้นทุนค่าแรง';
 
+
     public static function form(Form $form): Form
     {
         $currentGarage =  Filament::auth()->user()->garage;
+        $store = Customer::query()
+        ->orderBy('store', 'desc')
+            ->get('store')
+            ->pluck('store', 'store')
+            ->toArray();
 
         return $form
             ->schema([
@@ -96,12 +103,21 @@ class SaveRepairCostResource extends Resource
                                 ->label(__('trans.store.text'))
                                 ->required()
                                 ->preload()
-                                ->options([
-                                    'ร้านA'=>'ร้านA',
-                                    'ร้านB'=>'ร้านB',
-                                    'ร้านC'=>'ร้านC',
-                                    'ร้านD'=>'ร้านD',
-                                ]),
+                                ->reactive()
+                                ->options(
+                                    $store
+                                ) ->afterStateUpdated(function ($set, $state) {
+
+                                    if ($state) {
+
+                                        $store =Customer::query()->where('store', $state)->first();
+
+                                        if ($store) {
+                                            $store = $store->toArray();
+                                            $set('store', $store['store']);
+                                        }
+                                    }
+                                }),
                             TextInput::make('address')
                                 ->label(__('trans.address.text'))
                                 ->required(),
@@ -132,8 +148,8 @@ class SaveRepairCostResource extends Resource
                                         ->columnSpan(['md' => 2]),
                                         TextInput::make('price')
                                             ->label(__('trans.price.text'))
-                                            ->numeric()
                                             ->reactive()
+                                            ->numeric()
                                             ->columnSpan(['md' => 3])
                                             ->required(),
                                         TextInput::make('spare_code')
@@ -163,8 +179,7 @@ class SaveRepairCostResource extends Resource
                     ->image()
                     ->enableDownload(),
                 ViewField::make('courier_document')
-                    ->view('filament.resources.forms.components.courier_document')
-                    ->required(),
+                    ->view('filament.resources.forms.components.courier_document'),
                 TextInput::make('approver')
                     ->label(__('trans.approver.text'))
                     ->required()

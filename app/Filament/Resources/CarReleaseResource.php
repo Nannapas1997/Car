@@ -2,12 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Traits\JobNumberTrait;
-use Filament\Forms\Components\DatePicker;
 use Filament\Tables;
 use App\Models\CarReceive;
 use App\Models\CarRelease;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
@@ -16,11 +13,19 @@ use Illuminate\Support\Carbon;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
+use Illuminate\Support\Facades\Config;
+use App\Filament\Traits\JobNumberTrait;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\MarkdownEditor;
 use App\Filament\Resources\CarReleaseResource\Pages;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Resources\CarReleaseResource\RelationManagers;
-use Illuminate\Support\Facades\Config;
 
 class CarReleaseResource extends Resource
 {
@@ -123,6 +128,73 @@ class CarReleaseResource extends Resource
                 TextInput::make('claim_number')
                     ->label('เลขเคลม / เลขรับแจ้งที่')
                     ->disabled(),
+                Fieldset::make('เอกสารที่ได้รับในวันที่รถเข้าซ่อม')
+                    ->schema(
+                        [
+                            FileUpload::make('real_claim')
+                                ->label(__('trans.real_claim.text'))
+                                ->image()
+                                ->enableDownload(),
+                            FileUpload::make('copy_claim')
+                                ->label(__('trans.copy_claim.text'))
+                                ->image()
+                                ->enableDownload(),
+                            FileUpload::make('copy_driver_license')
+                                ->label(__('trans.copy_driver_license.text'))
+                                ->image()
+                                ->enableDownload(),
+                            FileUpload::make('copy_vehicle_regis')
+                                ->label(__('trans.copy_vehicle_regis.text'))
+                                ->image()
+                                ->enableDownload(),
+                            FileUpload::make('copy_policy')
+                                ->label(__('trans.copy_policy.text'))
+                                ->image()
+                                ->enableDownload(),
+                            FileUpload::make('power_of_attorney')
+                                ->label(__('trans.power_of_attorney.text'))
+                                ->image()
+                                ->enableDownload(),
+                            FileUpload::make('copy_of_director_id_card')
+                                ->label(__('trans.copy_of_director_id_card.text'))
+                                ->image()
+                                ->enableDownload(),
+                            FileUpload::make('copy_of_person')
+                                ->label(__('trans.copy_of_person.text'))
+                                ->image()
+                                ->enableDownload(),
+                            FileUpload::make('account_book')
+                                ->label(__('trans.account_book.text'))
+                                ->image()
+                                ->enableDownload(),
+                            FileUpload::make('atm_card')
+                                ->label(__('trans.atm_card.text'))
+                                ->image()
+                                ->enableDownload(),
+                            SpatieMediaLibraryFileUpload::make('cassie_number')
+                                ->label(__('trans.cassie_number.text'))
+                                ->image()
+                                ->enableDownload(),
+                        ]
+                    ),
+                Fieldset::make('เอกสารที่ลูกค้านำมาวันรับรถ')
+                    ->schema(
+                        [
+                            Checkbox::make('real_claim_document')->label(__('trans.real_claim.text')),
+                            Checkbox::make('copy_policy_document')->label(__('trans.copy_policy.text')),
+                            Checkbox::make('copy_claim_document')->label(__('trans.copy_claim.text')),
+                            Checkbox::make('power_of_attorney_document')->label(__('trans.power_of_attorney.text')),
+                            Checkbox::make('copy_driver_license_document')->label(__('trans.copy_driver_license.text')),
+                            Checkbox::make('copy_of_director_id_card_document')->label(__('trans.copy_of_director_id_card.text')),
+                            Checkbox::make('copy_vehicle_regis_document')->label(__('trans.copy_vehicle_regis.text')),
+                            Checkbox::make('copy_of_person_document')->label(__('trans.copy_of_person.text')),
+                            Checkbox::make('account_book_document')->label(__('trans.account_book.text')),
+                            Checkbox::make('atm_card_document')->label(__('trans.atm_card.text')),
+                            Checkbox::make('cassie_number_document')->label(__('trans.cassie_number.text')),
+                        ]
+                    ),
+                TextInput::make('car_releaser')
+                    ->label('ผู้ปล่อยรถ'),
             ]);
     }
 
@@ -134,6 +206,7 @@ class CarReleaseResource extends Resource
                     ->label(__('trans.job_number.text'))
                     ->searchable(),
                 TextColumn::make('oc_number')->label(__('trans.oc_number.text')),
+                TextColumn::make('car_releaser')->label(__('ผู้ปล่อยรถ')),
                 TextColumn::make('staff_name')->label(__('ชื่อ (ข้าพเจ้า)')),
                 TextColumn::make('staff_position')->label(__('ตำแหน่งที่เกี่ยวข้องกับ บจ./หจก.')),
                 TextColumn::make('vehicle_registration')

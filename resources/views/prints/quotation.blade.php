@@ -84,7 +84,7 @@
                                 <br>
                                 <span class="relative"><strong>ลูกค้า: </strong><span class="font-normal">{{ data_get($data, 'customer') }}</span></span>
                                 <br>
-                                <span class="relative"><span class="font-semibold">ที่อยู่: {{ data_get($car_receive, 'address') }}</span></span>
+                                <span class="relative"><span class="font-semibold">ที่อยู่: </span class="font-normal">{{ data_get($carReceive, 'address') }} ตำบล {{ data_get($carReceive, 'district') }} อำเภอ  </span>
                             </div>
                             <div class="flex-1 pt-10 ml-20">
                                 <div class="flex justify-center">
@@ -106,7 +106,120 @@
                     </div>
                 </div>
                 <div class="">
-
+                    <div class="p-9 content">
+                        <div class="flex flex-col mx-0 mt-8">
+                            <table class="w-full border border-collapse border-slate-500">
+                                <thead class="border">
+                                <tr class="text-sm">
+                                    <th scope="col" class="text-center border w-[20px]">
+                                        ลำดับ
+                                    </th>
+                                    <th scope="col" class="text-center border">
+                                        รายการ
+                                    </th>
+                                    <th scope="col" class="text-center border">
+                                        จำนวนเงิน
+                                    </th>
+                                    <th>
+                                        ค่าอะไหล่
+                                    </th>
+                                    <th>
+                                        ค่าแรง
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach(data_get($data, 'quotation_items') as $idx => $item)
+                                    <tr class="gap-2 text-small-f">
+                                        <td class="text-center border p-2">
+                                            {{ $idx + 1 }}
+                                        </td>
+                                        <td class="text-center border p-2">
+                                            {{ data_get($item, 'list_damaged_parts') ?? '-' }}
+                                        </td>
+                                        <td class="text-center border p-2">
+                                            {{ data_get($item, 'quantity') ?? '-' }}
+                                        </td>
+                                        <td class="text-center border p-2">
+                                            {{ data_get($item, 'spare_value') ?? '-' }}
+                                        </td>
+                                        <td class="text-center border p-2">
+                                            {{ data_get($item, 'wage') ?? '-' }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                    <tr class="gap-2">
+                                        <td colspan="2" class="flex-col border py-4 px-6">
+                                            <p>หมายเหตุ</p>
+                                            <p>ใบกำกับภาษีและใบเสร็จรับเงินจะออกให้ ณ วันที่รับเงิน</p>
+                                        </td>
+                                        <td colspan="1" class="flex-col border py-4 px-6">
+                                            <p class="flex justify-between">
+                                                <span>รวม</span>
+                                                <span>{{ data_get($data, 'amount', '-') }}</span>
+                                            </p>
+                                            <p class="flex justify-between">
+                                                <span>ส่วนลด</span>
+                                                <span>-</span>
+                                            </p>
+                                            <p class="flex justify-between">
+                                                <span>คงเหลือ</span>
+                                                <span>{{ data_get($data, 'amount', '-') }}</span>
+                                            </p>
+                                            <p class="flex justify-between">
+                                                <span>ภาษีมูลค่าเพิ่ม 7%</span>
+                                                <span>{{ data_get($data, 'vat', '-') }}</span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr class="gap-2">
+                                        <td colspan="2" class="flex-col border py-4 px-6">
+                                            <p>&nbsp;</p>
+                                        </td>
+                                        <td colspan="1" class="flex-col border py-4 px-6">
+                                            <p class="flex justify-between">
+                                                <span>สุทธิ</span>
+                                                <span>{{ data_get($data, 'aggregate', '-') }}</span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-9 content">
+                    <div class="grid grid-cols-2">
+                        <div class="w-full text-center">
+                            <div class="border-b mx-20 mt-10"></div>
+                            <div class="border-b mx-20 flex justify-between mt-4">
+                                <p>(</p>
+                                <p>)</p>
+                            </div>
+                            <div class="border-b mx-20 flex justify-between mt-4">
+                                <p>วันที่</p>
+                                <p>/</p>
+                                <p>/</p>
+                                <p>/</p>
+                            </div>
+                            <p class="pt-2">ผู้รับสินค้า</p>
+                        </div>
+                        <div class="w-full text-center">
+                            <div class="border-b mx-20 mt-10"></div>
+                            <div class="border-b mx-20 flex justify-between mt-4">
+                                <p>(</p>
+                                <p>)</p>
+                            </div>
+                            <div class="border-b mx-20 flex justify-between mt-4">
+                                <p>วันที่</p>
+                                <p>/</p>
+                                <p>/</p>
+                                <p>/</p>
+                            </div>
+                            <p class="pt-2">ผู้มีอำนาจลงนาม</p>
+                            <div class="">บริษัท เอส.พี.ภัทร อินเตอร์ ทรัค จำกัด</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </article>

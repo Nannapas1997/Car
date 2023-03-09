@@ -29,6 +29,10 @@ class PriceControlBills extends Model implements HasMedia
         'note',
         'courier',
         'price_dealer',
+        'labor_price',
+        'price_offer',
+        'wage_stop',
+        'price_spare_parts'
     ];
 
     public function registerMediaCollections(): void

@@ -37,7 +37,9 @@ class SaveRepairCost extends Model implements HasMedia
         'taxpayer_number',
         'contact_name',
         'tel_number',
-        'address'
+        'address',
+        'courier_document',
+        'approver'
     ];
 
     public function user():BelongsTo

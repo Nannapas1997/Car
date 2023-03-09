@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Quotation;
 use App\Models\CarReceive;
 use App\Models\CashReceipt;
-use App\Models\Quotation;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 
 class QuotationPrintController extends Controller
@@ -13,13 +14,16 @@ class QuotationPrintController extends Controller
     {
         $id = $request->route('id');
         $data = Quotation::find($id);
-        $car_receive = CarReceive::find($id);
-        if (!$data && !$car_receive) {
+        if (!$data) {
             return redirect('/');
         }
 
         $data = $data->toArray();
-        $car_receive = $car_receive->toArray();
-        return view('prints.quotation', ['data' => $data, 'car_receive' => $car_receive]);
+        $carReceive = CarReceive::query()
+        ->where('job_number', Arr::get($data, 'job_number'))
+        ->first();
+
+
+        return view('prints.quotation', ['data' => $data, 'carReceive' => $carReceive]);
     }
 }

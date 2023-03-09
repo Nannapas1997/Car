@@ -17,7 +17,7 @@ class PurchaseOrderPrintController extends Controller
         }
 
         $data = $data->toArray();
-
+        dd($data);
         return view('prints.purchase-order', ['data' => $data]);
     }
 }
