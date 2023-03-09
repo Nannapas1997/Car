@@ -147,10 +147,7 @@
                                             {{ $idx + 1 }}
                                         </td>
                                         <td class="text-center border p-2">
-                                            {{ data_get($item, 'code_c0_c7') ?? '-' }}
-                                        </td>
-                                        <td class="text-center border p-2">
-                                            {{ data_get($item, 'parts_list') ?? '-' }}
+                                        {{ data_get($item, 'parts_list') ?? '-' }}
                                         </td>
                                         <td class="text-center border p-2">
                                             {{ data_get($item, 'price') ?? '-' }}

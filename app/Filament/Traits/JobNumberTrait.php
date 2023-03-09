@@ -44,7 +44,7 @@ trait JobNumberTrait
                 ->preload()
                 ->required()
                 ->searchable()
-                ->options($optionData)
+                ->options($optionValue)
                 ->reactive()
                 ->afterStateUpdated($closure),
         ];
