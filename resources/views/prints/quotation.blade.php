@@ -129,7 +129,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach(data_get($data, 'quotation_items') as $idx => $item)
+                                @foreach(data_get($data, 'quotationitems') as $idx => $item)
                                     <tr class="gap-2 text-small-f">
                                         <td class="text-center border p-2">
                                             {{ $idx + 1 }}
@@ -153,7 +153,7 @@
                                             <p>หมายเหตุ</p>
                                             <p>ใบกำกับภาษีและใบเสร็จรับเงินจะออกให้ ณ วันที่รับเงิน</p>
                                         </td>
-                                        <td colspan="1" class="flex-col border py-4 px-6">
+                                        <td colspan="3" class="flex-col border py-4 px-6">
                                             <p class="flex justify-between">
                                                 <span>รวม</span>
                                                 <span>{{ data_get($data, 'amount', '-') }}</span>
@@ -176,7 +176,7 @@
                                         <td colspan="2" class="flex-col border py-4 px-6">
                                             <p>&nbsp;</p>
                                         </td>
-                                        <td colspan="1" class="flex-col border py-4 px-6">
+                                        <td colspan="3" class="flex-col border py-4 px-6">
                                             <p class="flex justify-between">
                                                 <span>สุทธิ</span>
                                                 <span>{{ data_get($data, 'aggregate', '-') }}</span>
